@@ -47,23 +47,23 @@ public class Gravel {
 	                     //Kein Look and feel möglich - Standardeinstellungen werden verwendet
 	                     e.printStackTrace();
 	                 } 
-	            	if (System.getProperty("os.name").toLowerCase().indexOf("mac")!=-1)
-	                {    		
-	            		//Mac-spezifische Systemwerte, wie etwa die Verwendung des Application-Menüs oben am Rand
-	                	System.setProperty("apple.laf.useScreenMenuBar","true"); //Use Menu Bar
-	            		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Gravel");
-	                	System.setProperty("com.apple.macos.use-file-dialog-packages","true");
-	                	System.setProperty("com.apple.eawt.CocoaComponent.CompatibilityMode", "false"); 
-	                	System.setProperty("com.apple.mrj.application.growbox.intrudes","false");
-	                	//Hauptfenster mit Mac-Deko
-	                	Gui_Mac.getInstance(f);
-	                }
-	            	else
-	            	{
+//	            	if (System.getProperty("os.name").toLowerCase().indexOf("mac")!=-1)
+//	                {
+//	            		//Mac-spezifische Systemwerte, wie etwa die Verwendung des Application-Menüs oben am Rand
+//	                	System.setProperty("apple.laf.useScreenMenuBar","true"); //Use Menu Bar
+//	            		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Gravel");
+//	                	System.setProperty("com.apple.macos.use-file-dialog-packages","true");
+//	                	System.setProperty("com.apple.eawt.CocoaComponent.CompatibilityMode", "false");
+//	                	System.setProperty("com.apple.mrj.application.growbox.intrudes","false");
+//	                	//Hauptfenster mit Mac-Deko
+//	                	Gui_Mac.getInstance(f);
+//	                }
+//	            	else
+//	            	{
 	            		//Andere Systeme ohne Mac Dekoration
 	                    Gui.getInstance(f);
     		            Gui.getInstance().show();
-	            	}
+//	            	}
 	            }
 	        });
 	    }
