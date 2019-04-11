@@ -1,43 +1,76 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+        "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="de">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel="stylesheet" type="text/css" href="format.css" />  
-	<title>Gravel - Hilfe - Export: LaTeX</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="format.css"/>
+    <title>Gravel - Hilfe - Export: LaTeX</title>
 </head>
 <h2><a name="title">Export - LaTeX</a></h2></a>
-<div class="imagebox"><img src="img/export_tex.png"></a><br><font size="-1">Abbildung 1: Einstellungen des LaTeX-Exports nach Wahl einer Datei.</div>
-	<p>Der Export zu LaTeX ist für die Weiterverndung in wissenschaftlichen Ausarbeitungen wichtig. Dabei werden zwei verschiedene Formate bereitgestellt, je nach Anforderungen und Wünschen des Benutzers. Nach Wahl einer Datei gelangt man zu dem Dialog wie in Abbildung 1.</p>
-	
-	Das Programm erstellt eine Vektorgrafik basierend auf der <tt><code>picture</code></tt>-Umgebung von LaTeX und
-	deren Erweiterungspakete <tt><code>epic.sty</code></tt><sup>1</sup> und <tt><code>eepic.sty</code></tt><sup>2</sup>, die bis auf die Farbinformationen alle Eigenschaften des Graphen berücksichtigt.
-	Diese beiden Pakete müssen entweder der Datei im gleichen Verzeichnis bereitgestellt werden oder dem LaTeX-Compiler bekannt sein. Weitere Pakete sind nicht notwendig.<br>
+<div class="imagebox"><img src="img/export_tex.png"></a><br><font size="-1">Abbildung 1: Einstellungen des LaTeX-Exports
+    nach Wahl einer Datei.</div>
+<p>Der Export zu LaTeX ist für die Weiterverndung in wissenschaftlichen Ausarbeitungen wichtig. Dabei werden zwei
+    verschiedene Formate bereitgestellt, je nach Anforderungen und Wünschen des Benutzers. Nach Wahl einer Datei gelangt
+    man zu dem Dialog wie in Abbildung 1.</p>
 
-<h3><name="einstellungen">Einstellungen des Exportes</a></h3>
-<p>Zur genaueren Angabe ist zunächst die Originalgröße des Graphen im Editor (bei 100%) nochmals genannt. Dessen Größe für den Export läßt sich nun über einen der drei Parameter
+Das Programm erstellt eine Vektorgrafik basierend auf der <tt><code>picture</code></tt>-Umgebung von LaTeX und
+deren Erweiterungspakete <tt><code>epic.sty</code></tt><sup>1</sup> und <tt><code>eepic.sty</code></tt><sup>2</sup>, die
+bis auf die Farbinformationen alle Eigenschaften des Graphen berücksichtigt.
+Diese beiden Pakete müssen entweder der Datei im gleichen Verzeichnis bereitgestellt werden oder dem LaTeX-Compiler
+bekannt sein. Weitere Pakete sind nicht notwendig.<br>
+
+<h3>
+    <name
+    ="einstellungen">Einstellungen des Exportes</a></h3>
+<p>Zur genaueren Angabe ist zunächst die Originalgröße des Graphen im Editor (bei 100%) nochmals genannt. Dessen Größe
+    für den Export läßt sich nun über einen der drei Parameter
 <ul>
-	<li>Breite</li>
-	<li>Höhe</li>
-	<li>Auflösung</li>
+    <li>Breite</li>
+    <li>Höhe</li>
+    <li>Auflösung</li>
 </ul>
-angeben. Die jeweils verbleibenden beiden werden aus diesem einen Wert ausgerechnet. Breite und Höhe eignen sich gut, wenn man in dem LaTeX-Dokument recht genau weiß, wie viel Platz die Grafik einnehmen soll. Die Auflösung hingegen ermöglicht einen Export mehrerer Grafiken in der gleichen Strichstärke/Textgröße etc., so man bei allen Exporten die gleiche Auflösung einstellt.</p>
-<p>Die darauffolgenden Einstellungen ermöglichen, entweder einen Export als gesamtes Dokument oder nur der <tt>figure</tt>-Umgebung. Das erste eignet sich, um auszuprobieren, wie der Export an sich einmal aussieht. Das Minimaldokument enthält dann alle notwendigen Angaben und kann alleine mit LaTeX kompiliert werden. Die <tt>figure</tt>-Umgebung eignet sich gut zum Einbinden in andere Dokumente. Dazu verwendet man den <tt>\input</tt>-Befehl von LaTeX. So kann mit der Zeit die Abbildung erneut erzeugt/exportiert werden, ohne dass man das LaTeX-Dokument erneut zusammen kopieren muss. Die <tt>figure</tt>-Umgebung enthält dabei auch bereits eine Bildunterschrift.</p>
-<p>Die Angabe der Export-Art wird in den folgenden beiden Abschnitten beschrieben. Zunächst der Export in ein TeX-picture, dann derjenige nach TikZ.
+angeben. Die jeweils verbleibenden beiden werden aus diesem einen Wert ausgerechnet. Breite und Höhe eignen sich gut,
+wenn man in dem LaTeX-Dokument recht genau weiß, wie viel Platz die Grafik einnehmen soll. Die Auflösung hingegen
+ermöglicht einen Export mehrerer Grafiken in der gleichen Strichstärke/Textgröße etc., so man bei allen Exporten die
+gleiche Auflösung einstellt.</p>
+<p>Die darauffolgenden Einstellungen ermöglichen, entweder einen Export als gesamtes Dokument oder nur der
+    <tt>figure</tt>-Umgebung. Das erste eignet sich, um auszuprobieren, wie der Export an sich einmal aussieht. Das
+    Minimaldokument enthält dann alle notwendigen Angaben und kann alleine mit LaTeX kompiliert werden. Die
+    <tt>figure</tt>-Umgebung eignet sich gut zum Einbinden in andere Dokumente. Dazu verwendet man den <tt>\input</tt>-Befehl
+    von LaTeX. So kann mit der Zeit die Abbildung erneut erzeugt/exportiert werden, ohne dass man das LaTeX-Dokument
+    erneut zusammen kopieren muss. Die <tt>figure</tt>-Umgebung enthält dabei auch bereits eine Bildunterschrift.</p>
+<p>Die Angabe der Export-Art wird in den folgenden beiden Abschnitten beschrieben. Zunächst der Export in ein
+    TeX-picture, dann derjenige nach TikZ.
 <h3>Details zur <tt>picture-</tt>Umgebung</h3>
-<p>Die Pakete <tt>epic.sty</tt><sup>1</sup> und <tt>eepic.sty</tt><sup>2</sup> ermöglichen es, in der <tt>picture</tt>-Umgebug von LaTeX Vektordarstellungen zu erzeugen. Über diese Variante ist der Export organisiert. Zum Kompilieren benötigt man dann entweder <tt>latex</tt> oder das neuere <tt>pdflatex</tt>, das jedoch im dvi-Modus. Das bedeutet, dass einige neuere Pakete nicht mehr funktionieren. Außerdem sind in diesem Export keine Farben möglich, so dass diese ignoriert werden.</p>
-<p>Die Beschriftungen werden skaliert, so dass sie annähernd denen in Gravel entsprechen. Leichte Unterschiede sind vorhanden, da sich die Schriftarten (von LateX gegenüber der Java Graphcis-Darstellung) unterscheiden. Ein nachträgliches Skalieren der Grafik durch eine Veränderung des zu begin stehenden Befehls <tt>\setlength{\unithlength}{...}</tt> ist eine Möglichkeit, im Nachhinein die Größe der Grafik zu verändern, die Schriften skalieren jedoch nicht mit.</p>
+<p>Die Pakete <tt>epic.sty</tt><sup>1</sup> und <tt>eepic.sty</tt><sup>2</sup> ermöglichen es, in der <tt>picture</tt>-Umgebug
+    von LaTeX Vektordarstellungen zu erzeugen. Über diese Variante ist der Export organisiert. Zum Kompilieren benötigt
+    man dann entweder <tt>latex</tt> oder das neuere <tt>pdflatex</tt>, das jedoch im dvi-Modus. Das bedeutet, dass
+    einige neuere Pakete nicht mehr funktionieren. Außerdem sind in diesem Export keine Farben möglich, so dass diese
+    ignoriert werden.</p>
+<p>Die Beschriftungen werden skaliert, so dass sie annähernd denen in Gravel entsprechen. Leichte Unterschiede sind
+    vorhanden, da sich die Schriftarten (von LateX gegenüber der Java Graphcis-Darstellung) unterscheiden. Ein
+    nachträgliches Skalieren der Grafik durch eine Veränderung des zu begin stehenden Befehls <tt>\setlength{\unithlength}{...}</tt>
+    ist eine Möglichkeit, im Nachhinein die Größe der Grafik zu verändern, die Schriften skalieren jedoch nicht mit.</p>
 
 <h3><a name="tikz">Details zum Export in eine TikZ-Grafik</a></h3>
-<p>Der Export in eine Grafik basierend auf dem Paket TikZ<sup>3</sup> bietet zwei wesentliche Vorteile: Es kann sowohl <tt>pdflatex</tt> als auch <tt>latex</tt> (bzw. <tt>pdflatex</tt> im dvi-modus) zum kompilieren genutzt werden und der TikZ-Export unterstützt Farben. Die Beschriftungen werden nicht mit skaliert, sondern an die normale Textgröße im Dokument angepasst. Das bietet den Vorteil, dass ein einheitlicheres Schriftbild im Dokument vorherrscht. Nachteil ist hingegen, dass dadurch der Unterschied zur Darstellung im Editor recht groß sein kann.</p>
-<p>Die Farben der Untergraphen, aus denen die Farben der Knoten und Kanten bzw. Hyperkanten erzeugt werden, sind zu beginn des Dokumentes definiert. So kann auch im Nachhinein an diesen Farben eine Veränderung vorgenommen werden. In der Grafik selbst werden die Farben dann für die einzelnen Knoten „zusammengemischt“. Ebenso sind die Linienstile recht einfach in den Elementen erzeugt. Da die Elemente des Graphen in diesem Export ausführlich kommentiert erzeugt werden, ist also auch hier eine nachträgliche Änderung möglich.</p>
-<p>Ein nachträgliches Skalieren der Grafik ist möglich, indem hinter <tt>\begin{tikzpicture}</tt> ein Skalierungsfaktor angegeben wird, etwa <tt>\begin{tikzpicture}[scale=0.5]</tt>, um die Grafik in ihrer Größe zu halbieren.
+<p>Der Export in eine Grafik basierend auf dem Paket TikZ<sup>3</sup> bietet zwei wesentliche Vorteile: Es kann sowohl
+    <tt>pdflatex</tt> als auch <tt>latex</tt> (bzw. <tt>pdflatex</tt> im dvi-modus) zum kompilieren genutzt werden und
+    der TikZ-Export unterstützt Farben. Die Beschriftungen werden nicht mit skaliert, sondern an die normale Textgröße
+    im Dokument angepasst. Das bietet den Vorteil, dass ein einheitlicheres Schriftbild im Dokument vorherrscht.
+    Nachteil ist hingegen, dass dadurch der Unterschied zur Darstellung im Editor recht groß sein kann.</p>
+<p>Die Farben der Untergraphen, aus denen die Farben der Knoten und Kanten bzw. Hyperkanten erzeugt werden, sind zu
+    beginn des Dokumentes definiert. So kann auch im Nachhinein an diesen Farben eine Veränderung vorgenommen werden. In
+    der Grafik selbst werden die Farben dann für die einzelnen Knoten „zusammengemischt“. Ebenso sind die Linienstile
+    recht einfach in den Elementen erzeugt. Da die Elemente des Graphen in diesem Export ausführlich kommentiert erzeugt
+    werden, ist also auch hier eine nachträgliche Änderung möglich.</p>
+<p>Ein nachträgliches Skalieren der Grafik ist möglich, indem hinter <tt>\begin{tikzpicture}</tt> ein Skalierungsfaktor
+    angegeben wird, etwa <tt>\begin{tikzpicture}[scale=0.5]</tt>, um die Grafik in ihrer Größe zu halbieren.
 <div class="notes">
-	<sup>1</sup> Version 1.2 vom 14 Juli 1986 von Sunil Podar<br>
-	<br>
-	<sup>2</sup> Version 1.1b vom 7. Februar 1988 von Conrad Kwok<br>
-	<br>
-	<sup>3</sup> Version 2.0 vom 13. Februar 2008 von Till Tantau<br>
+    <sup>1</sup> Version 1.2 vom 14 Juli 1986 von Sunil Podar<br>
+    <br>
+    <sup>2</sup> Version 1.1b vom 7. Februar 1988 von Conrad Kwok<br>
+    <br>
+    <sup>3</sup> Version 2.0 vom 13. Februar 2008 von Till Tantau<br>
 </div>
 </body>
 </html>

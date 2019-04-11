@@ -4,10 +4,10 @@ import java.io.File;
 
 public interface TeXWriter {
 
-	String saveToFile(File f);
+  String saveToFile(File f);
 
-	boolean isWholeDoc();
+  boolean isWholeDoc();
 
-	void setWholedoc(boolean wholedoc);
+  void setWholedoc(boolean wholedoc);
 
 }

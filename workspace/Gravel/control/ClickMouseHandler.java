@@ -6,17 +6,16 @@ import java.util.Observer;
 /**
  * Super class for the mouse handler for mouseclicks
  * this class is abstract, and is implemented by every mouse mode that is available in gravel
- * 
+ * <p>
  * This abstract superclass is also an observer. it is an oberserv the VGraph
- * 
+ * <p>
  * This Observer may only subscribe to Observables that send GraphMessages
- * @author ronny
  *
+ * @author ronny
  */
-public interface  ClickMouseHandler extends MouseListener, Observer
-{
-	/**
-	 * Remove all Graph Listeners from the Graph
-	 */
+public interface ClickMouseHandler extends MouseListener, Observer {
+  /**
+   * Remove all Graph Listeners from the Graph
+   */
   void removeGraphObservers();
 }

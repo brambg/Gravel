@@ -1,79 +1,74 @@
 package view;
 
-
+import control.*;
 import history.CommonGraphHistoryManager;
+import model.*;
+import model.Messages.GraphMessage;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.GeneralPath;
-//import java.awt.geom.Point2D;
-//import javax.swing.*;
 import java.util.Iterator;
 import java.util.Observable;
-//import java.util.Vector;
 
+//import java.awt.geom.Point2D;
+//import javax.swing.*;
+//import java.util.Vector;
 //import java.text.SimpleDateFormat;
 //import java.util.TimeZone;
 
-import control.*;
-import model.*;
-import model.Messages.*;
-
 /**
  * - Implementierung der Darstellung eines Hypergraphen in einer Graphics2D Umgebung
- * 
- * @author Ronny Bergmann
  *
+ * @author Ronny Bergmann
  */
-public class VHyperGraphic extends VCommonGraphic
-{
-	// VGraph : Die Daten des Graphen
-	protected VHyperGraph vG;
-	// Visual Styles
-	private BasicStroke vHyperEdgeStyle;
-	private DragMouseHandler Drag;
-	private ClickMouseHandler Click;
-	private static final long serialVersionUID = 1L;
-	
-	/**
-	 * Create a New Graphical representation of an VGraph with a given size
-	 * @param d Size of the Area the VGraphics gets
-	 * @param Graph Graph to be represented
-	 */
-	public VHyperGraphic(Dimension d,VHyperGraph Graph)
-	{
-		super(d,Graph);
-		//GeneralPreferences als beobachter eintragen
+public class VHyperGraphic extends VCommonGraphic {
+  // VGraph : Die Daten des Graphen
+  protected VHyperGraph vG;
+  // Visual Styles
+  private BasicStroke vHyperEdgeStyle;
+  private DragMouseHandler Drag;
+  private ClickMouseHandler Click;
+  private static final long serialVersionUID = 1L;
 
-		vHyperEdgeStyle = new BasicStroke(5.0f, BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND);
-		selColor = new Color(gp.getIntValue("vgraphic.selcolr"),gp.getIntValue("vgraphic.selcolg"),gp.getIntValue("vgraphic.selcolb"));
-		selWidth = gp.getIntValue("vgraphic.selwidth");
-		
-		vG = Graph;
-		vG.addObserver(this); //Die Graphikumgebung als Observer der Datenstruktur eintragen
-		vGh = new CommonGraphHistoryManager(vG);
-	}
-	public void paint(Graphics g) 
-	{
-		Graphics2D g2 = (Graphics2D) g;
-		//Mit Antialiasing
-		paint(g2);
-	}	
-	public void paint(Graphics2D g2)
-	{
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		paintgrid(g2);
-		paintHyperEdges(g2);
-		paintNodes(g2);
-		if ((Drag!=null)&&(Drag.getSelectionRectangle()!=null))
-		{
-			g2.setColor(selColor);
-			g2.setStroke(new BasicStroke(1,BasicStroke.JOIN_ROUND, BasicStroke.JOIN_ROUND));
-			g2.draw(Drag.getSelectionRectangle());
-		}
+  /**
+   * Create a New Graphical representation of an VGraph with a given size
+   *
+   * @param d     Size of the Area the VGraphics gets
+   * @param Graph Graph to be represented
+   */
+  public VHyperGraphic(Dimension d, VHyperGraph Graph) {
+    super(d, Graph);
+    //GeneralPreferences als beobachter eintragen
+
+    vHyperEdgeStyle = new BasicStroke(5.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+    selColor = new Color(gp.getIntValue("vgraphic.selcolr"), gp.getIntValue("vgraphic.selcolg"), gp.getIntValue("vgraphic.selcolb"));
+    selWidth = gp.getIntValue("vgraphic.selwidth");
+
+    vG = Graph;
+    vG.addObserver(this); //Die Graphikumgebung als Observer der Datenstruktur eintragen
+    vGh = new CommonGraphHistoryManager(vG);
+  }
+
+  public void paint(Graphics g) {
+    Graphics2D g2 = (Graphics2D) g;
+    //Mit Antialiasing
+    paint(g2);
+  }
+
+  public void paint(Graphics2D g2) {
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    paintgrid(g2);
+    paintHyperEdges(g2);
+    paintNodes(g2);
+    if ((Drag != null) && (Drag.getSelectionRectangle() != null)) {
+      g2.setColor(selColor);
+      g2.setStroke(new BasicStroke(1, BasicStroke.JOIN_ROUND, BasicStroke.JOIN_ROUND));
+      g2.draw(Drag.getSelectionRectangle());
+    }
 //		paintDerivDEBUG(g2);
 //		paintDEBUG(g2);
-	}
+  }
 //	private void paintDEBUG(Graphics2D g2)
 //	{
 //		int sHEIndex = 1;
@@ -308,148 +303,144 @@ public class VHyperGraphic extends VCommonGraphic
 //        SimpleDateFormat sdf = new SimpleDateFormat("ss:SSS");
 //        main.DEBUG.println(main.DEBUG.LOW,"Die "+(projectionpoints.size()-1)+" Projektionen benötigten "+sdf.format(time)+" Sekunden");  
 //	}
-	/**
-	 * @param g
-	 */
-	private void paintHyperEdges(Graphics2D g2)
-	{
-		Iterator<VHyperEdge> ei = vG.modifyHyperEdges.getIterator();
-		g2.setStroke(vHyperEdgeStyle);
-		while (ei.hasNext()) // drawEdges
-		{
-			VHyperEdge temp = ei.next();
-			MHyperEdge tempm = vG.getMathGraph().modifyHyperEdges.get(temp.getIndex());
-			if (!temp.getShape().isEmpty())
-			{
-				NURBSShape s = temp.getShape().stripDecorations().clone();
-				s.scale(zoomfactor);
-				GeneralPath p = s.getCurve(Math.min(2.5d,5d/(double)zoomfactor));
-				if ((((temp.getSelectedStatus()&VItem.SELECTED)==VItem.SELECTED)||((temp.getSelectedStatus()&VItem.SOFT_SELECTED)==VItem.SOFT_SELECTED))&&((temp.getSelectedStatus()&VItem.SOFT_DESELECTED)!=VItem.SOFT_DESELECTED))
-				{
-					//Falls die Kante Selektiert ist (und nicht temporär deselektiert, zeichne drunter eine etwas dickere Kante in der selectioncolor
-					g2.setColor(selColor);
-					g2.setStroke(new BasicStroke(Math.round((temp.getWidth()+selWidth)*zoomfactor),BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-					g2.draw(temp.getLinestyle().modifyPath(p,temp.getWidth()+selWidth,zoomfactor));
-				}
-				g2.setColor(temp.getColor());
-				g2.setStroke(new BasicStroke(temp.getWidth()*zoomfactor,BasicStroke.JOIN_ROUND, BasicStroke.JOIN_ROUND));
-				g2.draw(temp.getLinestyle().modifyPath(p,temp.getWidth(),zoomfactor));
-				if (temp.getTextProperties().isVisible()) //Visible
-				{
-					Point m = temp.getTextCenter();
-					//get the text wich should be displayd
-				    String text = "";
-				    if (temp.getTextProperties().isshowvalue())
-						text = ""+tempm.Value;
-				    else
-				    	text = tempm.name;
-				    //Show it
-					Font f = new Font("Arial",Font.PLAIN, Math.round(temp.getTextProperties().getSize()*zoomfactor));
-					g2.setFont(f);
-					g2.setColor(Color.black);
-					FontMetrics metrics = g2.getFontMetrics(f);
-				    int hgt = metrics.getAscent()-metrics.getLeading()-metrics.getDescent();
-				    if (text==null)
-				    	text = "";
-				    int adv = metrics.stringWidth(text);
-				    m.x = Math.round(m.x*zoomfactor);
-					m.y = Math.round(m.y*zoomfactor);
-					//adjust the point form the middle to the bottom left corner
-					m.x -= Math.round(adv/2); m.y += Math.round(hgt/2); //For Drawing, move to Top Left
-					g2.drawString(text,m.x,m.y);
-				}
-			}
-		}
-	}
-	/**
-	 * Get the represented Graph for manipulation.
-	 * The Manipulation is handled by pushing Notifications to the Graph-Observers 
-	 * 
-	 * @return the actual VGraph that is handled in the this GUI
-	 */
-	public VHyperGraph getGraph()
-	{
-		return vG;
-	}
-	public void setMouseHandling(int state) {
-		if (Drag!=null)
-		{
-			MouseEvent e = new MouseEvent(this,111,System.nanoTime(),0,-1,-1,1,false);		
-			Drag.mouseReleased(e);
-		}
-		resetMouseHandling();
-		switch (state) 
-		{
-			case NO_MOUSEHANDLING:
-			break;
-			case OCM_MOUSEHANDLING:
-				Click = new OCMClickMouseHandler(this);
-				Drag = new OCMDragMouseHandler(this);
-				this.addMouseListener(Drag);
-				this.addMouseMotionListener(Drag);
-				this.addMouseListener(Click);
-			break;
-			case STD_MOUSEHANDLING:
-			default:
-				Click = new StandardClickMouseHandler(this);
-				Drag = new StandardDragMouseHandler(this);
-				this.addMouseListener(Drag);
-				this.addMouseMotionListener(Drag);
-				this.addMouseListener(Click);
-			break;
-		}
-		if (Drag!=null) //Update Info in the Drag-Handler about the Grid.
-		{
-			Drag.setGrid(gridy,gridy);
-			Drag.setGridOrientated(gridenabled&&gridorientated);
-		}
-		repaint();
-	}
-	/**
-	 * Set the MouseHandling to NO_MOUSEHANDLING
-	 */
-	private void resetMouseHandling()
-	{
-		if (Drag!=null)
-			Drag.removeGraphObservers();
-		if (Click!=null)
-			Click.removeGraphObservers();
-		this.removeMouseListener(Drag);
-		this.removeMouseMotionListener(Drag);
-		this.removeMouseListener(Click);
-		Drag = null;
-		Click = null;
-	}
-	protected Point DragMouseOffSet()
-	{
-		if ((Drag!=null)&&(Drag.dragged()))
-				return Drag.getMouseOffSet();
-		else
-			return null;
-	}
-	public void handlePreferencesUpdate()
-	{
-		super.handlePreferencesUpdate();
-		if (Drag!=null)
-		{
-			Drag.setGridOrientated(gridenabled&&gridorientated);
-			Drag.setGrid(gridx,gridy);
-		}
-	}
-	public void update(Observable o, Object arg)
-	{
-		super.updateControls(o,arg);
-		if (arg instanceof GraphMessage) //All Other GraphUpdates are handled in VGRaphCommons
-		{
-			if (Click!=null) 
-				Click.update(o,arg);
-			repaint();
-		}
-		else if (super.Controls.containsKey(arg)) //We got news from grid or zoom
-			handlePreferencesUpdate();
-	}
-	
-	public int getType() {
-		return VCommonGraphic.VHYPERGRAPHIC;
-	}
+
+  /**
+   * @param g
+   */
+  private void paintHyperEdges(Graphics2D g2) {
+    Iterator<VHyperEdge> ei = vG.modifyHyperEdges.getIterator();
+    g2.setStroke(vHyperEdgeStyle);
+    while (ei.hasNext()) // drawEdges
+    {
+      VHyperEdge temp = ei.next();
+      MHyperEdge tempm = vG.getMathGraph().modifyHyperEdges.get(temp.getIndex());
+      if (!temp.getShape().isEmpty()) {
+        NURBSShape s = temp.getShape().stripDecorations().clone();
+        s.scale(zoomfactor);
+        GeneralPath p = s.getCurve(Math.min(2.5d, 5d / (double) zoomfactor));
+        if ((((temp.getSelectedStatus() & VItem.SELECTED) == VItem.SELECTED) || ((temp.getSelectedStatus() & VItem.SOFT_SELECTED) == VItem.SOFT_SELECTED)) && ((temp.getSelectedStatus() & VItem.SOFT_DESELECTED) != VItem.SOFT_DESELECTED)) {
+          //Falls die Kante Selektiert ist (und nicht temporär deselektiert, zeichne drunter eine etwas dickere Kante in der selectioncolor
+          g2.setColor(selColor);
+          g2.setStroke(new BasicStroke(Math.round((temp.getWidth() + selWidth) * zoomfactor), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+          g2.draw(temp.getLinestyle().modifyPath(p, temp.getWidth() + selWidth, zoomfactor));
+        }
+        g2.setColor(temp.getColor());
+        g2.setStroke(new BasicStroke(temp.getWidth() * zoomfactor, BasicStroke.JOIN_ROUND, BasicStroke.JOIN_ROUND));
+        g2.draw(temp.getLinestyle().modifyPath(p, temp.getWidth(), zoomfactor));
+        if (temp.getTextProperties().isVisible()) //Visible
+        {
+          Point m = temp.getTextCenter();
+          //get the text wich should be displayd
+          String text = "";
+          if (temp.getTextProperties().isshowvalue())
+            text = "" + tempm.Value;
+          else
+            text = tempm.name;
+          //Show it
+          Font f = new Font("Arial", Font.PLAIN, Math.round(temp.getTextProperties().getSize() * zoomfactor));
+          g2.setFont(f);
+          g2.setColor(Color.black);
+          FontMetrics metrics = g2.getFontMetrics(f);
+          int hgt = metrics.getAscent() - metrics.getLeading() - metrics.getDescent();
+          if (text == null)
+            text = "";
+          int adv = metrics.stringWidth(text);
+          m.x = Math.round(m.x * zoomfactor);
+          m.y = Math.round(m.y * zoomfactor);
+          //adjust the point form the middle to the bottom left corner
+          m.x -= Math.round(adv / 2);
+          m.y += Math.round(hgt / 2); //For Drawing, move to Top Left
+          g2.drawString(text, m.x, m.y);
+        }
+      }
+    }
+  }
+
+  /**
+   * Get the represented Graph for manipulation.
+   * The Manipulation is handled by pushing Notifications to the Graph-Observers
+   *
+   * @return the actual VGraph that is handled in the this GUI
+   */
+  public VHyperGraph getGraph() {
+    return vG;
+  }
+
+  public void setMouseHandling(int state) {
+    if (Drag != null) {
+      MouseEvent e = new MouseEvent(this, 111, System.nanoTime(), 0, -1, -1, 1, false);
+      Drag.mouseReleased(e);
+    }
+    resetMouseHandling();
+    switch (state) {
+      case NO_MOUSEHANDLING:
+        break;
+      case OCM_MOUSEHANDLING:
+        Click = new OCMClickMouseHandler(this);
+        Drag = new OCMDragMouseHandler(this);
+        this.addMouseListener(Drag);
+        this.addMouseMotionListener(Drag);
+        this.addMouseListener(Click);
+        break;
+      case STD_MOUSEHANDLING:
+      default:
+        Click = new StandardClickMouseHandler(this);
+        Drag = new StandardDragMouseHandler(this);
+        this.addMouseListener(Drag);
+        this.addMouseMotionListener(Drag);
+        this.addMouseListener(Click);
+        break;
+    }
+    if (Drag != null) //Update Info in the Drag-Handler about the Grid.
+    {
+      Drag.setGrid(gridy, gridy);
+      Drag.setGridOrientated(gridenabled && gridorientated);
+    }
+    repaint();
+  }
+
+  /**
+   * Set the MouseHandling to NO_MOUSEHANDLING
+   */
+  private void resetMouseHandling() {
+    if (Drag != null)
+      Drag.removeGraphObservers();
+    if (Click != null)
+      Click.removeGraphObservers();
+    this.removeMouseListener(Drag);
+    this.removeMouseMotionListener(Drag);
+    this.removeMouseListener(Click);
+    Drag = null;
+    Click = null;
+  }
+
+  protected Point DragMouseOffSet() {
+    if ((Drag != null) && (Drag.dragged()))
+      return Drag.getMouseOffSet();
+    else
+      return null;
+  }
+
+  public void handlePreferencesUpdate() {
+    super.handlePreferencesUpdate();
+    if (Drag != null) {
+      Drag.setGridOrientated(gridenabled && gridorientated);
+      Drag.setGrid(gridx, gridy);
+    }
+  }
+
+  public void update(Observable o, Object arg) {
+    super.updateControls(o, arg);
+    if (arg instanceof GraphMessage) //All Other GraphUpdates are handled in VGRaphCommons
+    {
+      if (Click != null)
+        Click.update(o, arg);
+      repaint();
+    } else if (super.Controls.containsKey(arg)) //We got news from grid or zoom
+      handlePreferencesUpdate();
+  }
+
+  public int getType() {
+    return VCommonGraphic.VHYPERGRAPHIC;
+  }
 }
