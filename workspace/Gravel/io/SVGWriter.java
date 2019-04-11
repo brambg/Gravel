@@ -157,7 +157,7 @@ public class SVGWriter
 		public static String replace(String in,String remove, String replace) 
 		{
 			if (in==null || remove==null || remove.length()==0) return in;
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			int oldIndex = 0;
 			int newIndex = 0;
 			int remLength = remove.length();
@@ -202,12 +202,12 @@ public class SVGWriter
 	    	   }
 	    	   if (actual.getEdgeType()==VEdge.QUADCURVE)
 	    	   {
-	    		   Point bez = ((VQuadCurveEdge)actual).getControlPoints().firstElement();
+	    		   Point bez = actual.getControlPoints().firstElement();
 	    		   s.write("<path d=\"M "+b.x+","+b.y+" Q "+bez.x+","+bez.y+" "+e.x+","+e.y+"\"");
 	    	   }
 	    	   if (actual.getEdgeType()==VEdge.SEGMENTED)
 	    	   {
-	    		   Iterator<Point> pit = ((VSegmentedEdge)actual).getControlPoints().iterator();
+	    		   Iterator<Point> pit = actual.getControlPoints().iterator();
 	    		   s.write("<path d=\"M "+b.x+","+b.y+"");
 	    		   while (pit.hasNext())
 	    		   {
@@ -266,30 +266,30 @@ public class SVGWriter
 			double[] coords = new double[2];
 			int x = 0, y = 0;
 			//Point2D.Double arrowhead = new Point2D.Double(),line1start = new Point2D.Double(),line1 = new Point2D.Double(),line2start = new Point2D.Double(),line2 = new Point2D.Double();
-			String s = "";
+			StringBuilder s = new StringBuilder();
 			if (directed)
 			{
 			  	Shape arrow = edge.getArrowShape(nodes.get(start).getPosition(),nodes.get(ende).getPosition(),Math.round(nodes.get(start).getSize()/2),Math.round(nodes.get(ende).getSize()/2),1.0f);
 			  	PathIterator path = arrow.getPathIterator(null, 0.001);
 //			  	int i=0;
-			  	s += "<path d=\"";
+			  	s.append("<path d=\"");
 			    while( !path.isDone() ) 
 			      {
 			      int type = path.currentSegment(coords);
 			    	x = Math.round((float)coords[0]); y = Math.round((float)coords[1]);
 			    	if (type==PathIterator.SEG_MOVETO)
 			    	{
-			    		s += NL+"M "+(x)+","+(y)+" ";
+			    		s.append(NL + "M ").append(x).append(",").append(y).append(" ");
 			    	}
 			    	else if (type==PathIterator.SEG_LINETO)	
 			    	{
-			    		s += "L "+x+","+y+" ";
+			    		s.append("L ").append(x).append(",").append(y).append(" ");
 			    	}
 			    	path.next();
 			    }
-			  s +="z\" style=\"fill:"+getItemColorString(edge)+"\"/>";
+			  s.append("z\" style=\"fill:").append(getItemColorString(edge)).append("\"/>");
 			}
-			return s;
+			return s.toString();
 		}
 		private void writeSubgraphs(OutputStreamWriter s) throws IOException
 		{
@@ -333,7 +333,7 @@ public class SVGWriter
 		}
 		private String drawOnePath(PathIterator path)
 		{
-			String s ="d=\"";
+			StringBuilder s = new StringBuilder("d=\"");
 		   	double[] coords = new double[2];
 		   	double x = 0.0, y = 0.0;
 		    while( !path.isDone() ) 
@@ -341,9 +341,9 @@ public class SVGWriter
 			   int type = path.currentSegment(coords);
 			    x = coords[0]; y = coords[1];
 		    	if (type==PathIterator.SEG_MOVETO)
-					s +="M"+x+" "+y+" ";
+					s.append("M").append(x).append(" ").append(y).append(" ");
 		    	else if (type==PathIterator.SEG_LINETO)	
-		    		s +="L"+x+" "+y+" ";
+		    		s.append("L").append(x).append(" ").append(y).append(" ");
 		    	path.next();
 			}
 			return s+" Z\""; //return as closed path

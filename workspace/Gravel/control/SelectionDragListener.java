@@ -119,13 +119,12 @@ public class SelectionDragListener
 						break;
 					}
 					case VEdge.SEGMENTED : {
-						Vector<Point> p = ((VSegmentedEdge)e).getControlPoints();
+						Vector<Point> p = e.getControlPoints();
 						Point last = sp;
-						for (int i=0; i<p.size(); i++)
-						{
-							intersects |= selrect.intersectsLine(new Line2D.Double(last,p.get(i)));
-							last = p.get(i);
-						}
+            for (Point point : p) {
+              intersects |= selrect.intersectsLine(new Line2D.Double(last, point));
+              last = point;
+            }
 						intersects |= selrect.intersectsLine(new Line2D.Double(last,ep));
 						break;
 					}
@@ -137,7 +136,7 @@ public class SelectionDragListener
 					break;
 					}
 					case VEdge.QUADCURVE: {
-						Point bz = ((VQuadCurveEdge)e).getControlPoints().get(0);
+						Point bz = e.getControlPoints().get(0);
 						QuadCurve2D.Double q = new QuadCurve2D.Double(sp.x,sp.y,bz.x,bz.y,ep.x,ep.y);
 						intersects = (q.intersects(selrect));
 					}

@@ -42,8 +42,6 @@
 package sunw.demo.newmerge;
 
 import java.io.*;
-import javax.swing.*;
-import javax.swing.filechooser.*;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.Enumeration;

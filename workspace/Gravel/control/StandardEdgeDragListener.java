@@ -117,7 +117,7 @@ public class StandardEdgeDragListener implements MouseListener, MouseMotionListe
 				{
 					Vector<Point> pp = new Vector<Point>();
 					pp.add(posInGraph);
-					((VQuadCurveEdge)movingEdge).setControlPoints(pp);
+					movingEdge.setControlPoints(pp);
 					vg.pushNotify(new GraphMessage(GraphConstraints.EDGE,movingEdge.getIndex(),GraphConstraints.UPDATE, GraphConstraints.EDGE|GraphConstraints.SELECTION));
 				}
 			}
@@ -127,7 +127,6 @@ public class StandardEdgeDragListener implements MouseListener, MouseMotionListe
 			firstdrag = false; //First time really draged, so it's not firstdrag anymore
 	}
 
-	@SuppressWarnings("unchecked")
 	public void mousePressed(MouseEvent e) {
 		firstdrag = true;
 		MouseOffSet = e.getPoint(); //Aktuelle Position merken für eventuelle Bewegungen while pressed Zoom included
@@ -144,7 +143,7 @@ public class StandardEdgeDragListener implements MouseListener, MouseMotionListe
 			if (c!=null)
 			{
 				movingControlPointEdge = (VEdge) c.get(0);
-				movingControlPointIndex = ((Integer)c.get(1)).intValue();
+				movingControlPointIndex = (Integer) c.get(1);
 			}
 		}
 		if (movingControlPointEdge==null)

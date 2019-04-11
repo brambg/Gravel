@@ -50,7 +50,7 @@ public class HelpPanel
 		try 
 		{
 			//url = HelpSet.findHelpSet(loader,"data/help/"+language+"/help.hs");
-			url = (new File("data/help/"+language+"/help.hs")).toURL();
+			url = (new File("data/help/" + language + "/help.hs")).toURL();
 			hs = new HelpSet(loader,url);
 		}
 		catch (Exception e)

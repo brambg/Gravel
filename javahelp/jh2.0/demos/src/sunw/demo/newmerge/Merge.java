@@ -40,10 +40,10 @@
 
 
 
-/**
- * Merge demo
- *
- * @author  Richard Gregor
+/*
+  Merge demo
+
+  @author  Richard Gregor
  * @version	1.9	10/30/06
  */
 
@@ -57,7 +57,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 
-public class Merge extends Object{
+public class Merge {
     /**
      * Frame for master and slave
      */
@@ -522,7 +522,7 @@ public class Merge extends Object{
             String strURL = jarAccessory.getName();
 	    try {
 		URL jarURL = new URL("file:"+fileName);
-		URL urls[] = { jarURL };
+          URL[] urls = {jarURL};
 		URLClassLoader urlLoader = new URLClassLoader(urls, loader);
 		slaveHsURL = HelpSet.findHelpSet(urlLoader, strURL);
 	    } catch (MalformedURLException ex) {
@@ -592,7 +592,7 @@ public class Merge extends Object{
     /**
      * @param args the command line arguments
      */
-    public static void main (String args[]) {
+    public static void main (String[] args) {
         if(args.length >0)
             new Merge(args[0]);
         else

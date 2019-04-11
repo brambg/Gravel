@@ -165,7 +165,7 @@ public class AlgorithmGUI extends JDialog implements ActionListener
 		try {
 			if (Gui.getInstance().getVGraph().getType()!=VGraphInterface.GRAPH)
 				return false;
-			form = AlgorithmFactory.getForm(AlgType, ((VGraph) Gui.getInstance().getVGraph()));
+			form = AlgorithmFactory.getForm(AlgType, Gui.getInstance().getVGraph());
 		}
 		catch (Exception e)
 		{

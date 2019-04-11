@@ -51,11 +51,11 @@ public class GravelMLReader
 			
 		public void characters(char[] text, int start, int length) throws SAXException 
 		{
-			String val = "";
+			StringBuilder val = new StringBuilder();
 			for (int i=0; i<length; i++)
-				val += text[start+i];
+				val.append(text[start + i]);
 			if (data_key.equals("gt"))
-				graphtype = val;
+				graphtype = val.toString();
 		}
 		public void endDocument() throws SAXException {}
 		public void endElement(String namespaceURI, String localName,String qualifiedName) throws SAXException 
@@ -285,12 +285,9 @@ public class GravelMLReader
 			return false;
 		if ((k.get("subset.sg")==null)||(!(k.get("subset.sg").equals("integer"))))
 			return false;
-		if ((k.get("subset.sb")==null)||(!(k.get("subset.sb").equals("integer"))))
-			return false;
-		
-		
-		return true;
-	}
+    return (k.get("subset.sb") != null) && (k.get("subset.sb").equals("integer"));
+
+  }
 	private boolean checkMathKeys(TreeMap<String,String> k)
 	{
 		if ((k.get("edge.ev")==null)||(!(k.get("edge.ev").equals("integer"))))
@@ -300,10 +297,10 @@ public class GravelMLReader
 		if ((k.get("subset.sn")==null)||(!(k.get("subset.sn").equals("string"))))
 			return false;
 		//edge name is not necassarily needed but if it exists it must be string
-		if (k.get("edge.name")==null)
+    //existent but not boolean -> wrong
+    if (k.get("edge.name")==null)
 			k.put("edge.name","string"); //non existent -> add
-		else if (!k.get("edge.name").equals("string")) //existent but not boolean -> wrong
-			return false;
+		else return k.get("edge.name").equals("string");
 		
 		return true;
 	}

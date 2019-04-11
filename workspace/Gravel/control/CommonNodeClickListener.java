@@ -53,7 +53,7 @@ public class CommonNodeClickListener implements MouseListener {
 		if (alt) //if alt+click -> toggle visibility of the text
 		{
 			if (r!=null) //Doubleclick really on Node
-			{	r.setNameVisible(r.isNameVisible()^true);
+			{	r.setNameVisible(!r.isNameVisible());
 				GraphMessage msg = new GraphMessage(GraphConstraints.NODE, r.getIndex(),GraphConstraints.UPDATE, GraphConstraints.NODE);
 				if (vg!=null)
 					vg.pushNotify(msg);

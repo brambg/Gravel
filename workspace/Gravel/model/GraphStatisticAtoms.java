@@ -157,7 +157,7 @@ public class GraphStatisticAtoms extends Observable implements Observer {
 					break;
 				}
 				case VEdge.SEGMENTED : {
-					Vector<Point> p = ((VSegmentedEdge)actual).getControlPoints();
+					Vector<Point> p = actual.getControlPoints();
 					int count = 0, lastindex = 0;
 					for (int i=0; i<p.size(); i++)
 					{
@@ -323,8 +323,8 @@ public class GraphStatisticAtoms extends Observable implements Observer {
 		}
 		average /= count;
 		Vector<Double> ret = new Vector<Double>();
-		ret.add((double)min);
-		ret.add((double)max);
+		ret.add(min);
+		ret.add(max);
 		ret.add(average);
 		return ret;
 	}

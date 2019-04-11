@@ -27,7 +27,6 @@ public class MagnetismAndSpringsForm extends AlgorithmParameterForm
 		vGCopy = new VGraph(true,false,false);
 		vGCopy.replace(guigraph);
 	}
-	@SuppressWarnings("unchecked")
 	public HashMap showDialog() {
 		this.setTitle("Federn und Magnetfelder - Parameterangaben");
 		Container content = getContentPane();
@@ -69,8 +68,8 @@ public class MagnetismAndSpringsForm extends AlgorithmParameterForm
 		if (e.getSource()==bOk)
 		{
 			Parameters.put("VGraph",vGCopy);
-			Parameters.put("EdgeSizeFactor", new Double(100.0d));
-			Parameters.put("EdgeValueUsed", new Boolean(bUseEdgeValues.isSelected()));
+			Parameters.put("EdgeSizeFactor", 100.0d);
+			Parameters.put("EdgeValueUsed", bUseEdgeValues.isSelected());
 			dispose();
 		}
 		else if (e.getSource()==bCancel)

@@ -62,13 +62,10 @@ public class MNodeSet extends Observable implements Observer {
 		NodeLock.lock();
 		try
 		{
-			Iterator<MNode> n = mNodes.iterator();
-			while (n.hasNext())
-			{
-				MNode t = n.next();
-				if (t.index==i)
-					return t;
-			}
+      for (final MNode t : mNodes) {
+        if (t.index == i)
+          return t;
+      }
 		} finally {NodeLock.unlock();}
 		return null;
 	}
@@ -90,8 +87,7 @@ public class MNodeSet extends Observable implements Observer {
 		notifyObservers(new MGraphMessage(GraphConstraints.NODE,i,GraphConstraints.REMOVAL));
 		//global notify
 		setChanged();
-		notifyObservers(new GraphMessage(GraphConstraints.NODE,i,GraphConstraints.REMOVAL,GraphConstraints.GRAPH_ALL_ELEMENTS));	
-		return;
+		notifyObservers(new GraphMessage(GraphConstraints.NODE,i,GraphConstraints.REMOVAL,GraphConstraints.GRAPH_ALL_ELEMENTS));
 	}
 	/**
 	 * Replace (if existent) the node in the graph with the index of the parameter node by the parameter
@@ -144,14 +140,12 @@ public class MNodeSet extends Observable implements Observer {
 		int index = 1;
 		NodeLock.lock();
 		try {
-			Iterator<MNode> n = mNodes.iterator();
-			while (n.hasNext()) {
-				MNode temp = n.next();
-				if (temp.index >= index) // index vergeben
-				{
-					index = temp.index + 1;
-				}
-			}
+      for (final MNode temp : mNodes) {
+        if (temp.index >= index) // index vergeben
+        {
+          index = temp.index + 1;
+        }
+      }
 		} finally {NodeLock.unlock();}
 		return index;
 	}
@@ -163,15 +157,13 @@ public class MNodeSet extends Observable implements Observer {
 	 */
 	public Vector<String> getNames() {
 		Vector<String> ret = new Vector<String>();
-		Iterator<MNode> n = mNodes.iterator();
-		while (n.hasNext()) {
-			MNode actual = n.next();
-			if ((actual.index + 1) > ret.size()) {
-				ret.setSize(actual.index + 1);
-			}
-			if (actual.index!=0) //kein temp-knoten
-				ret.set(actual.index, get(actual.index).name);
-		}
+    for (final MNode actual : mNodes) {
+      if ((actual.index + 1) > ret.size()) {
+        ret.setSize(actual.index + 1);
+      }
+      if (actual.index != 0) //kein temp-knoten
+        ret.set(actual.index, get(actual.index).name);
+    }
 		return ret;
 	}
 	/**

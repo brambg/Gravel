@@ -23,19 +23,19 @@ public interface VAlgorithmIF {
 	 * 
 	 * @return An Error-Message if an error happend, an Empty String if everything is right
 	 */
-	public String setParameters(HashMap<String,Object> m);
+  String setParameters(HashMap<String, Object> m);
 	
 	/**
 	 * Indicates, whether the given mathematical graph fits
 	 * @return true if it fits
 	 */
-	public boolean GraphOkay();
+  boolean GraphOkay();
 	
 	/**
 	 * Executes the algorithm and create the visual graph
 	 *
 	 */
-	public void run();
+  void run();
 	
 	/**
 	 * get the actual state of the visualized Graph in the beginning this method should return an empty graph
@@ -45,8 +45,8 @@ public interface VAlgorithmIF {
 	 * if the algorithm is started with run(), this method returns the result
 	 * 
 	 * @return actual VGraph situation
-	 */	
-	public VGraph getactualState();
+	 */
+  VGraph getactualState();
 
 	//
 	//
@@ -60,21 +60,21 @@ public interface VAlgorithmIF {
 	 * use this method to init a stebwise execution
 	 *
 	 */
-	public void start();
+  void start();
 	
 	/**
 	 * Indicates whether an algorithm is stepwise runable or not
 	 */
-	public boolean isStepwiseRunable();
+  boolean isStepwiseRunable();
 	
 	/**
 	 * do a step 
 	 */
-	public void step();
+  void step();
 	
-	/**
-	 * Set the size of one step. this should be used to set the granularity of execution
-	 * @param i
+	/*
+	  Set the size of one step. this should be used to set the granularity of execution
+	  @param i
 	 */
 		
 	/**
@@ -82,5 +82,5 @@ public interface VAlgorithmIF {
 	 *  
 	 * @return true if the algorithm is finished
 	 */
-	public boolean finished();
+  boolean finished();
 }

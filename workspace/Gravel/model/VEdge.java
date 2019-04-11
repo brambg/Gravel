@@ -201,8 +201,8 @@ public abstract class VEdge extends VItem {
 		
 		//und normieren
 		float abs_e = (float)Math.sqrt(ex*ex + ey*ey);
-		ex = (float)(ex/abs_e);
-		ey = (float)(ey/abs_e);
+		ex = ex/abs_e;
+		ey = ey/abs_e;
 		//ex und ey ist die Richtung des Pfeils normiert
 		//nun den zoom einrechnen
 		float ahx = (float)p2.x*zoom;

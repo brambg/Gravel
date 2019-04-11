@@ -35,6 +35,5 @@ public abstract class AlgorithmParameterForm extends JDialog implements ActionLi
 	 * starts the dialog and returns 
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public abstract HashMap showDialog();
 }

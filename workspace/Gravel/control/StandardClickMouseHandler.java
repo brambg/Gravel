@@ -32,16 +32,16 @@ public class StandardClickMouseHandler implements ClickMouseHandler {
 	{
 		NodeMouseActions = new CommonNodeClickListener(g);
 		EdgeMouseActions = new CommonEdgeClickListener(g);
-		SelectionMouseActions = new SelectionClickListener(g);;
-		PopupClickActions = new ContextMenuClickListener(g);
+		SelectionMouseActions = new SelectionClickListener(g);
+    PopupClickActions = new ContextMenuClickListener(g);
 	}
 
 	public StandardClickMouseHandler(VHyperGraphic g)
 	{
 		NodeMouseActions = new CommonNodeClickListener(g);
 		EdgeMouseActions = new CommonEdgeClickListener(g);
-		SelectionMouseActions = new SelectionClickListener(g);;
-		PopupClickActions = new ContextMenuClickListener(g);
+		SelectionMouseActions = new SelectionClickListener(g);
+    PopupClickActions = new ContextMenuClickListener(g);
 	}
 	public void removeGraphObservers()
 	{

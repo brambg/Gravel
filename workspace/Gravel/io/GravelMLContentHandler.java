@@ -80,11 +80,11 @@ public class GravelMLContentHandler implements ContentHandler
 	
 	public void characters(char[] text, int start, int length) throws SAXException 
 	{
-		String val = "";
+		StringBuilder val = new StringBuilder();
 		for (int i=0; i<length; i++)
-			val += text[start+i];
+			val.append(text[start + i]);
 		if (position.endsWith("key.default"))
-			def = val;
+			def = val.toString();
 		else
 			CDATA += val;
 	}
@@ -140,19 +140,23 @@ public class GravelMLContentHandler implements ContentHandler
 		{
 			if (isVisual)
 			{	if ((vG==null)||(vG.getMathGraph().modifyNodes.cardinality()==0))
-						{isValid=false; main.DEBUG.println(main.DEBUG.MIDDLE,"No VGraph or no Nodes existent. Can't Parse Edges"); return;}
+						{isValid=false; main.DEBUG.println(main.DEBUG.MIDDLE,"No VGraph or no Nodes existent. Can't Parse Edges");
+						}
 			} 
 			else if (mG==null)
-			{isValid=false; main.DEBUG.println(main.DEBUG.MIDDLE,"No MGraph existent. Can't Parse Edges"); return;}
+			{isValid=false; main.DEBUG.println(main.DEBUG.MIDDLE,"No MGraph existent. Can't Parse Edges");
+			}
 		}		
 		else if (Status==PARSE_SUBGRAPHS)
 		{
 			if (isVisual)
 			{	if ((vG==null))
-						{isValid=false; main.DEBUG.println(main.DEBUG.MIDDLE,"No VGraph existent. Can't Parse Subgraphs/SubSets"); return;}
+						{isValid=false; main.DEBUG.println(main.DEBUG.MIDDLE,"No VGraph existent. Can't Parse Subgraphs/SubSets");
+						}
 			} 
 			else if (mG==null)
-				{isValid=false; main.DEBUG.println(main.DEBUG.MIDDLE,"No MGraph existent. Can't Parse Subgraphs/SubSets"); return;}
+				{isValid=false; main.DEBUG.println(main.DEBUG.MIDDLE,"No MGraph existent. Can't Parse Subgraphs/SubSets");
+				}
 		}
 		
 	}
@@ -350,12 +354,12 @@ public class GravelMLContentHandler implements ContentHandler
 				if (type.equals("string"))
 					gp.setStringValue(gpKey,def);
 				else if (type.equals("integer"))
-					gp.setIntValue(gpKey,(new Integer(def)).intValue());
+					gp.setIntValue(gpKey, new Integer(def));
 				else if (type.equals("boolean"))
-					gp.setBoolValue(gpKey,(new Boolean(def)).booleanValue());
+					gp.setBoolValue(gpKey, Boolean.valueOf(def));
 				else if (type.equals("float"))
 				{
-					float fval = (new Float(def)).floatValue();
+					float fval = new Float(def);
 					if (fval<=1.0f)
 						fval *= 100.0f;
 					gp.setIntValue(gpKey,Math.round(fval));
@@ -580,14 +584,16 @@ public class GravelMLContentHandler implements ContentHandler
 				if (vG.modifyNodes.get(nodeindex)!=null)
 					vG.modifySubgraphs.addNodetoSubgraph(nodeindex, id);
 				else
-					{isValid=false; return;}
+					{isValid=false;
+					}
 			}
 			else
 			{
 				if (mG.modifyNodes.get(nodeindex)!=null)
 					mG.modifySubgraphs.addNodetoSubgraph(nodeindex, id);
 				else
-					{isValid=false; return;}
+					{isValid=false;
+					}
 			}
 		}
 		else if (position.equals("graphml.graph.subset.sedge"))
@@ -603,14 +609,16 @@ public class GravelMLContentHandler implements ContentHandler
 				if (vG.modifyEdges.get(edgeindex)!=null)
 					vG.modifySubgraphs.addEdgetoSubgraph(edgeindex, id);
 				else
-					{isValid=false; return;}
+					{isValid=false;
+					}
 			}
 			else
 			{
 				if (mG.modifyEdges.get(edgeindex).Value!=-1)
 					vG.modifySubgraphs.addEdgetoSubgraph(edgeindex, id);
 				else
-					{isValid=false; return;}
+					{isValid=false;
+					}
 			}
 		}
 		else if (position.equals("graphml.graph.subset.data"))
@@ -628,7 +636,6 @@ public class GravelMLContentHandler implements ContentHandler
 				{
 					vG.modifySubgraphs.remove(id);
 					isValid=false;
-					return;
 				}
 			}
 		}

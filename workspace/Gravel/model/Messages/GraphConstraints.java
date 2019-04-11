@@ -18,48 +18,48 @@ public interface GraphConstraints {
 	/*
 	 * Element Information for Indication of changed Elements
 	 */
-	public static final int NODE = 1;
-	public static final int EDGE = 2;
-	public static final int HYPEREDGE = 4;
-	public static final int SUBGRAPH = 8;
-	public static final int GRAPH_ALL_ELEMENTS=NODE|EDGE|SUBGRAPH;
-	public static final int HYPERGRAPH_ALL_ELEMENTS=NODE|HYPEREDGE|SUBGRAPH;
-	public static final int SELECTION = 16;
-	public static final int DIRECTION = 32;
-	public static final int LOOPS = 64;
-	public static final int MULTIPLE = 128;
-	public static final int ELEMENT_MASK = 0xffff;
+  int NODE = 1;
+	int EDGE = 2;
+	int HYPEREDGE = 4;
+	int SUBGRAPH = 8;
+	int GRAPH_ALL_ELEMENTS=NODE|EDGE|SUBGRAPH;
+	int HYPERGRAPH_ALL_ELEMENTS=NODE|HYPEREDGE|SUBGRAPH;
+	int SELECTION = 16;
+	int DIRECTION = 32;
+	int LOOPS = 64;
+	int MULTIPLE = 128;
+	int ELEMENT_MASK = 0xffff;
 
 	/*
 	 * Graph Indicators for the types of Graph - may be used in same Indicator as the Element Values
 	 */
-	public static final int MATH = 2048; 
-	public static final int VISUAL = 4096; 
-	public static final int GRAPH = 1024; 
-	public static final int HYPERGRAPH = 512; 
+  int MATH = 2048;
+	int VISUAL = 4096;
+	int GRAPH = 1024;
+	int HYPERGRAPH = 512;
 	
 	/*
 	 * Modification Indicators, that cover all possible changes that might have happened 
 	 */
-	public static final int UPDATE = 1;
-	public static final int ADDITION = 2;
-	public static final int REMOVAL = 4;
-	public static final int HISTORY = 8;
-	public static final int TRANSLATION = 16;
-	public static final int REPLACEMENT = 32;
-	public static final int INDEXCHANGED = 64;
+  int UPDATE = 1;
+	int ADDITION = 2;
+	int REMOVAL = 4;
+	int HISTORY = 8;
+	int TRANSLATION = 16;
+	int REPLACEMENT = 32;
+	int INDEXCHANGED = 64;
 
-	public static final int ACTIONMASK = UPDATE | ADDITION | REMOVAL | HISTORY | TRANSLATION | REPLACEMENT | INDEXCHANGED;
+	int ACTIONMASK = UPDATE | ADDITION | REMOVAL | HISTORY | TRANSLATION | REPLACEMENT | INDEXCHANGED;
 	
 	
 	/*
 	 * Additional Special Indicators for Partial information of the Modification, e.g. whether it was local or not 
 	 */
-	public static final int HYPEREDGESHAPE = 128;
-	public static final int CREATION = 256; //Is there still just Interpolation Parameters ?
-	public static final int LOCAL = 512;	//Local Shape change if not given, the action is assumed to be shape-global
+  int HYPEREDGESHAPE = 128;
+	int CREATION = 256; //Is there still just Interpolation Parameters ?
+	int LOCAL = 512;	//Local Shape change if not given, the action is assumed to be shape-global
 
-	public static final int PARTINFORMATIONMASK = HYPEREDGESHAPE|LOCAL|CREATION;
+	int PARTINFORMATIONMASK = HYPEREDGESHAPE|LOCAL|CREATION;
 	
 	/*
 	 * Additional Special information about block - which may be used to accummulate some actions into one
@@ -67,8 +67,8 @@ public interface GraphConstraints {
 	 * though they are blocked
 	 * 
 	 */
-	public static final int BLOCK_START = 1024;
-	public static final int BLOCK_END = 2048;
-	public static final int BLOCK_ABORT = 4096;
-	public static final int BLOCKMASK = BLOCK_START|BLOCK_END|BLOCK_ABORT; //All 3 Block-Stati
+  int BLOCK_START = 1024;
+	int BLOCK_END = 2048;
+	int BLOCK_ABORT = 4096;
+	int BLOCKMASK = BLOCK_START|BLOCK_END|BLOCK_ABORT; //All 3 Block-Stati
 }

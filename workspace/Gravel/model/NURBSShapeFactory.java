@@ -74,16 +74,13 @@ public class NURBSShapeFactory {
 		//Check iff there is too less stuff to cut away
 		if (u1<u2) //too less stuff to cut away
 		{
-			if ((k2-k1)<origCurve.degree+1)
-				return false;
+      return (k2 - k1) >= origCurve.degree + 1;
 		}
 		else
 		{
-			if (Math.abs(k1-keptFragment.maxKnotIndex+2*keptFragment.degree-k2)<origCurve.degree+1)
-				return false;
+      return Math.abs(k1 - keptFragment.maxKnotIndex + 2 * keptFragment.degree - k2) >= origCurve.degree + 1;
 		}
-		return true;
-	}
+  }
 
 	/**
 	 * Create a NURBSSHape Circle based on the Information, where its Origin is, its Radius and the Distance to the nodes
@@ -139,7 +136,7 @@ public class NURBSShapeFactory {
 		for (int i=0; i<4; i++)
 		{
 			controlPoints.add((Point2D)controlPoints.get(i).clone());
-			weights.add(weights.get(i).doubleValue());			
+			weights.add(weights.get(i));
 		}
 		NURBSShape c = new NURBSShape(knots,controlPoints,weights);
 		c.scale((double)radius);
@@ -165,8 +162,7 @@ public class NURBSShapeFactory {
 			return new NURBSShape();			
 		for (int i=q.size()-degree-1; i<q.size(); i++)
 			IP.add((Point2D) q.get(i).clone());
-		for (int i=0; i<q.size(); i++)
-			IP.add((Point2D) q.get(i).clone());
+		for (Point2D point2D : q) IP.add((Point2D) point2D.clone());
 		for (int i=0; i<=degree; i++)
 			IP.add((Point2D) q.get(i).clone());
 
@@ -181,7 +177,7 @@ public class NURBSShapeFactory {
 		lgspoints.set(0,0d);
 		lgspoints.set(maxIPIndex, 1d);
 		for (int i=1; i<maxIPIndex; i++)
-			lgspoints.set(i, lgspoints.get(i-1).doubleValue() + Math.sqrt(IP.get(i).distance(IP.get(i-1)))/d);
+			lgspoints.set(i, lgspoints.get(i - 1) + Math.sqrt(IP.get(i).distance(IP.get(i-1)))/d);
 		//At the lgspoints we evaluate the Curve, get an LGS, that is totally positive and banded
 		Vector<Double> Knots = calculateKnotVector(degree, maxKnotIndex, lgspoints);
 		NURBSShape c = solveLGS(Knots, lgspoints, IP);
@@ -218,9 +214,8 @@ public class NURBSShapeFactory {
 		Vector<Point2D> IP = new Vector<Point2D>();
 		int IPCount = q.size();
 		if (IPCount <= degree) //only possible for at least degree +1 elements
-			return new NURBSShape();			
-		for (int i=0; i<q.size(); i++) //Copy
-			IP.add((Point2D) q.get(i).clone());
+			return new NURBSShape();
+		for (Point2D point2D : q) IP.add((Point2D) point2D.clone());
 
 		int maxIPIndex = IP.size()-1; //highest IP Index
 		int maxKnotIndex = maxIPIndex+degree+1;//highest KnotIndex in the resulting NURBS-Curve
@@ -233,11 +228,10 @@ public class NURBSShapeFactory {
 		lgspoints.set(0,0d);
 		lgspoints.set(maxIPIndex, 1d);
 		for (int i=1; i<maxIPIndex; i++)
-			lgspoints.set(i, lgspoints.get(i-1).doubleValue() + Math.sqrt(IP.get(i).distance(IP.get(i-1)))/d);
+			lgspoints.set(i, lgspoints.get(i - 1) + Math.sqrt(IP.get(i).distance(IP.get(i-1)))/d);
 		//At the lgspoints we evaluate the Curve, get an LGS, that is totally positive and banded
 		Vector<Double> Knots = calculateKnotVector(degree, maxKnotIndex, lgspoints);
-		NURBSShape c = solveLGS(Knots, lgspoints, IP);
-		return c;
+    return solveLGS(Knots, lgspoints, IP);
 	}
 	
 	/**
@@ -312,9 +306,9 @@ public class NURBSShapeFactory {
 		for (int i=0; i<q.size(); i++)
 		{
 			if (i==0)
-				lgspoints.add(lgspoints.lastElement().doubleValue() + Math.sqrt(q.firstElement().distance(IP.lastElement()))/d);
+				lgspoints.add(lgspoints.lastElement() + Math.sqrt(q.firstElement().distance(IP.lastElement()))/d);
 			else
-				lgspoints.add(lgspoints.lastElement().doubleValue() + Math.sqrt(q.get(i).distance(q.get(i-1)))/d);
+				lgspoints.add(lgspoints.lastElement() + Math.sqrt(q.get(i).distance(q.get(i-1)))/d);
 			IP.add((Point2D)q.get(i).clone());
 		}
 		//
@@ -379,14 +373,14 @@ public class NURBSShapeFactory {
 		double s1offset = s1.Knots.get(s1.maxKnotIndex-s1.degree)-s1.Knots.get(s1.degree);
 		double shift = s1offset+s2offset;
 		for (int i=0; i<=s2.maxKnotIndex; i++)
-			newKnots.add(s2.Knots.get(i).doubleValue());
+			newKnots.add(s2.Knots.get(i));
 		for (int i=0; i<=s2.maxCPIndex; i++)
-			newP.add((Point2dHom)s2.controlPointsHom.get(i).clone());
+			newP.add(s2.controlPointsHom.get(i).clone());
 		int s1BeginKnots = newKnots.size(), s1BeginCP = newP.size();
 		for (int i=s1.degree+1; i<=s1.maxKnotIndex; i++) //0...s1.degree are equal to the end of s2
-			newKnots.add(s1.Knots.get(i).doubleValue()+shift);
+			newKnots.add(s1.Knots.get(i) +shift);
 		for (int i=0; i<=s1.maxCPIndex; i++)
-			newP.add((Point2dHom)s1.controlPointsHom.get(i).clone());
+			newP.add(s1.controlPointsHom.get(i).clone());
 		
 		NURBSShape temp = new NURBSShape(newKnots,newP);
 		temp = unclamp(temp); //So now they are unclamped, we can copy back to get s1 - s2
@@ -396,14 +390,14 @@ public class NURBSShapeFactory {
 		for (int i=0; i<=s1.degree; i++)
 			newKnots.add(s1.Knots.get(i)); //Old Clamped Part
 		for (int i=s1BeginKnots; i<temp.maxKnotIndex-s1.degree; i++) //copy s1 back to beginning
-			newKnots.add(temp.Knots.get(i).doubleValue()-shift); //And shift back
+			newKnots.add(temp.Knots.get(i) -shift); //And shift back
 		for (int i=s2.degree; i<s1BeginKnots; i++)
-			newKnots.add(temp.Knots.get(i).doubleValue());
+			newKnots.add(temp.Knots.get(i));
 		
 		for (int i=s1BeginCP; i<temp.maxCPIndex; i++)
-			newP.add((Point2dHom)temp.controlPointsHom.get(i).clone());
+			newP.add(temp.controlPointsHom.get(i).clone());
 		for (int i=s2.degree-1; i<s1BeginCP; i++)
-			newP.add((Point2dHom)temp.controlPointsHom.get(i).clone());
+			newP.add(temp.controlPointsHom.get(i).clone());
 		temp = new NURBSShape(newKnots,newP);
 		temp = unclamp(temp); //Unclamp the part that stays at endvalues of the combinational curve
 		temp.updateCircular(!OldOverCirc); //Update Front if normal, back if over circStart/End
@@ -438,8 +432,8 @@ public class NURBSShapeFactory {
 		int maxIPIndex = maxKnotIndex-degree-1;
 		for (int i=0; i<=degree; i++)
 		{
-			Knots.set(i,lgspoints.firstElement().doubleValue()); //First degree+1 Entries are zero
-			Knots.set(maxKnotIndex-i,lgspoints.lastElement().doubleValue()); //Last p+1 Entries are 1
+			Knots.set(i, lgspoints.firstElement()); //First degree+1 Entries are zero
+			Knots.set(maxKnotIndex-i, lgspoints.lastElement()); //Last p+1 Entries are 1
 		}
 		for (int j=1; j<=maxIPIndex-degree; j++) //middle values
 		{
@@ -473,10 +467,10 @@ public class NURBSShapeFactory {
 		
 		//Raise both endvalues to multiplicity d to get an clamped curve
 		int multStart = 0;
-		while (c.Knots.get(Start+multStart).doubleValue()==u1)
+		while (c.Knots.get(Start + multStart) ==u1)
 			multStart++;
 		int multEnd = 0;
-		while (c.Knots.get(End-multEnd).doubleValue()==u2)
+		while (c.Knots.get(End - multEnd) ==u2)
 			multEnd++;
 		Vector<Double> Refinement = new Vector<Double>();
 		for (int i=0; i<=c.degree-multStart; i++)
@@ -491,7 +485,7 @@ public class NURBSShapeFactory {
 		for (int i=Start+1; i<(End+c.degree+1-multStart+1); i++)
 		{
 			newCP.add((Point2D)subcurve.controlPoints.get(i).clone());
-			newWeight.add(subcurve.cpWeight.get(i).doubleValue());
+			newWeight.add(subcurve.cpWeight.get(i));
 		}
 		//Copy needed Knots
 		int index = 0;
@@ -500,7 +494,7 @@ public class NURBSShapeFactory {
 			index++;
 		while (subcurve.Knots.get(index)<=u2)
 		{
-			newKnots.add(subcurve.Knots.get(index).doubleValue());
+			newKnots.add(subcurve.Knots.get(index));
 			index++;
 		}
 		return new NURBSShape(newKnots,newCP,newWeight);
@@ -653,14 +647,13 @@ public class NURBSShapeFactory {
 		if (nodes.size()==2) //Create Line, nonperiodic
 		{
 			Vector<Point2D> LineIP = new Vector<Point2D>();
-			int segments = degree;
-			LineIP.add((Point2D)nodes.firstElement().clone());
+      LineIP.add((Point2D)nodes.firstElement().clone());
 			double length = nodes.firstElement().distance(nodes.lastElement());
-			double onelength = length/((double)segments);
+			double onelength = length/((double) degree);
 			Point2D direction = new Point2D.Double(
 					(nodes.lastElement().getX()-nodes.firstElement().getX())/length,
 					(nodes.lastElement().getY()-nodes.firstElement().getY())/length);
-			for (int i=1; i<segments; i++)
+			for (int i = 1; i< degree; i++)
 				LineIP.add(
 						new Point2D.Double(
 								nodes.firstElement().getX() + ((double)i)*onelength*direction.getX(),

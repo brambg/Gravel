@@ -60,9 +60,9 @@ public class MagnetismAndSprings implements VAlgorithmIF
 			return "keine Kantengröße gegeben";
 		if (m.get("EdgeValueUsed")==null)
 			return "nicht angegeben, ob Kanten-Werte genutzt werden sollen";
-		edgelength = ((Double) m.get("EdgeSizeFactor")).doubleValue();
+		edgelength = (Double) m.get("EdgeSizeFactor");
 		vg = (VGraph) m.get("VGraph");
-		this.useedgevalue = ((Boolean) m.get("EdgeValueUsed")).booleanValue();
+		this.useedgevalue = (Boolean) m.get("EdgeValueUsed");
 		if (edgelength<=0.0d)
 			return "Kantengröße zu gering";
 		if (!GraphOkay())

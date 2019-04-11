@@ -62,13 +62,13 @@ public class RandomVisualize implements VAlgorithmIF {
 		if (m.get("RandomizeEdges")==null)
 			randEdges = true;
 		else
-			randEdges = ((Boolean)m.get("RandomizeEdges")).booleanValue();
+			randEdges = (Boolean) m.get("RandomizeEdges");
 		if (m.get("RandomizeNodes")==null)
 			randNodes = true;
 		else
-			randNodes = ((Boolean)m.get("RandomizeEdges")).booleanValue();
-		maxX = ((Integer) m.get("MaxX")).intValue();
-		maxY = ((Integer) m.get("MaxY")).intValue();
+			randNodes = (Boolean) m.get("RandomizeEdges");
+		maxX = (Integer) m.get("MaxX");
+		maxY = (Integer) m.get("MaxY");
 		if ((maxX<=0)&&(maxY<=0))
 			return "Einer der Max-Werte ist zu klein";
 		return "";
@@ -133,8 +133,6 @@ public class RandomVisualize implements VAlgorithmIF {
 	}
 	
 	public boolean finished() {
-		if ((!nodeiter.hasNext())&&(generator!=null))
-				return true;
-		return false;
-	}
+    return (!nodeiter.hasNext()) && (generator != null);
+  }
 }

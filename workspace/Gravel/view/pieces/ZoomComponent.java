@@ -65,7 +65,7 @@ public class ZoomComponent extends Observable implements ChangeListener, CaretLi
 	 */
 	public void stateChanged(ChangeEvent arg0)
 	{
-				value.setValue((int)zoomslider.getValue());
+				value.setValue(zoomslider.getValue());
 				//zoomfield.setText("<html>Ma"+main.CONST.html_sz+"stab: "+value+"%</html>");
 				setChanged();
 				notifyObservers("Zoom");

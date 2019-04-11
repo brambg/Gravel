@@ -42,16 +42,9 @@ package sunw.demo.searchdemo;
 
 import java.io.*;
 import java.net.*;
-import java.text.*;
-import java.util.Vector;
 import java.util.Hashtable;
-import java.util.EventListener;
-import java.util.Locale;
 // import javax.help.*;
 import javax.help.search.*;
-import javax.help.search.SearchEvent;
-import javax.help.search.SearchListener;
-
 
 /**
  * ClientSearchEngine is the default search engine. 

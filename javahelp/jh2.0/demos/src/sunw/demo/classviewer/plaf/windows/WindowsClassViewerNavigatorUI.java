@@ -44,7 +44,6 @@ import sunw.demo.classviewer.plaf.basic.*;
 import sunw.demo.classviewer.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.*;
-import javax.help.*;
 
 /**
  * The windows UI for a ClassViewerNavigator

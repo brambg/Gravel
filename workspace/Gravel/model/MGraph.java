@@ -204,9 +204,7 @@ public class MGraph extends Observable implements Observer, MGraphInterface
 					if (removed.get(e.index)) //was is just set?
 						deledges.add(e);
 			}
-			Iterator<MEdge> n3 = deledges.iterator();
-			while (n3.hasNext()) // Diese loeschen
-					modifyEdges.remove(n3.next().index);
+      for (final MEdge deledge : deledges) modifyEdges.remove(deledge.index);
 		}	
 		this.allowloops = a;
 		setChanged();
@@ -246,7 +244,7 @@ public class MGraph extends Observable implements Observer, MGraphInterface
 				{
 					MNode t2 = n2.next();
 					//if the graph is directed
-					if (((!directed)&&(t2.index<=t.index))||(directed)) //in the nondirected case only half the cases
+					if (directed || (t2.index <= t.index)) //in the nondirected case only half the cases
 					{
 						if (modifyEdges.cardinalityBetween(t.index, t2.index)>1) //we have to delete
 						{
@@ -281,6 +279,6 @@ public class MGraph extends Observable implements Observer, MGraphInterface
 	}
 	public void update(Observable o, Object arg) {
 		if (arg instanceof GraphMessage) //Send graphmessages to external listeners
-			pushNotify((GraphMessage)arg);
+			pushNotify(arg);
 	}
 }

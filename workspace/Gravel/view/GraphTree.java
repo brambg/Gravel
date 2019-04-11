@@ -213,7 +213,7 @@ public class GraphTree extends JTree implements TreeSelectionListener,
 	public void mousePressed(MouseEvent e)
 	{
 		//PopupHandlign or Selection on a Mac
-		if ( (System.getProperty("os.name").toLowerCase().indexOf("mac")!=-1) ||  (System.getProperty("os.name").toLowerCase().indexOf("linux")!=-1) )
+		if ( (System.getProperty("os.name").toLowerCase().contains("mac")) ||  (System.getProperty("os.name").toLowerCase().contains("linux")) )
 		{
 			if (selectionHandling(e) && e.isPopupTrigger())
 			{
@@ -225,7 +225,7 @@ public class GraphTree extends JTree implements TreeSelectionListener,
 	public void mouseReleased(MouseEvent e) 
 	{
 		//PopupHandlign or Selection on anything else
-		if ( (System.getProperty("os.name").toLowerCase().indexOf("mac")==-1) && (System.getProperty("os.name").toLowerCase().indexOf("linux")==-1) )
+		if ( (!System.getProperty("os.name").toLowerCase().contains("mac")) && (!System.getProperty("os.name").toLowerCase().contains("linux")) )
 		{
 			if (selectionHandling(e) && e.isPopupTrigger())
 			{
@@ -412,7 +412,8 @@ public class GraphTree extends JTree implements TreeSelectionListener,
 								vhG.modifySubgraphs.remove(StringPos2Index(ParentType,selectedPosition));
 							updateSubgraphs(); 									
 								break;}
-						default : {return;}
+						default : {
+						}
 					}
 			   }
 		}	

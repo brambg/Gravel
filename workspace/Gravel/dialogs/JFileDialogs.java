@@ -563,10 +563,8 @@ public class JFileDialogs implements Observer
 				"<html>Die Datei<br><br><i>"+f.getAbsolutePath()+"</i><br><br>hat eine Falsche Endung (."+
 				getExtension(f)+") zum Export in <br><i>"+ff.getDescription()+"</i><br> M"+CONST.html_oe+
 				"chten Sie trotzdem exportieren?","Unbekannte Dateiendung für den Export", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
-	if (sel == JOptionPane.NO_OPTION)
-		return false;
-	return true;
-	}
+    return sel != JOptionPane.NO_OPTION;
+  }
 	/**
 	 * Get the actual status of the graph
 	 * @return true if the current Graph is saved in a file, else false
@@ -670,7 +668,7 @@ public class JFileDialogs implements Observer
 			}
 			else
 				newtitle = Gui.WindowName;
-        	if (System.getProperty("os.name").toLowerCase().indexOf("mac")!=-1) //Back to X as close
+        	if (System.getProperty("os.name").toLowerCase().contains("mac")) //Back to X as close
         		Gui.getInstance().getParentWindow().getRootPane().putClientProperty( "Window.documentModified", Boolean.FALSE );
 		}		
 		else //Graph not saved
@@ -683,7 +681,7 @@ public class JFileDialogs implements Observer
 			}
 			else
 				newtitle = Gui.WindowName;
-        	if (System.getProperty("os.name").toLowerCase().indexOf("mac")!=-1) //Back to Circle on CLose
+        	if (System.getProperty("os.name").toLowerCase().contains("mac")) //Back to Circle on CLose
         		Gui.getInstance().getParentWindow().getRootPane().putClientProperty( "Window.documentModified", Boolean.TRUE );
 
 		}

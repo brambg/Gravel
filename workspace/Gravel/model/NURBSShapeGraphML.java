@@ -52,19 +52,16 @@ public class NURBSShapeGraphML extends NURBSShape {
 	{
 		if (isEmpty())
 			return "";
-		String s;
-		s = indentation+"<data key=\""+keyID+"\">"+nl+
-			 indentation+"\t<"+elementName+" degree=\""+degree+"\">"+nl;
+		StringBuilder s;
+		s = new StringBuilder(indentation + "<data key=\"" + keyID + "\">" + nl +
+				indentation + "\t<" + elementName + " degree=\"" + degree + "\">" + nl);
 		for (int i=0; i<=maxKnotIndex; i++)
-			s += indentation+"\t\t<knot id=\""+i+"\" u=\""+Knots.get(i).doubleValue()+"\"/>"+nl;
+			s.append(indentation).append("\t\t<knot id=\"").append(i).append("\" u=\"").append(Knots.get(i)).append("\"/>").append(nl);
 		for (int i=0; i<=maxCPIndex; i++)
-			s += indentation+"\t\t<controlpoint id=\""+i+"\""+
-			" x=\""+controlPoints.get(i).getX()+"\""+
-			" y=\""+controlPoints.get(i).getY()+"\""+
-			" w=\""+cpWeight.get(i).doubleValue()+"\"/>"+nl;
-		s += indentation+"\t</"+elementName+">"+nl;
-		s += indentation+"</data>"+nl;
-		return s;
+			s.append(indentation).append("\t\t<controlpoint id=\"").append(i).append("\"").append(" x=\"").append(controlPoints.get(i).getX()).append("\"").append(" y=\"").append(controlPoints.get(i).getY()).append("\"").append(" w=\"").append(cpWeight.get(i)).append("\"/>").append(nl);
+		s.append(indentation).append("\t</").append(elementName).append(">").append(nl);
+		s.append(indentation).append("</data>").append(nl);
+		return s.toString();
 	}
 	private void setDecoTo(NURBSShape c)
 	{

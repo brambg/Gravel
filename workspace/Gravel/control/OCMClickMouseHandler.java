@@ -37,8 +37,8 @@ public class OCMClickMouseHandler implements ClickMouseHandler {
 	{
 		NodeMouseActions = new CommonNodeClickListener(g);
 		EdgeMouseActions = new CommonEdgeClickListener(g);
-		SelectionMouseActions = new SelectionClickListener(g);;
-		PopupClickActions = new ContextMenuClickListener(g);
+		SelectionMouseActions = new SelectionClickListener(g);
+    PopupClickActions = new ContextMenuClickListener(g);
 
 		vgc = g;
 		vg = g.getGraph();
@@ -49,8 +49,8 @@ public class OCMClickMouseHandler implements ClickMouseHandler {
 	{
 		NodeMouseActions = new CommonNodeClickListener(g);
 		EdgeMouseActions = new CommonEdgeClickListener(g);
-		SelectionMouseActions = new SelectionClickListener(g);;
-		PopupClickActions = new ContextMenuClickListener(g);
+		SelectionMouseActions = new SelectionClickListener(g);
+    PopupClickActions = new ContextMenuClickListener(g);
 		vgc = g;
 		vhg = g.getGraph();
 		gp = GeneralPreferences.getInstance();
@@ -97,8 +97,8 @@ public class OCMClickMouseHandler implements ClickMouseHandler {
 					int i = vhg.getMathGraph().modifyNodes.getNextIndex();
 					vhg.modifyNodes.add(new VNode(i,p.x,p.y, gp.getIntValue("node.size"), gp.getIntValue("node.name_distance"), gp.getIntValue("node.name_rotation"), gp.getIntValue("node.name_size"), gp.getBoolValue("node.name_visible")), new MNode(i,gp.getNodeName(i)));
 				}
-				else
-					return;
+				else {
+				}
 			}	
 		}
 	}	

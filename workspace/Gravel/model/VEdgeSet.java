@@ -48,9 +48,8 @@ public class VEdgeSet extends Observable implements Observer {
 	 */
 	public void deselect()
 	{
-		Iterator<VEdge> e = vEdges.iterator();
-		while (e.hasNext()) {
-			e.next().deselect();
+		for (final VEdge vEdge : vEdges) {
+			vEdge.deselect();
 		}
 	}
 	/**
@@ -69,23 +68,16 @@ public class VEdgeSet extends Observable implements Observer {
 			try
 			{
 				HashSet<VEdge> deledges = new HashSet<VEdge>();
-				Iterator<VEdge> n2 = vEdges.iterator();
-				while (n2.hasNext())
-				{
-					VEdge e = n2.next();
+				for (final VEdge e : vEdges) {
 					MEdge me = mG.modifyEdges.get(e.getIndex());
-					if (me.StartIndex==me.EndIndex)
-					{
+					if (me.StartIndex == me.EndIndex) {
 						removed.set(e.getIndex());
 						deledges.add(e);
-					}
-					else
+					} else
 						removed.clear(e.getIndex());
 				}
-				Iterator<VEdge> n3 = deledges.iterator();
-				while (n3.hasNext()) // Diese loeschen
-				{
-					remove(n3.next().getIndex());
+				for (final VEdge deledge : deledges) {
+					remove(deledge.getIndex());
 				}
 			} finally {EdgeLock.unlock();}
 			setChanged();
@@ -204,9 +196,7 @@ public class VEdgeSet extends Observable implements Observer {
 	 * @return the edge, if existens, else null 
 	 */
 	public VEdge get(int i) {
-		Iterator<VEdge> n = vEdges.iterator();
-		while (n.hasNext()) {
-			VEdge temp = n.next();
+		for (final VEdge temp : vEdges) {
 			if (temp.getIndex() == i) {
 				return temp;
 			}
@@ -232,18 +222,14 @@ public class VEdgeSet extends Observable implements Observer {
 		EdgeLock.lock(); //Find the edge to be replaced
 		try
 		{
-			Iterator<VEdge> ei = vEdges.iterator();				
-			while (ei.hasNext())
-			{
-				VEdge t = ei.next();
-				if (t.getIndex()==e.getIndex())
-				{
+			for (final VEdge t : vEdges) {
+				if (t.getIndex() == e.getIndex()) {
 					vEdges.remove(t);
 					//Clone Color Status of e from t
 					t.copyColorStatus(e);
 					vEdges.add(e);
 					setChanged();
-					notifyObservers(new GraphMessage(GraphConstraints.EDGE,e.getIndex(), GraphConstraints.REPLACEMENT,GraphConstraints.EDGE));	
+					notifyObservers(new GraphMessage(GraphConstraints.EDGE, e.getIndex(), GraphConstraints.REPLACEMENT, GraphConstraints.EDGE));
 					break;
 				}
 			}
@@ -307,22 +293,19 @@ public class VEdgeSet extends Observable implements Observer {
 		if (mG.isMultipleAllowed())
 		{
 			Vector<Integer> indices = mG.modifyEdges.indicesBetween(s, e);
-			Iterator<Integer> iiter = indices.iterator();
-			while (iiter.hasNext())
-			{
-				VEdge act = get(iiter.next());
+			for (final Integer index : indices) {
+				VEdge act = get(index);
 				MEdge me = mG.modifyEdges.get(act.getIndex());
-				if ((me.StartIndex==e)&&(!mG.isDirected())&&(act.getEdgeType()==VEdge.ORTHOGONAL)&&(edge.getEdgeType()==VEdge.ORTHOGONAL)) 
+				if ((me.StartIndex == e) && (!mG.isDirected()) && (act.getEdgeType() == VEdge.ORTHOGONAL) && (edge.getEdgeType() == VEdge.ORTHOGONAL))
 				//ungerichtet, beide orthogonal und entgegengesetz gespeichert
 				{
-					if (((VOrthogonalEdge)act).getVerticalFirst()!=((VOrthogonalEdge)edge).getVerticalFirst())
+					if (((VOrthogonalEdge) act).getVerticalFirst() != ((VOrthogonalEdge) edge).getVerticalFirst())
 						return act.getIndex();
-				}
-				else if ((edge.PathEquals(act))&&(edge.getIndex()!=act.getIndex())) //same path but different indexx
+				} else if ((edge.PathEquals(act)) && (edge.getIndex() != act.getIndex())) //same path but different indexx
 				{
 					return act.getIndex();
 				}
-	
+
 			}
 		}
 		else if (mG.modifyEdges.indicesBetween(s, e).size()>0)
@@ -351,35 +334,33 @@ public class VEdgeSet extends Observable implements Observer {
 	 */
 	@SuppressWarnings("unchecked")
 	public Vector firstCPinRageOf(Point m, double variation) {
-		Iterator<VEdge> n = vEdges.iterator();
-		while (n.hasNext()) {
-			VEdge temp = n.next(); // naechste Kante
+		for (final VEdge temp : vEdges) {
 			switch (temp.getEdgeType()) {
-				case VEdge.LOOP :
-				case VEdge.QUADCURVE : // Wenns eine Bezierkante ist
+				case VEdge.LOOP:
+				case VEdge.QUADCURVE: // Wenns eine Bezierkante ist
 				{
 					Point p = temp.getControlPoints().firstElement();
 					if (p.distance(m) <= variation) {
 						Vector c = new Vector();
 						c.add(temp);
-						c.add(new Integer(0));
+						c.add(0);
 						return c;
 					}
 					break;
 				}
-				case VEdge.SEGMENTED : {
+				case VEdge.SEGMENTED: {
 					Vector<Point> p = temp.getControlPoints();
 					for (int i = 0; i < p.size(); i++) {
 						if (p.get(i).distance(m) <= variation) {
 							Vector c = new Vector();
 							c.add(temp); // Kante anfügen
-							c.add(new Integer(i)); // Punkt angeben
+							c.add(i); // Punkt angeben
 							return c;
 						}
 					}
 					break;
 				}
-				default : {
+				default: {
 					break;
 				} // Sonst - Straightline
 			}
@@ -486,8 +467,8 @@ public class VEdgeSet extends Observable implements Observer {
 		if (arg instanceof GraphColorMessage)
 		{
 			GraphColorMessage m = (GraphColorMessage)arg;
-			if (m==null)
-				return;
+			if (m==null) {
+			}
 			else
 				Colorchange(m);
 		}

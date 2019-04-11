@@ -31,7 +31,6 @@ public class RandomVisualizeForm extends AlgorithmParameterForm
 		Parameters = new HashMap<String, Object>();
 		mGCopy = guigraph;
 	}
-	@SuppressWarnings("unchecked")	
 	public HashMap showDialog() {
 		this.setTitle("Ein erster Testalgorithmus - Parameterangaben");
 		Container content = getContentPane();
@@ -96,10 +95,10 @@ public class RandomVisualizeForm extends AlgorithmParameterForm
 		if (e.getSource()==bOk)
 		{
 			Parameters.put("MGraph",mGCopy);
-			Parameters.put("MaxX", new Integer(iMaxX.getValue()));
-			Parameters.put("MaxY", new Integer(iMaxY.getValue()));
-			Parameters.put("RandomizeEdges", new Boolean(bRandomizeEdges.isSelected()));
-			Parameters.put("RandomizeNodes", new Boolean(bRandomizeNodes.isSelected()));			
+			Parameters.put("MaxX", iMaxX.getValue());
+			Parameters.put("MaxY", iMaxY.getValue());
+			Parameters.put("RandomizeEdges", bRandomizeEdges.isSelected());
+			Parameters.put("RandomizeNodes", bRandomizeNodes.isSelected());
 			dispose();
 		}
 		else if (e.getSource()==bCancel)

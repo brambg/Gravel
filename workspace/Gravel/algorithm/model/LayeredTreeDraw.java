@@ -104,7 +104,7 @@ public class LayeredTreeDraw implements VAlgorithmIF
 		//Beide sind mit left und right auf höhe 1, verschiebe right nach rechts und beide auf höhe 2
 		leftsubtree.translate(0,gridY);
 		//No Enviroment, so no Node-Text-Infos are given
-		rightsubtree.translate((1+(int)(leftsubtree.getMaxPoint(null).x/gridX))*gridX,gridY);
+		rightsubtree.translate((1+ (leftsubtree.getMaxPoint(null).x/gridX))*gridX,gridY);
 		//Da jeder stets den eignen Index verwendet (s.o.) iteriere über right füge die zum andren hinzu
 		Iterator<VNode> copynodes = rightsubtree.modifyNodes.getIterator();
 		while (copynodes.hasNext())
@@ -155,8 +155,8 @@ public class LayeredTreeDraw implements VAlgorithmIF
 			return "kein Raster angegeben";
 		if (m.get("GridY")==null)
 			return "kein Raster angegeben";
-		gridX = ((Integer) m.get("GridX")).intValue();
-		gridY = ((Integer) m.get("GridY")).intValue();
+		gridX = (Integer) m.get("GridX");
+		gridY = (Integer) m.get("GridY");
 		mG = (MGraph) m.get("MGraph");
 		ta.setGraph(mG);
 		ErgebnisGraph = new VGraph(mG.isDirected(),false,false);

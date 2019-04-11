@@ -565,7 +565,7 @@ public class JEdgeDialog extends JDialog implements ActionListener, ItemListener
 		cQuadCurve.setPreferredSize(prefSize);
 		if ((chEdge!=null)&&(chEdge.getEdgeType()==VEdge.QUADCURVE)) //Werte holen
 		{
-			Point p = ((VQuadCurveEdge) chEdge).getControlPoints().firstElement();
+			Point p = chEdge.getControlPoints().firstElement();
 			iQCx.setValue(p.x);
 			iQCy.setValue(p.y);
 		}
@@ -920,8 +920,8 @@ public class JEdgeDialog extends JDialog implements ActionListener, ItemListener
 			if ((iSegx.getValue()!=-1)&&(iSegy.getValue()!=-1))
 			{
 				Point p = new Point(iSegx.getValue(),iSegy.getValue());
-				for (int i=0; i<segmentpoints.size(); i++)
-					if ((segmentpoints.get(i).x==p.x)&&(segmentpoints.get(i).y==p.y))
+				for (Point segmentpoint : segmentpoints)
+					if ((segmentpoint.x == p.x) && (segmentpoint.y == p.y))
 						return; //Doppelt eintragen ist nich
 				
 				segmentpoints.add(p);
@@ -977,30 +977,25 @@ public class JEdgeDialog extends JDialog implements ActionListener, ItemListener
 	}
 	
 	public void itemStateChanged(ItemEvent event) 
-	{		
-		for (int i=0; i<SubgraphChecks.length; i++)
-		{
-			if (event.getSource()==SubgraphChecks[i])
-			{
+	{
+		for (final JCheckBox subgraphCheck : SubgraphChecks) {
+			if (event.getSource() == subgraphCheck) {
 				//Ein Zustand hat sich geändert, neue Farbe berechnen
 				Color colour = Color.BLACK;
 				int colourcount = 0;
 				int temp = 0; //zum mitzaehlen
-				for (int j=0; j<subgraphlist.size();j++)
-				{
-					if (subgraphlist.elementAt(j)!=null)
-					{
-						if (SubgraphChecks[temp].isSelected())
-						{
+				for (int j = 0; j < subgraphlist.size(); j++) {
+					if (subgraphlist.elementAt(j) != null) {
+						if (SubgraphChecks[temp].isSelected()) {
 							Color newc = graphref.modifySubgraphs.get(j).getColor();
-							int b=colour.getBlue()*colourcount + newc.getBlue();
-							int a=colour.getAlpha()*colourcount + newc.getAlpha();
-							int g=colour.getGreen()*colourcount + newc.getGreen();
-							int r=colour.getRed()*colourcount + newc.getRed();
+							int b = colour.getBlue() * colourcount + newc.getBlue();
+							int a = colour.getAlpha() * colourcount + newc.getAlpha();
+							int g = colour.getGreen() * colourcount + newc.getGreen();
+							int r = colour.getRed() * colourcount + newc.getRed();
 							colourcount++;
-							colour = new Color((r/colourcount),(g/colourcount),(b/colourcount),(a/colourcount));
+							colour = new Color((r / colourcount), (g / colourcount), (b / colourcount), (a / colourcount));
 						}
-							temp++;
+						temp++;
 					}
 				}
 				Colorfield.setBackground(colour);

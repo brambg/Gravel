@@ -523,7 +523,6 @@ public class GraphMLReader {
 			((MGraph) loadedMGraph).modifyEdges.add(me);
 		} else {
 			errorMsg = "No suitable Graph for adding an Edge #"+index+"found";
-			return;
 		}
 	}
 	private void parseHyperedges(Node GraphNode) {
@@ -711,7 +710,6 @@ public class GraphMLReader {
 			((MHyperGraph) loadedMGraph).modifyHyperEdges.add(mhe);
 		} else {
 			errorMsg = "No suitable Graph for adding an Edge found";
-			return;
 		}
 	}
 	//

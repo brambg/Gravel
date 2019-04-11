@@ -498,35 +498,30 @@ public class JNodeDialog extends JDialog implements ActionListener, ItemListener
 	}
 
 	public void itemStateChanged(ItemEvent event) {
-		for (int i=0; i<SubgraphChecks.length; i++)
-		{
-			if (event.getSource()==SubgraphChecks[i])
-			{
+		for (final JCheckBox subgraphCheck : SubgraphChecks) {
+			if (event.getSource() == subgraphCheck) {
 				//Ein Zustand hat sich geändert, neue Farbe berechnen
 				Color colour = Color.BLACK;
 				int colourcount = 0;
 				int temp = 0; //zum mitzaehlen
-				for (int j=0; j<subgraphlist.size();j++)
-				{
-					if (subgraphlist.elementAt(j)!=null)
-					{
-						if (SubgraphChecks[temp].isSelected())
-						{
+				for (int j = 0; j < subgraphlist.size(); j++) {
+					if (subgraphlist.elementAt(j) != null) {
+						if (SubgraphChecks[temp].isSelected()) {
 							Color newc;
-							if (graphref.getType()==VGraphInterface.GRAPH)
-								newc = ((VGraph)graphref).modifySubgraphs.get(j).getColor();
-							else if (graphref.getType()==VGraphInterface.HYPERGRAPH)
-								newc = ((VHyperGraph)graphref).modifySubgraphs.get(j).getColor();
+							if (graphref.getType() == VGraphInterface.GRAPH)
+								newc = ((VGraph) graphref).modifySubgraphs.get(j).getColor();
+							else if (graphref.getType() == VGraphInterface.HYPERGRAPH)
+								newc = ((VHyperGraph) graphref).modifySubgraphs.get(j).getColor();
 							else
 								return;
-							int b=colour.getBlue()*colourcount + newc.getBlue();
-							int a=colour.getAlpha()*colourcount + newc.getAlpha();
-							int g=colour.getGreen()*colourcount + newc.getGreen();
-							int r=colour.getRed()*colourcount + newc.getRed();
+							int b = colour.getBlue() * colourcount + newc.getBlue();
+							int a = colour.getAlpha() * colourcount + newc.getAlpha();
+							int g = colour.getGreen() * colourcount + newc.getGreen();
+							int r = colour.getRed() * colourcount + newc.getRed();
 							colourcount++;
-							colour = new Color((r/colourcount),(g/colourcount),(b/colourcount),(a/colourcount));
+							colour = new Color((r / colourcount), (g / colourcount), (b / colourcount), (a / colourcount));
 						}
-							temp++;
+						temp++;
 					}
 				}
 				Colorfield.setBackground(colour);

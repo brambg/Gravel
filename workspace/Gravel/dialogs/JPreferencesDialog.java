@@ -105,8 +105,7 @@ import view.pieces.GridComponent;
 		setTitle("Einstellungen");
 		prefStatus = new JLabel(status);
 		tabs = new JTabbedPane();
-		String[] nametemp = {"Pfeil","Beschriftung","Linienstil","Schleifen"};
-		edgesubtexts = nametemp;
+		edgesubtexts = new String[]{"Pfeil","Beschriftung","Linienstil","Schleifen"};
 		tabs.setTabPlacement(JTabbedPane.TOP);
 		tabs.addTab("Allgemein", buildPropPane());
 		tabs.addTab("Ansicht", buildViewPane());
@@ -345,9 +344,9 @@ import view.pieces.GridComponent;
 		content.add(cNodeName,c);
 		return content;
 	}
-	/**
-	 * Create the Subgraph-Stanardvalues Parameter Tab
-	 * @return and return the JPanel
+	/*
+	  Create the Subgraph-Stanardvalues Parameter Tab
+	  @return and return the JPanel
 	 */
 	/**
 	 * Build the Edge JPanel containing all Edge Standard Value and

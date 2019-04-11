@@ -79,15 +79,11 @@ public class MHyperEdgeSet extends Observable implements Observer {
 	 */
 	public MHyperEdge get(int i)
 	{
-		Iterator<MHyperEdge> n = mHyperEdges.iterator();
-		while (n.hasNext())
-		{
-			MHyperEdge e = n.next();
-			if (e.index==i)
-			{
-				return e;
-			}
-		}
+    for (final MHyperEdge e : mHyperEdges) {
+      if (e.index == i) {
+        return e;
+      }
+    }
 		return null;
 	}
 	/**
@@ -101,17 +97,14 @@ public class MHyperEdgeSet extends Observable implements Observer {
 	 */
 	public MHyperEdge get(BitSet s)
 	{
-		Iterator<MHyperEdge> ihe = mHyperEdges.iterator();
-		while (ihe.hasNext())
-		{
-			MHyperEdge temp = ihe.next();
-			BitSet check = (BitSet) temp.getEndNodes().clone(); //Get a Clone o the BitSet
-			check.and(s);
-			if ((check.cardinality()==temp.getEndNodes().cardinality()) //The logical and did not remove any of temps nodes, so temp is a subset of s
-					&&(check.cardinality()==s.cardinality())) //The logical and did not remove any node from s so s is a subset of temp
-				//s subset temp && temp subset s => equal
-				return temp;
-		}
+    for (final MHyperEdge temp : mHyperEdges) {
+      BitSet check = (BitSet) temp.getEndNodes().clone(); //Get a Clone o the BitSet
+      check.and(s);
+      if ((check.cardinality() == temp.getEndNodes().cardinality()) //The logical and did not remove any of temps nodes, so temp is a subset of s
+          && (check.cardinality() == s.cardinality())) //The logical and did not remove any node from s so s is a subset of temp
+        //s subset temp && temp subset s => equal
+        return temp;
+    }
 		return null;
 	}
 	/**
@@ -210,14 +203,12 @@ public class MHyperEdgeSet extends Observable implements Observer {
 		HyperEdgeLock.lock();
 		int index = 1;
 		try {
-			Iterator<MHyperEdge> n = mHyperEdges.iterator();
-			while (n.hasNext()) {
-				MHyperEdge temp = n.next();
-				if (temp.index >= index) // index vergeben
-				{
-					index = temp.index + 1;
-				}
-			}
+      for (final MHyperEdge temp : mHyperEdges) {
+        if (temp.index >= index) // index vergeben
+        {
+          index = temp.index + 1;
+        }
+      }
 		} finally {
 			HyperEdgeLock.unlock();
 		}
@@ -233,14 +224,12 @@ public class MHyperEdgeSet extends Observable implements Observer {
 	 */	
 	public Vector<String> getNames() {
 		Vector<String> ret = new Vector<String>();
-		Iterator<MHyperEdge> n = mHyperEdges.iterator();
-		while (n.hasNext()) {
-			MHyperEdge actual = n.next();
-			if ((actual.index + 1) > ret.size()) {
-				ret.setSize(actual.index + 1);
-			}
-			ret.set(actual.index, actual.name);
-		}
+    for (final MHyperEdge actual : mHyperEdges) {
+      if ((actual.index + 1) > ret.size()) {
+        ret.setSize(actual.index + 1);
+      }
+      ret.set(actual.index, actual.name);
+    }
 		return ret;
 	}
 	/**
@@ -255,12 +244,10 @@ public class MHyperEdgeSet extends Observable implements Observer {
 		int count = 0;
 		HyperEdgeLock.lock();
 		try{
-				Iterator<MHyperEdge> n = mHyperEdges.iterator();
-				while (n.hasNext())
-				{
-					if (n.next().containsNode(i))
-						count++;
-				}
+      for (final MHyperEdge mHyperEdge : mHyperEdges) {
+        if (mHyperEdge.containsNode(i))
+          count++;
+      }
 			} finally {HyperEdgeLock.unlock();}
 		return count;
 	}
@@ -275,16 +262,12 @@ public class MHyperEdgeSet extends Observable implements Observer {
 		Vector<Integer> liste = new Vector<Integer>();
 		HyperEdgeLock.lock();
 		try{
-				Iterator<MHyperEdge> n = mHyperEdges.iterator();
-				while (n.hasNext())
-				{
-					MHyperEdge e = n.next();
-					if (e.containsNode(end))
-					{
-						liste.add(e.index);
-					}
-					//return e.index;
-				}
+      for (final MHyperEdge e : mHyperEdges) {
+        if (e.containsNode(end)) {
+          liste.add(e.index);
+        }
+        //return e.index;
+      }
 			} finally {HyperEdgeLock.unlock();}
 		return liste;
 	}
@@ -341,11 +324,8 @@ public class MHyperEdgeSet extends Observable implements Observer {
 		if (!(arg instanceof MGraphMessage))
 			return; //Only handle internal Messages
 		MGraphMessage mm = (MGraphMessage)arg;
-		switch (mm.getModifiedElement())
-		{
-			case GraphConstraints.NODE:
-				handleNodeUpdate(mm);
-				break;
-		}
+    if (mm.getModifiedElement() == GraphConstraints.NODE) {
+      handleNodeUpdate(mm);
+    }
 	}
 }

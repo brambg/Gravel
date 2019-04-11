@@ -225,22 +225,20 @@ public class GravelMLWriter {
 	    	   else if (actual.getEdgeType()==VEdge.QUADCURVE)
 	    	   {
 	    		   s.write("\t\t\t<data key=\"et\">QuadCurve</data>"+nl);
-	    		   Point p = ((VQuadCurveEdge)actual).getControlPoints().firstElement();
+	    		   Point p = actual.getControlPoints().firstElement();
 	    		   s.write("\t\t\t<data key=\"ex\">"+p.x+"</data>"+nl);
 	    		   s.write("\t\t\t<data key=\"ey\">"+p.y+"</data>"+nl);		   
 	    	   }
 	    	   else if (actual.getEdgeType()==VEdge.SEGMENTED)
 	    	   {
 	    		   s.write("\t\t\t<data key=\"et\">Segmented</data>"+nl);
-	    		   Vector<Point> points = ((VSegmentedEdge)actual).getControlPoints();
-	    			for (int i=0; i<points.size(); i++)
-	    			{
-	    				if (points.get(i)!=null)
-	    				{
-	    				   Point p = points.get(i);
-    					   s.write("\t\t\t<data key=\"ex\">"+p.x+"</data>"+nl);
-    		    		   s.write("\t\t\t<data key=\"ey\">"+p.y+"</data>"+nl);	}
-	    			}		   
+	    		   Vector<Point> points = actual.getControlPoints();
+             for (Point point : points) {
+               if (point != null) {
+								 s.write("\t\t\t<data key=\"ex\">" + point.x + "</data>" + nl);
+                 s.write("\t\t\t<data key=\"ey\">" + point.y + "</data>" + nl);
+               }
+             }
 	    	   }
 	    	   else if (actual.getEdgeType()==VEdge.LOOP)
 	    	   {

@@ -18,5 +18,5 @@ public interface  ClickMouseHandler extends MouseListener, Observer
 	/**
 	 * Remove all Graph Listeners from the Graph
 	 */
-	public void removeGraphObservers();
+  void removeGraphObservers();
 }

@@ -1,5 +1,6 @@
 package model;
 
+import main.DEBUG;
 import view.Gui;
 import view.VCommonGraphic;
 
@@ -251,30 +252,24 @@ public class NURBSShapeValidator extends NURBSShape {
 				}
 				//Calculate Distance and direction from Point to its projection
 				boolean circlehandled = false; //Indicator whether the new circle is completely inside another
-				Iterator<Entry<Point2D,PointInfo>> RadiusIterator = pointInformation.entrySet().iterator();
-				while (RadiusIterator.hasNext()) //Iterate all old Points
-				{
-					Entry<Point2D,PointInfo> actEntry = RadiusIterator.next();
-					//If the radius is given and distance of the actualPoint to this is smaller that the sum of both radii - both are in the same set
-					if (actEntry.getKey()!=actualP)
-					{
-						if ((!Double.isNaN(actEntry.getValue().radius)) && ( ( (actEntry.getKey().distance(actualP)+actualInfo.radius) < actEntry.getValue().radius)) )
-						{
-							circlehandled = true; //The circle around actualP was completely handled by actEntry.getKey()
-						}
-						if ((!Double.isNaN(actEntry.getValue().radius)) &&(actEntry.getKey().distance(actualP)<(actEntry.getValue().radius+actualInfo.radius - TOL)) )
-						{ //Both circles overlap -> union sets
-							int a = actEntry.getValue().set;
-							int b = actualInfo.set;
-							if (a!=b) //not in the same set yet -> Union of both sets in the minimum (sameset)
-							{
-								main.DEBUG.println(main.DEBUG.MIDDLE,"Joining the two circle sets "+a+" "+b);
-								UnionSets(a,b);
-								unionHappened=true;
-							}
-						}
-					}
-				}
+        for (final Entry<Point2D, PointInfo> actEntry : pointInformation.entrySet()) {
+          //If the radius is given and distance of the actualPoint to this is smaller that the sum of both radii - both are in the same set
+          if (actEntry.getKey() != actualP) {
+            if ((!Double.isNaN(actEntry.getValue().radius)) && (((actEntry.getKey().distance(actualP) + actualInfo.radius) < actEntry.getValue().radius))) {
+              circlehandled = true; //The circle around actualP was completely handled by actEntry.getKey()
+            }
+            if ((!Double.isNaN(actEntry.getValue().radius)) && (actEntry.getKey().distance(actualP) < (actEntry.getValue().radius + actualInfo.radius - TOL))) { //Both circles overlap -> union sets
+              int a = actEntry.getValue().set;
+              int b = actualInfo.set;
+              if (a != b) //not in the same set yet -> Union of both sets in the minimum (sameset)
+              {
+                DEBUG.println(DEBUG.MIDDLE, "Joining the two circle sets " + a + " " + b);
+                UnionSets(a, b);
+                unionHappened = true;
+              }
+            }
+          }
+        }
 				Vector<Point2D> Succ = findSuccessors(actualP);
 				if ((Succ==null)||(Succ.size()==0))
 				{}
@@ -386,13 +381,10 @@ public class NURBSShapeValidator extends NURBSShape {
 	private Point2D getPointOfNode(int i)
 	{
 		//Iterate over Points and get its nodeindex
-		Iterator<Entry<Point2D, PointInfo>> it = pointInformation.entrySet().iterator();
-		while (it.hasNext())
-		{
-			Entry<Point2D, PointInfo> actualEntry = it.next();
-			if (actualEntry.getValue().nodeIndex==i)
-				return actualEntry.getKey();
-		}
+    for (final Entry<Point2D, PointInfo> actualEntry : pointInformation.entrySet()) {
+      if (actualEntry.getValue().nodeIndex == i)
+        return actualEntry.getKey();
+    }
 		return null;
 	}
 	/**
@@ -410,16 +402,11 @@ public class NURBSShapeValidator extends NURBSShape {
 			return;
 		int min = Math.min(a,b);
 		int max = Math.max(a,b);
-		Iterator<Entry<Point2D,PointInfo>> it = pointInformation.entrySet().iterator();
-		while (it.hasNext())
-		{
-			Entry<Point2D,PointInfo> checkEntry = it.next();
-			
-			if (checkEntry.getValue().set==max)
-			{
-				checkEntry.getValue().set=min;
-			}
-		}
+    for (final Entry<Point2D, PointInfo> checkEntry : pointInformation.entrySet()) {
+      if (checkEntry.getValue().set == max) {
+        checkEntry.getValue().set = min;
+      }
+    }
 	}
 	private void initPointSets()
 	{

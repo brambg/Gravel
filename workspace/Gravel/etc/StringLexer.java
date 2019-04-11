@@ -8,23 +8,18 @@ import antlr.TokenStreamIOException;
 import antlr.TokenStreamRecognitionException;
 import antlr.CharStreamException;
 import antlr.CharStreamIOException;
-import antlr.ANTLRException;
+
 import java.io.Reader;
 import java.util.Hashtable;
-import antlr.CharScanner;
+
 import antlr.InputBuffer;
 import antlr.ByteBuffer;
 import antlr.CharBuffer;
 import antlr.Token;
-import antlr.CommonToken;
 import antlr.RecognitionException;
 import antlr.NoViableAltForCharException;
-import antlr.MismatchedCharException;
 import antlr.TokenStream;
-import antlr.ANTLRHashString;
 import antlr.LexerSharedInputState;
-import antlr.collections.impl.BitSet;
-import antlr.SemanticException;
 
 public class StringLexer extends antlr.CharScanner implements StringLexerTokenTypes, TokenStream
  {
@@ -119,10 +114,10 @@ tryAgain:
 				default:
 				{
 					if (LA(1)==EOF_CHAR) {uponEOF(); _returnToken = makeToken(Token.EOF_TYPE);}
-				else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+				else {throw new NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
 				}
 				}
-				if ( _returnToken==null ) continue tryAgain; // found SKIP token
+				if ( _returnToken==null ) continue; // found SKIP token
 				_ttype = _returnToken.getType();
 				_ttype = testLiteralsTable(_ttype);
 				_returnToken.setType(_ttype);
@@ -173,7 +168,7 @@ tryAgain:
 		}
 		default:
 		{
-			throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());
+			throw new NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());
 		}
 		}
 		}
@@ -315,7 +310,7 @@ tryAgain:
 				mZIFFER(false);
 			}
 			else {
-				if ( _cnt14>=1 ) { break _loop14; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+				if ( _cnt14>=1 ) { break; } else {throw new NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
 			}
 			
 			_cnt14++;
@@ -332,7 +327,7 @@ tryAgain:
 					mZIFFER(false);
 				}
 				else {
-					if ( _cnt17>=1 ) { break _loop17; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+					if ( _cnt17>=1 ) { break; } else {throw new NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
 				}
 				
 				_cnt17++;

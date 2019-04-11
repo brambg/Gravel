@@ -73,7 +73,8 @@ public class CLoopParameters extends Container implements ActionListener{
 		iLength = new IntegerTextField();	iLength.setPreferredSize(new Dimension(100, 20));
 		c.gridx++; add(iLength,c);
 		
-		c.gridx=0; c.gridy++;; c.gridwidth=1;
+		c.gridx=0; c.gridy++;
+    c.gridwidth=1;
 		if (checksEnabled)
 		{
 			bProportion = new JCheckBox();

@@ -142,13 +142,11 @@ public class NURBSCreationMessage {
 			return new NURBSCreationMessage();
 		//all cases have points
 		Vector<Point2D> pclone = new Vector<Point2D>();
-		for (int i=0; i<points.size(); i++)
-			pclone.add(new Point2D.Double(points.get(i).getX(), points.get(i).getY()));
+		for (Point2D point : points) pclone.add(new Point2D.Double(point.getX(), point.getY()));
 		Vector<Integer> vclone = new Vector<Integer>();
 		if ((type==CIRCLE)||(type==CONVEX_HULL))
 		{
-			for (int i=0; i<values.size(); i++)
-				vclone.add(values.get(i).intValue());
+			vclone.addAll(values);
 		}
 		switch(type)
 		{

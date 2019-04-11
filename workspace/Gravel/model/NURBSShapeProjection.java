@@ -60,9 +60,8 @@ public class NURBSShapeProjection extends NURBSShape
 		if (!isInBezierForm())
 		{
 			Vector<NURBSShape> partsf = DecomposeCurve(this);
-			for (int i=0; i<partsf.size(); i++)
-			{
-				Parts.offer(partsf.get(i));
+			for (NURBSShape nurbsShape : partsf) {
+				Parts.offer(nurbsShape);
 			}
 		}
 		else
@@ -85,10 +84,9 @@ public class NURBSShapeProjection extends NURBSShape
 
 			//Check whether all are outside compute min
 			double min = Double.MAX_VALUE;
-			for (int i=0; i<qcControlPoints.size(); i++)
-			{
-				if (qcControlPoints.get(i)<min)
-					min = qcControlPoints.get(i);
+			for (Double qcControlPoint : qcControlPoints) {
+				if (qcControlPoint < min)
+					min = qcControlPoint;
 			}
 			if (min>alpha) //definetly outside -> do nothing
 			{}
@@ -122,8 +120,7 @@ public class NURBSShapeProjection extends NURBSShape
 					ref.add(refinement);
 					actualPart.RefineKnots(ref);
 					Vector<NURBSShape> newParts = DecomposeCurve(actualPart);
-					for (int i=0; i<newParts.size(); i++)
-						Parts.offer(newParts.get(i));
+					for (NURBSShape newPart : newParts) Parts.offer(newPart);
 				}
 				else //Newton Iteration on this part
 				{
@@ -142,12 +139,10 @@ public class NURBSShapeProjection extends NURBSShape
 			} //End INside
 		} //End while
 		double min = Double.MAX_VALUE;
-		for (int i=0; i<candidates.size(); i++)
-		{
-			Point2D pcmp = CurveAt(candidates.get(i));
-			if (pcmp.distance(p)<min)
-			{
-				resultu = candidates.get(i);
+		for (Double candidate : candidates) {
+			Point2D pcmp = CurveAt(candidate);
+			if (pcmp.distance(p) < min) {
+				resultu = candidate;
 				min = pcmp.distance(p);
 			}
 		}
@@ -238,9 +233,9 @@ public class NURBSShapeProjection extends NURBSShape
 		int counta=0, countb=0;
 		for (int i=0; i<=maxKnotIndex; i++)
 		{
-			if (Knots.get(i).doubleValue()==a)
+			if (Knots.get(i) ==a)
 				counta++;
-			else if (Knots.get(i).doubleValue()==b)
+			else if (Knots.get(i) ==b)
 				countb++;
 			else
 				return false;
@@ -311,7 +306,7 @@ public class NURBSShapeProjection extends NURBSShape
 					{
 						foronepx += c.controlPoints.get(j1).getX()*alphaP[j1]*c.controlPoints.get(j2).getX()*alphaQ[j2];
 						foronepy += c.controlPoints.get(j1).getY()*alphaP[j1]*c.controlPoints.get(j2).getY()*alphaQ[j2];
-						foronepw += c.cpWeight.get(j1).doubleValue()*alphaP[j1]*c.cpWeight.get(j2).doubleValue()*alphaQ[j2];
+						foronepw += c.cpWeight.get(j1) *alphaP[j1]* c.cpWeight.get(j2) *alphaQ[j2];
 					}
 				}
 				dix += foronepx*mult/wholenum;
@@ -319,12 +314,12 @@ public class NURBSShapeProjection extends NURBSShape
 				diw += foronepw*mult/wholenum;
 				//Change the t^P and t^Q, so that t^P its first LV set to FV and t^Q its last FV set to LV
 				int changeindex = 0;
-				while ((changeindex<tP.size()-1)&&(tP.get(changeindex).doubleValue()==FirstValue))
+				while ((changeindex<tP.size()-1)&&(tP.get(changeindex) ==FirstValue))
 					changeindex++;
 				tP.set(changeindex-1, LastValue);
 				changeindex = 0;
 				//Search for a change
-				while ((changeindex<tQ.size()-1)&&(tQ.get(changeindex).doubleValue()==FirstValue))
+				while ((changeindex<tQ.size()-1)&&(tQ.get(changeindex) ==FirstValue))
 					changeindex++;
 				tQ.set(changeindex, FirstValue);
 			} //End Cases
@@ -337,8 +332,8 @@ public class NURBSShapeProjection extends NURBSShape
 		}	//End i
 		//Update Degree
 		qcDegree = 2*Degree;
-		umin = c.Knots.firstElement().doubleValue();
-		umax = c.Knots.lastElement().doubleValue();
+		umin = c.Knots.firstElement();
+		umax = c.Knots.lastElement();
 	}
 	/**
 	 * Computes the discrete B-Spline Coefficients of the projection-curve coefficient i from tau to t
@@ -366,8 +361,7 @@ public class NURBSShapeProjection extends NURBSShape
 			}
 		}
 		double[] result = new double[k+1];
-		for (int j=0; j<=k; j++)
-			result[j] = temp[j];
+		System.arraycopy(temp, 0, result, 0, k + 1);
 		return result;
 	}
 	/**
@@ -435,11 +429,11 @@ public class NURBSShapeProjection extends NURBSShape
 			int multiplicity = b-i+1; //Multiplicity of actual Knot
 			if (multiplicity < c.degree) //Refine it until it is p
 			{
-				double numer = c.Knots.get(b).doubleValue() - c.Knots.get(a).doubleValue(); //Numerator of the alphas 
+				double numer = c.Knots.get(b) - c.Knots.get(a); //Numerator of the alphas
 				Vector<Double> alpha = new Vector<Double>();
 				alpha.setSize(c.degree-multiplicity);
 				for (int j=c.degree; j>multiplicity; j--)
-					alpha.set(j-multiplicity-1, numer/(c.Knots.get(a+j).doubleValue()-c.Knots.get(a).doubleValue()));
+					alpha.set(j-multiplicity-1, numer/(c.Knots.get(a + j) - c.Knots.get(a)));
 				int insertionMultiplicity = c.degree-multiplicity;
 				for (int j=1; j<=insertionMultiplicity; j++) //Insert Knot as often as needed
 				{
@@ -447,8 +441,8 @@ public class NURBSShapeProjection extends NURBSShape
 					int s = multiplicity+j; //These many new Points
 					for (int k=c.degree; k>=s; k--) //
 					{
-						Point2dHom p1 = (Point2dHom) bezierCP.get(k).clone();
-						Point2dHom p2 = (Point2dHom) bezierCP.get(k-1).clone();
+						Point2dHom p1 = bezierCP.get(k).clone();
+						Point2dHom p2 = bezierCP.get(k-1).clone();
 						p1.scale(alpha.get(k-s)); p2.scale(1-alpha.get(k-s));						
 						p1.add(p2);
 						bezierCP.set(k,p1);
@@ -493,9 +487,9 @@ public class NURBSShapeProjection extends NURBSShape
 		//Raise both endvalues to multiplicity d to get an clamped curve
 		for (int i=0; i<=c.maxKnotIndex; i++)
 		{
-		 if (c.Knots.get(i).doubleValue()==u1)
+		 if (c.Knots.get(i) ==u1)
 			multStart++;
-		 if (c.Knots.get(i).doubleValue()==u2)
+		 if (c.Knots.get(i) ==u2)
 			multEnd++;
 		}
 		Vector<Double> Refinement = new Vector<Double>();
@@ -513,7 +507,7 @@ public class NURBSShapeProjection extends NURBSShape
 		for (int i=subStart-c.degree; i<=subEnd; i++) //Copy needed CP
 		{
 			newCP.add((Point2D)subcurve.controlPoints.get(i).clone());
-			newWeight.add(subcurve.cpWeight.get(i).doubleValue());
+			newWeight.add(subcurve.cpWeight.get(i));
 		}
 		//Copy needed Knots
 		Vector<Double> newKnots = new Vector<Double>();
@@ -523,12 +517,11 @@ public class NURBSShapeProjection extends NURBSShape
 			index++;
 		while (subcurve.Knots.get(index)<=u2)
 		{
-			newKnots.add(subcurve.Knots.get(index).doubleValue());
+			newKnots.add(subcurve.Knots.get(index));
 			index++;
 		}
 		newKnots.add(u2);
-		NURBSShape retval = new NURBSShape(newKnots,newCP,newWeight);
-		return retval;
+		return new NURBSShape(newKnots,newCP,newWeight);
 	}
 	
 	long nint(double x)

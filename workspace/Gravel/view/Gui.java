@@ -109,7 +109,7 @@ public class Gui implements WindowListener
         MenuBar = new MainMenu(graphpart);
         //Set the menu bar and add the label to the content pane.
     	frame.setJMenuBar(MenuBar);
-        if (System.getProperty("os.name").toLowerCase().indexOf("mac")!=-1)
+        if (System.getProperty("os.name").toLowerCase().contains("mac"))
         {
         	//The normal way would be just to set the frame Menubar to NULL
         	//But then the Key-Shortcuts won't work.
@@ -436,7 +436,7 @@ public class Gui implements WindowListener
    	        MenuBar = new MainMenu(graphpart);
    	        //Set the menu bar and add the label to the content pane.
    	    	frame.setJMenuBar(MenuBar);
-   	        if (System.getProperty("os.name").toLowerCase().indexOf("mac")!=-1)
+   	        if (System.getProperty("os.name").toLowerCase().contains("mac"))
    	        {
    	        	//The normal way would be just to set the frame Menubar to NULL
    	        	//But then the Key-Shortcuts won't work.

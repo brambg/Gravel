@@ -51,8 +51,9 @@ public class Statistics extends JPanel implements Observer, ActionListener
 	    {
 	        return false;
 	    }
-	};
-	private static final long serialVersionUID = 1L;
+	}
+
+  private static final long serialVersionUID = 1L;
 	//Zuordnungen Name -> Formel (nicht arithmethisch, enthält Variablen
 	private TreeMap<String, String> formeln;
 	private Double[] values;
@@ -163,7 +164,7 @@ public class Statistics extends JPanel implements Observer, ActionListener
 		Object[] tabvals = new Object[values.length];
 		for (int i=0; i<tabvals.length; i++)
 		{
-			if ((new Double(values[i])).toString().endsWith(".0"))
+			if ((values[i]).toString().endsWith(".0"))
 				tabvals[i] = Math.round(values[i]);
 			else
 				tabvals[i] = values[i];
@@ -194,7 +195,7 @@ public class Statistics extends JPanel implements Observer, ActionListener
 		Object[] tabvals = new Object[values.length];
 		for (int i=0; i<tabvals.length; i++)
 		{
-			if ((new Double(values[i])).toString().endsWith(".0"))
+			if ((values[i]).toString().endsWith(".0"))
 				tabvals[i] = Math.round(values[i]);
 			else
 				tabvals[i] = values[i];
@@ -242,14 +243,11 @@ public class Statistics extends JPanel implements Observer, ActionListener
 		{
 			s = replace(s,GraphStatisticAtoms.ATOMS[i], vgs.getValuebyName(GraphStatisticAtoms.ATOMS[i]).toString());
 		}
-		Iterator<String> iter = formeln.keySet().iterator();
-		while (iter.hasNext())
-		{
-			String actKey = iter.next();
+		for (final String actKey : formeln.keySet()) {
 			String formular = formeln.get(actKey);
-			if ((s.contains(actKey))&&(!formular.contains(s))) //Nur wenn s nicht die Formel ist und der Key vorkommt...
-			//ersteres verhindert rekursion im Term zweiteres direkte Rekursion
-			s = replace(s, actKey, new Double(interprete(formeln.get(actKey))).toString());
+			if ((s.contains(actKey)) && (!formular.contains(s))) //Nur wenn s nicht die Formel ist und der Key vorkommt...
+				//ersteres verhindert rekursion im Term zweiteres direkte Rekursion
+				s = replace(s, actKey, Double.toString(interprete(formeln.get(actKey))));
 		}
 		return evaluate(s);
 	}
@@ -284,7 +282,7 @@ public class Statistics extends JPanel implements Observer, ActionListener
 	public static String replace(String in,String remove, String replace) 
 	{
 		if (in==null || remove==null || remove.length()==0) return in;
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		int oldIndex = 0;
 		int newIndex = 0;
 		int remLength = remove.length();

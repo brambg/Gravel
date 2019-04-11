@@ -333,7 +333,7 @@ public class GraphMLWriter {
 	    	   else if (actual.getEdgeType()==VEdge.QUADCURVE)
 	    	   {
 	    		   s.write("\t\t\t<data key=\"edgetype\">QuadCurve</data>"+nl);
-	    		   Point p = ((VQuadCurveEdge)actual).getControlPoints().firstElement();
+	    		   Point p = actual.getControlPoints().firstElement();
 	    		   s.write("\t\t\t<data key=\"edgepoints\">"+nl+
 	    				   "\t\t\t\t<point id=\"0\" x=\""+p.x+"\" y=\""+p.y+"\"/>"+nl+
 	    				   "\t\t\t</data>"+nl);		   
@@ -341,7 +341,7 @@ public class GraphMLWriter {
 	    	   else if (actual.getEdgeType()==VEdge.SEGMENTED)
 	    	   {
 	    		   s.write("\t\t\t<data key=\"edgetype\">Segmented</data>"+nl);
-	    		   Vector<Point> points = ((VSegmentedEdge)actual).getControlPoints();
+	    		   Vector<Point> points = actual.getControlPoints();
 	    		   s.write("\t\t\t<data key=\"edgepoints\">"+nl);
 	    			for (int i=0; i<points.size(); i++)
 	    			{

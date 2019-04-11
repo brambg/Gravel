@@ -273,18 +273,16 @@ public class JSelectionModifyDialog extends JDialog implements ActionListener, C
 		{
 			cPosition.setSelectedItem(Positionnames[0]);
 			Dimension maxsize = new Dimension(0,0);
-			for (int i=0; i<Positioncontent.length; i++)
-			{
-				int h = Positioncontent[i].getHeight();
+			for (final Container value : Positioncontent) {
+				int h = value.getHeight();
 				if (h > maxsize.height)
 					maxsize.height = h;
-				int b = Positioncontent[i].getWidth();
+				int b = value.getWidth();
 				if (b > maxsize.width)
 					maxsize.width = b;
 			}
-			for (int i=0; i<Positioncontent.length; i++)
-			{
-				Positioncontent[i].setPreferredSize(maxsize);
+			for (final Container container : Positioncontent) {
+				container.setPreferredSize(maxsize);
 			}
 		}
 		Point p = new Point(0,0);
@@ -339,11 +337,10 @@ public class JSelectionModifyDialog extends JDialog implements ActionListener, C
 		//Positioncontent[0].add(new JLabel(""))
 		Positioncontent[1] = buildPosTranslateContent(); //Position - Verschieben
 		Positioncontent[2] = buildPosArrangeCircle(); //Position - Verschieben
-		for (int i=0; i<Positioncontent.length; i++)
-		{
-			Positioncontent[i].validate();
-			Positioncontent[i].setIgnoreRepaint(true);
-			content.add(Positioncontent[i],c);
+		for (final Container container : Positioncontent) {
+			container.validate();
+			container.setIgnoreRepaint(true);
+			content.add(container, c);
 		}
 
 		c.gridy++;
@@ -998,10 +995,10 @@ public class JSelectionModifyDialog extends JDialog implements ActionListener, C
 				{
 					VSubgraph s = siter.next();
 					if (beginning) //Set the Subgraph the first node belongs to...
-						subgraphs.set(s.getIndex(), new Boolean(msubs.get(s.getIndex()).containsNode(actual.getIndex())));
+						subgraphs.set(s.getIndex(), msubs.get(s.getIndex()).containsNode(actual.getIndex()));
 					else
 					{
-						if (subgraphs.get(s.getIndex()).booleanValue()!=msubs.get(s.getIndex()).containsNode(actual.getIndex()))
+						if (subgraphs.get(s.getIndex()) !=msubs.get(s.getIndex()).containsNode(actual.getIndex()))
 							preSubgraphsequal = false;
 					}
 				}
@@ -1030,10 +1027,10 @@ public class JSelectionModifyDialog extends JDialog implements ActionListener, C
 				{
 					VSubgraph s = siter.next();
 					if (beginning) //Set the Subgraphs the first edge belongs to (happens if no node selected) belongs to...
-						subgraphs.set(s.getIndex(), new Boolean(msubs.get(s.getIndex()).containsEdge(actual.getIndex())));
+						subgraphs.set(s.getIndex(), msubs.get(s.getIndex()).containsEdge(actual.getIndex()));
 					else
 					{
-						if (subgraphs.get(s.getIndex()).booleanValue()!=msubs.get(s.getIndex()).containsEdge(actual.getIndex()))
+						if (subgraphs.get(s.getIndex()) !=msubs.get(s.getIndex()).containsEdge(actual.getIndex()))
 							preSubgraphsequal = false;
 					}
 				}
@@ -1044,11 +1041,9 @@ public class JSelectionModifyDialog extends JDialog implements ActionListener, C
 		if (preSubgraphsequal) //All selected are in the same subgraphs
 		{
 			int position = 0;
-			for (int i=0; i<subgraphs.size(); i++)
-			{
-				if (subgraphs.get(i)!=null)
-				{
-					this.bSubgraph[position].setSelected(subgraphs.get(i).booleanValue());
+			for (Boolean subgraph : subgraphs) {
+				if (subgraph != null) {
+					this.bSubgraph[position].setSelected(subgraph);
 					position++;
 				}
 			}
@@ -1057,9 +1052,8 @@ public class JSelectionModifyDialog extends JDialog implements ActionListener, C
 		{
 			bChSubgraph.setForeground(Color.GRAY);
 			iSubgraph.setEnabled(false);
-			for (int i=0; i<bSubgraph.length; i++)
-			{
-				bSubgraph[i].setEnabled(false);
+			for (final JCheckBox jCheckBox : bSubgraph) {
+				jCheckBox.setEnabled(false);
 			}
 		}
 	}
@@ -1411,8 +1405,7 @@ public class JSelectionModifyDialog extends JDialog implements ActionListener, C
 			{
 				int sel = JOptionPane.showConfirmDialog(Gui.getInstance().getParentWindow(), "<html><p>Die Anordnung im Kreis verschiebt den Graphen,<br>da der Kreis aus der Zeichenfl"+main.CONST.html_ae+"che herausragt.</p></html>"
 						, "Verschieben bestätigen", JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
-				if (sel == JOptionPane.CANCEL_OPTION)
-					return false;
+        return sel != JOptionPane.CANCEL_OPTION;
 			}
 		}
 		return true;
@@ -1513,8 +1506,7 @@ public class JSelectionModifyDialog extends JDialog implements ActionListener, C
 		}
 		if (show_edgeprop)
 		{
-			if (!checkEdge())
-				return false;
+      return checkEdge();
 		}
 		//Subgraphs don't have to be checked ;) only checkboxes, so no user error possible
 		
@@ -1578,9 +1570,8 @@ public class JSelectionModifyDialog extends JDialog implements ActionListener, C
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource()==cPosition)
 		{
-			for (int i=0; i<Positioncontent.length; i++)
-			{
-				Positioncontent[i].setVisible(false);
+			for (final Container container : Positioncontent) {
+				container.setVisible(false);
 			}
 			Positioncontent[cPosition.getSelectedIndex()].setVisible(true);
 			this.invalidate();
@@ -1658,10 +1649,9 @@ public class JSelectionModifyDialog extends JDialog implements ActionListener, C
 				bChSubgraph.setForeground(Color.BLACK);
 			else
 				bChSubgraph.setForeground(Color.GRAY);
-			
-			for (int i=0; i<bSubgraph.length; i++)
-			{
-				bSubgraph[i].setEnabled(bChSubgraph.isSelected());
+
+			for (final JCheckBox jCheckBox : bSubgraph) {
+				jCheckBox.setEnabled(bChSubgraph.isSelected());
 			}
 
 		}

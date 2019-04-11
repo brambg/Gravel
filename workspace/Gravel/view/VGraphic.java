@@ -137,8 +137,7 @@ public class VGraphic extends VCommonGraphic
 		{
 			VEdge temp = edgeiter.next(); //Grafischer Teil
 			Vector<Point> p = temp.getControlPoints();
-			for (int i=0; i<p.size(); i++)
-				drawCP(g,p.get(i), Color.BLUE.brighter());
+			for (Point point : p) drawCP(g, point, Color.BLUE.brighter());
 		}
 	}
 	/**
@@ -228,7 +227,7 @@ public class VGraphic extends VCommonGraphic
 				Click.update(o,arg);
 			repaint();
 		}
-		else if (super.Controls.containsKey((String)arg)) //We got news from grid or zoom
+		else if (super.Controls.containsKey(arg)) //We got news from grid or zoom
 			handlePreferencesUpdate();
 	}
 

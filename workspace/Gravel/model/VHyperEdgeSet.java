@@ -47,9 +47,8 @@ public class VHyperEdgeSet extends Observable implements Observer {
 	 */
 	public void deselect()
 	{
-		Iterator<VHyperEdge> e = vHyperEdges.iterator();
-		while (e.hasNext()) {
-			e.next().deselect();
+		for (final VHyperEdge vHyperEdge : vHyperEdges) {
+			vHyperEdge.deselect();
 		}
 	}
 	/**
@@ -89,9 +88,7 @@ public class VHyperEdgeSet extends Observable implements Observer {
 	 * @return the VHyperEdge, if exists, else null 
 	 */
 	public VHyperEdge get(int i) {
-		Iterator<VHyperEdge> n = vHyperEdges.iterator();
-		while (n.hasNext()) {
-			VHyperEdge temp = n.next();
+		for (final VHyperEdge temp : vHyperEdges) {
 			if (temp.getIndex() == i) {
 				return temp;
 			}
@@ -117,18 +114,14 @@ public class VHyperEdgeSet extends Observable implements Observer {
 		HyperEdgeLock.lock(); //Find the edge to be replaced
 		try
 		{
-			Iterator<VHyperEdge> ei = vHyperEdges.iterator();				
-			while (ei.hasNext())
-			{
-				VHyperEdge t = ei.next();
-				if (t.getIndex()==e.getIndex())
-				{
+			for (final VHyperEdge t : vHyperEdges) {
+				if (t.getIndex() == e.getIndex()) {
 					vHyperEdges.remove(t);
 					//Clone Color Status of e from t
 					t.copyColorStatus(e);
 					vHyperEdges.add(e);
 					setChanged();
-					notifyObservers(new GraphMessage(GraphConstraints.HYPEREDGE,e.getIndex(), GraphConstraints.REPLACEMENT|GraphConstraints.HYPEREDGESHAPE,GraphConstraints.HYPEREDGE));	
+					notifyObservers(new GraphMessage(GraphConstraints.HYPEREDGE, e.getIndex(), GraphConstraints.REPLACEMENT | GraphConstraints.HYPEREDGESHAPE, GraphConstraints.HYPEREDGE));
 					break;
 				}
 			}
@@ -184,15 +177,11 @@ public class VHyperEdgeSet extends Observable implements Observer {
 	{
 		if (edge==null)
 			return 0;
-		Iterator<VHyperEdge> hei = vHyperEdges.iterator();
-		while (hei.hasNext())
-		{
-			VHyperEdge act = hei.next();
+		for (final VHyperEdge act : vHyperEdges) {
 			//Actual Edge is not the same object as parameter and has same shape
-			if ((!act.equals(edge))&&(act.getShape().CurveEquals(edge.getShape())))
-			{
-				if ((!act.getShape().isEmpty())||(!edge.getShape().isEmpty())) //One of them is nonempty
-				return act.getIndex();
+			if ((!act.equals(edge)) && (act.getShape().CurveEquals(edge.getShape()))) {
+				if ((!act.getShape().isEmpty()) || (!edge.getShape().isEmpty())) //One of them is nonempty
+					return act.getIndex();
 			}
 		}
 		return 0;
@@ -217,15 +206,12 @@ public class VHyperEdgeSet extends Observable implements Observer {
 	 */
 	@SuppressWarnings("unchecked")
 	public Vector firstCPinRageOf(Point m, double variation) {
-		Iterator<VHyperEdge> n = vHyperEdges.iterator();
-		while (n.hasNext()) {
-			VHyperEdge temp = n.next(); // naechste Kante
+		for (final VHyperEdge temp : vHyperEdges) {
 			Point2D ncp = temp.getShape().getNearestCP(m);
-			if (ncp.distance(m) <= variation)
-			{
+			if (ncp.distance(m) <= variation) {
 				Vector c = new Vector();
 				c.add(temp);
-				c.add(new Integer(0));
+				c.add(0);
 				return c;
 			}
 		}
@@ -331,8 +317,8 @@ public class VHyperEdgeSet extends Observable implements Observer {
 		if (arg instanceof GraphColorMessage)
 		{
 			GraphColorMessage m = (GraphColorMessage)arg;
-			if (m==null)
-				return;
+			if (m==null) {
+			}
 			else
 				Colorchange(m);
 		}

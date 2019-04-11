@@ -125,7 +125,7 @@ public class CEdgeArrowParameters extends Observable implements CaretListener, C
 		sArrowPos.setMinimum(0);
 		sArrowPos.setMaximum(100);
 		Hashtable<Integer, JLabel> t = new Hashtable<Integer, JLabel>();
-		t.put(new Integer(0),new JLabel("Start")); t.put(new Integer(25),new JLabel("")); t.put(new Integer(50),new JLabel("Mitte")); t.put(new Integer(75),new JLabel("")); t.put(new Integer(100),new JLabel("Ende"));	
+		t.put(0,new JLabel("Start")); t.put(25,new JLabel("")); t.put(50,new JLabel("Mitte")); t.put(75,new JLabel("")); t.put(100,new JLabel("Ende"));
 		sArrowPos.setLabelTable(t);
 		sArrowPos.setPaintLabels(true); sArrowPos.setPaintTicks(true);
 		sArrowPos.addChangeListener(this);

@@ -50,7 +50,7 @@ public class VHyperShapeGraphic extends VHyperGraphic
 		invalidNodesforShape = new Vector<Integer>();
 		vGh = new HyperEdgeShapeHistoryManager(this,hyperedgeindex);
 		//Deselect Main graph to deactivate i
-		((VHyperGraph)Gui.getInstance().getVGraph()).deselect();
+		Gui.getInstance().getVGraph().deselect();
 	}	
 	
 	public void finalize()
@@ -155,7 +155,7 @@ public class VHyperShapeGraphic extends VHyperGraphic
 		Point2D last=null, first=null;
 		while (pi.hasNext())
 		{
-			Point2D p = (Point2D) pi.next();
+			Point2D p = pi.next();
 			if (first==null)
 				first = p;
 			g2.setStroke(new BasicStroke(1,BasicStroke.JOIN_ROUND, BasicStroke.JOIN_ROUND));
@@ -240,11 +240,8 @@ public class VHyperShapeGraphic extends VHyperGraphic
 		{
 			NURBSCreationMessage nm = firstModus.getShapeParameters();
 			Vector<Point2D> IP = nm.getPoints();
-			Iterator<Point2D> iter = IP.iterator();
-			while (iter.hasNext())
-			{
-				Point2D p = iter.next();
-				Point p2 = new Point(Math.round((float)p.getX()),Math.round((float)p.getY()));
+			for (final Point2D p : IP) {
+				Point p2 = new Point(Math.round((float) p.getX()), Math.round((float) p.getY()));
 				this.drawCP(g2, p2, Color.BLUE);
 			}
 			if ((nm.getCurve().getDecorationTypes()&NURBSShape.FRAGMENT)==NURBSShape.FRAGMENT)
@@ -284,9 +281,8 @@ public class VHyperShapeGraphic extends VHyperGraphic
 			g2.setColor(selColor);
 			int size = (selWidth+vG.modifyHyperEdges.get(highlightedHyperEdge).getWidth())/2;
 			Vector<Point2D> kP = vG.modifyHyperEdges.get(highlightedHyperEdge).getShape().getRemovableKnotPoints();
-			for (int i=0; i<kP.size(); i++)
-			{
-				g2.fillOval(Math.round(((float)kP.get(i).getX()-(float)size)*zoomfactor), Math.round(((float)kP.get(i).getY()-(float)size)*zoomfactor), Math.round(2*size*zoomfactor), Math.round(2*size*zoomfactor));
+			for (Point2D point2D : kP) {
+				g2.fillOval(Math.round(((float) point2D.getX() - (float) size) * zoomfactor), Math.round(((float) point2D.getY() - (float) size) * zoomfactor), Math.round(2 * size * zoomfactor), Math.round(2 * size * zoomfactor));
 			}
 		}
 		if (secondModus==null)

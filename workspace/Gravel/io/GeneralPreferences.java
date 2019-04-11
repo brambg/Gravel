@@ -50,9 +50,9 @@ public class GeneralPreferences extends Observable
 		}
 		public void characters(char[] text, int start, int length) throws SAXException 
 		{
-			String val = "";
+			StringBuilder val = new StringBuilder();
 			for (int i=0; i<length; i++)
-				val += text[start+i];
+				val.append(text[start + i]);
 			main.DEBUG.println(main.DEBUG.HIGH,"GeneralPreferences.gpExtractor::characters() Loading Key '"+key+"' ("+type+") Value:"+val+".");
 			if (type==null)
 			{
@@ -61,22 +61,22 @@ public class GeneralPreferences extends Observable
 			}
 			if (type.equals("Integer"))
 			{
-				IntValues.put(key,(new Integer(val)).intValue());
+				IntValues.put(key, new Integer(val.toString()));
 			}
 			else if (type.equals("Float"))
 			{
-				FloatValues.put(key,(new Float(val)).floatValue());
+				FloatValues.put(key, new Float(val.toString()));
 			}
 			else if (type.equals("Boolean"))
 			{
-				BoolValues.put(key,(new Boolean(val)).booleanValue());				
+				BoolValues.put(key, Boolean.valueOf(val.toString()));
 			}
 			else if (type.equals("String"))
 			{
 				if ((val==null)&&(key.endsWith("name")))
 					StringValues.put(key,"");
 				else
-					StringValues.put(key,val);
+					StringValues.put(key, val.toString());
 			}
 		}
 		public void endDocument() throws SAXException {}
@@ -407,10 +407,10 @@ public class GeneralPreferences extends Observable
 
 		if (IntValues.get("window.x")==null) return false;
 		if (IntValues.get("window.y")==null) return false;
-		
-		if (FloatValues.get("edge.arrow_pos")==null) return false;
 
-		return true; //Falls alle da sind, alles okay
+		return FloatValues.get("edge.arrow_pos") != null;
+
+		//Falls alle da sind, alles okay
 	}
 		
 	/**
@@ -581,24 +581,16 @@ public class GeneralPreferences extends Observable
 			TreeSet<String> AllValues = new TreeSet<String>();
 			
 			//ALL Integer Keys
-			Iterator<String> intiter = IntValues.keySet().iterator();
-			while (intiter.hasNext())
-				AllValues.add(intiter.next());
+			AllValues.addAll(IntValues.keySet());
 			
 			//All Boolean Keys
-			Iterator<String> booliter = BoolValues.keySet().iterator();
-			while (booliter.hasNext())
-				AllValues.add(booliter.next());
+			AllValues.addAll(BoolValues.keySet());
 
 			//All Float Keys
-			Iterator<String> floatiter = FloatValues.keySet().iterator();
-			while (floatiter.hasNext())
-				AllValues.add(floatiter.next());
+			AllValues.addAll(FloatValues.keySet());
 
 			//All String Keys
-			Iterator<String> stringiter = StringValues.keySet().iterator();
-			while (stringiter.hasNext())
-				AllValues.add(stringiter.next());
+			AllValues.addAll(StringValues.keySet());
 
 				//noch mehr ?
 				
@@ -608,7 +600,7 @@ public class GeneralPreferences extends Observable
 	        while (iter.hasNext())
 	        {
 		       	String next = iter.next();
-		       	String form[] = next.split("\\.");
+						String[] form = next.split("\\.");
 	        	int i = form.length-2; //length-1 ist das defintiv neue
 	        	if (i==-1) //Base Element
 		    	{
@@ -693,7 +685,7 @@ public class GeneralPreferences extends Observable
 	public static String replace(String in,String remove, String replace) 
 	{
 		if (in==null || remove==null || remove.length()==0) return in;
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		int oldIndex = 0;
 		int newIndex = 0;
 		int remLength = remove.length();

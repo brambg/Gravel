@@ -98,8 +98,7 @@ public class ShapeSubcurveSelectionHandler implements
 	}
 
 	public NURBSShape getShape() {
-		NURBSShapeFragment actualFragment = new NURBSShapeFragment(temporaryShape.stripDecorations(), tempStart, tempEnd);
-		return actualFragment; //maybe subcurve is empty...that does not matter
+    return new NURBSShapeFragment(temporaryShape.stripDecorations(), tempStart, tempEnd); //maybe subcurve is empty...that does not matter
 	}
 	public Point2D getDragStartPoint() {
 		if (!dragged())

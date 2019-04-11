@@ -40,7 +40,6 @@
 
 package sunw.demo.classviewer;
 
-import javax.swing.Icon;
 import javax.swing.UIManager;
 import javax.swing.UIDefaults;
 import javax.swing.LookAndFeel;

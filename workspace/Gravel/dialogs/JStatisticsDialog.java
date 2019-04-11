@@ -27,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
+import main.CONST;
 import model.GraphStatisticAtoms;
 
 import view.Gui;
@@ -208,15 +209,12 @@ public class JStatisticsDialog extends JDialog implements ActionListener, TextLi
 		int belegt = 0;int index = 0;
 		String Expr = iExpr.getText();
 		String Name = iName.getText();
-		Iterator<String> iter = bisherige_formeln.keySet().iterator();
-		while (iter.hasNext())
-		{
-			String actKey = iter.next();
-			if (Expr.contains(actKey)) //Enthalten
-			{
-				bT[belegt++] = actKey;
-			}
-		}
+    for (final String actKey : bisherige_formeln.keySet()) {
+      if (Expr.contains(actKey)) //Enthalten
+      {
+        bT[belegt++] = actKey;
+      }
+    }
 		while ((index < bT.length)&&(bT[index]!=null))
 		{
 			//(1) enth�lt der aktuelle Wert den Namen ? dann liegt eine Rekursion vor
@@ -225,17 +223,13 @@ public class JStatisticsDialog extends JDialog implements ActionListener, TextLi
 			if (Check_Expr.contains(Name))
 				return true;
 			//(2) da eine Rekursion auch über alle bekannten Formeln gehen kann, alle anderen Formeln in dieser hinten an bT anfügen, so sie nicht enthalten sind
-			iter = bisherige_formeln.keySet().iterator();
-			while (iter.hasNext())
-			{
-				String actKey = iter.next();
+			for (final String actKey : bisherige_formeln.keySet()) {
 				if (Check_Expr.contains(actKey)) //Key enthalten in der aktuelle expression
 				{
-					boolean enthalten=false;
-					for (int i=0; i<belegt; i++)
-					{
+					boolean enthalten = false;
+					for (int i = 0; i < belegt; i++) {
 						if (bT[i].equals(actKey))
-							enthalten=true;
+							enthalten = true;
 					}
 					if (!enthalten) //und noch nich im Array
 					{
@@ -280,32 +274,25 @@ public class JStatisticsDialog extends JDialog implements ActionListener, TextLi
 			}
 	
 		}
-		Iterator<String> iter = bisherige_formeln.keySet().iterator();
-		while (iter.hasNext())
-		{
-			String actKey = iter.next();
-			if (!actKey.equals(oldName))
-			{	
-				if (actKey.equals(iName.getText())&&(!actKey.equals(oldName)))
-				{ //Ver�ndert aber vergeben
-					lError.setText("<html><font color=#AA0000>Name bereits vergeben!</font></html>");
-					lDoubleValue.setText("Wert : #");
-					return;
-				}
-				if (actKey.startsWith(iName.getText()))
-				{
-					lError.setText("<html><font color=#AA0000>Der gew"+main.CONST.html_ae+"hlte Name ist Prefix von \""+actKey+"\". Namen m"+main.CONST.html_ue+"ssen Prefix-frei sein.</font></html>");
-					lDoubleValue.setText("Wert : #");
-					return;	
-				}
-				if (iName.getText().startsWith(actKey))
-				{
-					lError.setText("<html><font color=#AA0000>Der gew"+main.CONST.html_ae+"hlte Name hat \""+actKey+"\" als Prefix. Namen m"+main.CONST.html_ue+"ssen Prefix-frei sein.</font></html>");
-					lDoubleValue.setText("Wert : #");
-					return;		
-				}
-			}
-		}
+    for (final String actKey : bisherige_formeln.keySet()) {
+      if (!actKey.equals(oldName)) {
+        if (actKey.equals(iName.getText()) && (!actKey.equals(oldName))) { //Ver�ndert aber vergeben
+          lError.setText("<html><font color=#AA0000>Name bereits vergeben!</font></html>");
+          lDoubleValue.setText("Wert : #");
+          return;
+        }
+        if (actKey.startsWith(iName.getText())) {
+          lError.setText("<html><font color=#AA0000>Der gew" + CONST.html_ae + "hlte Name ist Prefix von \"" + actKey + "\". Namen m" + CONST.html_ue + "ssen Prefix-frei sein.</font></html>");
+          lDoubleValue.setText("Wert : #");
+          return;
+        }
+        if (iName.getText().startsWith(actKey)) {
+          lError.setText("<html><font color=#AA0000>Der gew" + CONST.html_ae + "hlte Name hat \"" + actKey + "\" als Prefix. Namen m" + CONST.html_ue + "ssen Prefix-frei sein.</font></html>");
+          lDoubleValue.setText("Wert : #");
+          return;
+        }
+      }
+    }
 		lError.setText("");
 	}
 	/**
@@ -364,17 +351,13 @@ public class JStatisticsDialog extends JDialog implements ActionListener, TextLi
 			}
 		
 		}
-		Iterator<String> iter = bisherige_formeln.keySet().iterator();
-		while (iter.hasNext())
-		{
-			String actKey = iter.next();
-			if ((iExpr.getText().contains(actKey))&&(bisherige_formeln.get(actKey).contains(iName.getText())))
-			{ //rekursion
-				lError.setText("<html><font color=#AA0000>"+iName.getText()+" und "+actKey+" rufen sich gegenseitig auf. Rekursion ist jedoch nicht erlaubt.</font></html>");
-				lDoubleValue.setText("Wert : #");
-				return;
-			}
-		}
+    for (final String actKey : bisherige_formeln.keySet()) {
+      if ((iExpr.getText().contains(actKey)) && (bisherige_formeln.get(actKey).contains(iName.getText()))) { //rekursion
+        lError.setText("<html><font color=#AA0000>" + iName.getText() + " und " + actKey + " rufen sich gegenseitig auf. Rekursion ist jedoch nicht erlaubt.</font></html>");
+        lDoubleValue.setText("Wert : #");
+        return;
+      }
+    }
 		if (ExprIsRecursive())
 		{
 			lError.setText("<html><font color=#AA0000>"+iName.getText()+" bewirkt "+main.CONST.html_ue+"ber einige Terme eine Rekursion. Rekursion ist jedoch nicht erlaubt.</font></html>");

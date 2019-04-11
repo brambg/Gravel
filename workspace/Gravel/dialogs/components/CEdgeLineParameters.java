@@ -73,11 +73,10 @@ public class CEdgeLineParameters extends Observable implements ActionListener, C
 		LineTypes = new JLabel("<html>Linienstil</html>");
 		LineContent.add(LineTypes,c);
 		c.gridx++;
-		String[] typetemp = {	"\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500", //Solid
-							" \u2500  \u2500  \u2500  \u2500  \u2500 ", //Dashed
-							"\u25cf    \u25cf    \u25cf    \u25cf    \u25cf", //Dotted
-							"\u25cf   \u2500   \u25cf   \u2500   \u25cf"}; //Dotdashed
-		LineTypenames = typetemp;
+    LineTypenames = new String[]{	"\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500", //Solid
+              " \u2500  \u2500  \u2500  \u2500  \u2500 ", //Dashed
+              "\u25cf    \u25cf    \u25cf    \u25cf    \u25cf", //Dotted
+              "\u25cf   \u2500   \u25cf   \u2500   \u25cf"};
 		cLineTypes = new JComboBox(LineTypenames);
 		cLineTypes.addActionListener(this);
 		LineContent.add(cLineTypes,c);

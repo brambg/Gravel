@@ -133,7 +133,7 @@ public class FloatTextField extends JTextField
     	{
     		double typedValue = -1d;
  
-    		StringBuffer textBuffer = new StringBuffer(FloatTextField.this.getText().trim());
+    		StringBuilder textBuffer = new StringBuilder(FloatTextField.this.getText().trim());
     		//The offset argument must be greater than or equal to 0, and less than or equal to the length of this string buffer
     		if((offs >= 0) && (offs <= textBuffer.length()))
     		{
@@ -161,7 +161,6 @@ public class FloatTextField extends JTextField
 				if (str.equals("."))
 				{
 					super.insertString(offs,new String(str),a);
-					return;
 				}
 				else
 				{

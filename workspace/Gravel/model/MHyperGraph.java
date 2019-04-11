@@ -107,6 +107,6 @@ public class MHyperGraph extends Observable implements Observer, MGraphInterface
 	}
 	public void update(Observable o, Object arg) {
 		if (arg instanceof GraphMessage) //Send graphmessages to external listeners
-			pushNotify((GraphMessage)arg);
+			pushNotify(arg);
 	}
 }

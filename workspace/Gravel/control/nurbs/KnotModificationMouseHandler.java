@@ -36,8 +36,8 @@ public class KnotModificationMouseHandler implements ShapeModificationMouseHandl
 	double zoom;
 	VHyperEdge HyperEdgeRef;
 	GeneralPreferences gp;
-	Point MouseOffSet = new Point(0,0);;
-	boolean firstdrag = true;
+	Point MouseOffSet = new Point(0,0);
+  boolean firstdrag = true;
 	double DragStartProjection = Double.NaN;
 	NURBSShape temporaryShape=null;
 	boolean add=false, remove = false;
@@ -92,7 +92,7 @@ public class KnotModificationMouseHandler implements ShapeModificationMouseHandl
 	{
 		if (!dragged())
 			return null;
-		return new Point2D.Double(MouseOffSet.getX()/((double)zoom),MouseOffSet.getY()/((double)zoom));		
+		return new Point2D.Double(MouseOffSet.getX()/ zoom,MouseOffSet.getY()/ zoom);
 	}
 
 	public NURBSShape getShape()

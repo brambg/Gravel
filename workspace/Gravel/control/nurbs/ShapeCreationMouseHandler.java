@@ -20,24 +20,24 @@ public interface ShapeCreationMouseHandler extends DragMouseHandler
 	/**
 	 * Set Shape to an empty/null object
 	 */
-	public void resetShape();
+  void resetShape();
 	
 	/**
 	 * Get Parameters for NURBSShapeFactory of the actually created Shape
 	 * @return
 	 */
-	public NURBSCreationMessage getShapeParameters();
+  NURBSCreationMessage getShapeParameters();
 
 	/**
 	 * Set the Shape externally with NURBSShapeFactory-Parameters
 	 * This method also updates the internal shape, which is provided by @see getShape();
 	 * @param nm
 	 */
-	public void setShapeParameters(NURBSCreationMessage nm);
+  void setShapeParameters(NURBSCreationMessage nm);
 
 	/**
 	 * Get Shape for drawing, if not null, else null is returned
 	 * @return
 	 */
-	public NURBSShape getShape();
+  NURBSShape getShape();
 }

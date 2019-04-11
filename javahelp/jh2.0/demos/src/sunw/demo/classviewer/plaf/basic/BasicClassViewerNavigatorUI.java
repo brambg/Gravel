@@ -42,15 +42,11 @@ package sunw.demo.classviewer.plaf.basic;
 
 import javax.help.*;
 import javax.help.plaf.HelpNavigatorUI;
-import javax.help.plaf.HelpUI;
-import javax.help.plaf.basic.BasicHelpUI;
-import javax.help.plaf.basic.BasicIndexNavigatorUI;
 import javax.help.plaf.basic.BasicTOCCellRenderer;
 import javax.help.event.HelpModelListener;
 import javax.help.event.HelpModelEvent;
 import com.sun.java.help.impl.*;
 import java.util.Locale;
-import java.util.EventObject;
 import java.util.Stack;
 import java.util.Hashtable;
 import javax.swing.*;
@@ -393,7 +389,6 @@ PropertyChangeListener
 		nodeStack.push(node);
 		addTag(tag, locale);
 	    }
-	    return;
 	} else if (tag.name.equals("toc")) {
 	    if (!tag.isEnd) {
 		if (startedtoc) {
@@ -407,7 +402,6 @@ PropertyChangeListener
 		}
 		removeTag(tag);
 	    }
-	    return;
 	} else if (tag.name.equals("field")) {
 	    if (!startedfields) {
 		debug("Class field data incorrect");
@@ -443,7 +437,6 @@ PropertyChangeListener
 		nodeStack.push(node);
 		addTag(tag, locale);
 	    }
-	    return;
 	} else if (tag.name.equals("fields")) {
 	    if (!tag.isEnd) {
 		if (startedfields && !startedclass) {
@@ -467,7 +460,6 @@ PropertyChangeListener
 		itemStack.pop();
 		removeTag(tag);
 	    }
-	    return;
 	} else if (tag.name.equals("constructor")) {
 	    if (!startedconstructors) {
 		debug("Class constructor data incorrect");
@@ -503,7 +495,6 @@ PropertyChangeListener
 		nodeStack.push(node);
 		addTag(tag, locale);
 	    }
-	    return;
 	} else if (tag.name.equals("constructors")) {
 	    if (!tag.isEnd) {
 		if (startedconstructors && !startedclass) {
@@ -527,7 +518,6 @@ PropertyChangeListener
 		itemStack.pop();
 		removeTag(tag);
 	    }
-	    return;
 	} else if (tag.name.equals("method")) {
 	    if (!startedmethods) {
 		System.out.println("Class method data incorrect");
@@ -563,7 +553,6 @@ PropertyChangeListener
 		nodeStack.push(node);
 		addTag(tag, locale);
 	    }
-	    return;
 	} else if (tag.name.equals("methods")) {
 	    if (!tag.isEnd) {
 		if (startedmethods && !startedclass) {
@@ -587,7 +576,6 @@ PropertyChangeListener
 		itemStack.pop();
 		removeTag(tag);
 	    }
-	    return;
 	} else if (tag.name.equals("description")) {
 	    // Looks a little strange but it's ok 
 	    // Descriptions are self contained. The end tag is at the end
@@ -615,7 +603,6 @@ PropertyChangeListener
 	    } else {
 		debug ("description must have internal end tag");
 	    }
-	    return;
 	} else if (tag.name.equals("class")) {
 	    if (!tag.isEnd) {
 		if (startedclass) {
@@ -653,8 +640,7 @@ PropertyChangeListener
 		itemStack.pop();
 		removeTag(tag);
 	    }
-	    return;
-	} 
+	}
     }
 
     /**
@@ -666,7 +652,7 @@ PropertyChangeListener
 	    return;
 	}
 	LangElement le = (LangElement) tagStack.peek();
-	Tag tag = (Tag) le.getTag();
+	Tag tag = le.getTag();
 	debug ("Can't add text for " + tag.name);
 	debug ("  text is >"+e.getText()+"<");
     }
@@ -845,7 +831,6 @@ PropertyChangeListener
 		    treenav.getModel().setCurrentID(tocEl.getID());
 		} catch (InvalidHelpSetContextException e2) {
 		    debug ("BadID");
-		    return;
 		}
 	    }
 	}

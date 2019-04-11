@@ -94,15 +94,11 @@ public class MEdgeSet extends Observable implements Observer {
 	 */
 	public MEdge get(int i)
 	{
-		Iterator<MEdge> n = mEdges.iterator();
-		while (n.hasNext())
-		{
-			MEdge e = n.next();
-			if (e.index==i)
-			{
-				return e;
-			}
-		}
+    for (final MEdge e : mEdges) {
+      if (e.index == i) {
+        return e;
+      }
+    }
 		return null;
 	}
 	/**
@@ -163,14 +159,12 @@ public class MEdgeSet extends Observable implements Observer {
 		EdgeLock.lock();
 		int index = 1;
 		try {
-			Iterator<MEdge> n = mEdges.iterator();
-			while (n.hasNext()) {
-				MEdge temp = n.next();
-				if (temp.index >= index) // index vergeben
-				{
-					index = temp.index + 1;
-				}
-			}
+      for (final MEdge temp : mEdges) {
+        if (temp.index >= index) // index vergeben
+        {
+          index = temp.index + 1;
+        }
+      }
 		} finally {
 			EdgeLock.unlock();
 		}
@@ -186,17 +180,15 @@ public class MEdgeSet extends Observable implements Observer {
 	 */	
 	public Vector<String> getNames() {
 		Vector<String> ret = new Vector<String>();
-		Iterator<MEdge> n = mEdges.iterator();
-		while (n.hasNext()) {
-			MEdge actual = n.next();
-			if ((actual.index + 1) > ret.size()) {
-				ret.setSize(actual.index + 1);
-			}
-			if (!((actual.StartIndex==0)||(actual.EndIndex==0)))//keine temporäre Kante
-			{
-				ret.set(actual.index, actual.name);
-			}
-		}
+    for (final MEdge actual : mEdges) {
+      if ((actual.index + 1) > ret.size()) {
+        ret.setSize(actual.index + 1);
+      }
+      if (!((actual.StartIndex == 0) || (actual.EndIndex == 0)))//keine temporäre Kante
+      {
+        ret.set(actual.index, actual.name);
+      }
+    }
 		return ret;
 	}
 	/**
@@ -211,15 +203,12 @@ public class MEdgeSet extends Observable implements Observer {
 		int count = 0;
 		EdgeLock.lock();
 		try{
-				Iterator<MEdge> n = mEdges.iterator();
-				while (n.hasNext())
-				{
-					MEdge e = n.next();
-					if ( ( e.StartIndex==start ) && (e.EndIndex==ende) )
-						count ++; //count this edge because it is from start to end
-					else if ( ( !directed ) && ( e.StartIndex==ende ) && ( e.EndIndex==start ) )
-						count ++; //count this edge because in the nondirected case this is also from start to end
-				}
+      for (final MEdge e : mEdges) {
+        if ((e.StartIndex == start) && (e.EndIndex == ende))
+          count++; //count this edge because it is from start to end
+        else if ((!directed) && (e.StartIndex == ende) && (e.EndIndex == start))
+          count++; //count this edge because in the nondirected case this is also from start to end
+      }
 			} finally {EdgeLock.unlock();}
 		return count;
 	}
@@ -234,21 +223,16 @@ public class MEdgeSet extends Observable implements Observer {
 		Vector<Integer> liste = new Vector<Integer>();
 		EdgeLock.lock();
 		try{
-				Iterator<MEdge> n = mEdges.iterator();
-				while (n.hasNext())
-				{
-					MEdge e = n.next();
-					if ( ( e.StartIndex==start ) && (e.EndIndex==ende) )
-					{
-						liste.add(e.index);
-					}
-					//return e.index;
-					else if ( ( !directed ) && ( e.StartIndex==ende ) && ( e.EndIndex==start ) )
-					{
-						liste.add(e.index);
-					}
-					//return e.index;
-				}
+      for (final MEdge e : mEdges) {
+        if ((e.StartIndex == start) && (e.EndIndex == ende)) {
+          liste.add(e.index);
+        }
+        //return e.index;
+        else if ((!directed) && (e.StartIndex == ende) && (e.EndIndex == start)) {
+          liste.add(e.index);
+        }
+        //return e.index;
+      }
 			} finally {EdgeLock.unlock();}
 		return liste;
 	}

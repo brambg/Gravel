@@ -201,29 +201,23 @@ public class VGraph extends Observable implements VGraphInterface {
 						int ts = mG.modifyEdges.get(t.getIndex()).StartIndex;
 						int te = mG.modifyEdges.get(t.getIndex()).StartIndex;
 						Vector<Integer> indices = mG.modifyEdges.indicesBetween(ts, te);
-						Iterator<Integer> iiter = indices.iterator();
-						while (iiter.hasNext())
-						{
-							VEdge act = modifyEdges.get(iiter.next());
-							if ((mG.modifyEdges.get(act.getIndex()).StartIndex==te)&&(!mG.isDirected())&&(act.getEdgeType()==VEdge.ORTHOGONAL)&&(t.getEdgeType()==VEdge.ORTHOGONAL)) 
-							//ungerichtet, beide orthogonal und entgegengesetz gespeichert
-							{
-								if ((((VOrthogonalEdge)act).getVerticalFirst()!=((VOrthogonalEdge)t).getVerticalFirst())&&(!removed.get(act.getIndex())))
-								{
-									toDelete.add(t);
-									removed.set(t.getIndex());
-								}
-							}
-							else if ((t.PathEquals(act)&&(!removed.get(act.getIndex())))&&(t.getIndex()!=act.getIndex())) //same path
-							{
-								toDelete.add(t);
-								removed.set(t.getIndex());
-							}
-						} //end inner while
+            for (final Integer index : indices) {
+              VEdge act = modifyEdges.get(index);
+              if ((mG.modifyEdges.get(act.getIndex()).StartIndex == te) && (!mG.isDirected()) && (act.getEdgeType() == VEdge.ORTHOGONAL) && (t.getEdgeType() == VEdge.ORTHOGONAL))
+              //ungerichtet, beide orthogonal und entgegengesetz gespeichert
+              {
+                if ((((VOrthogonalEdge) act).getVerticalFirst() != ((VOrthogonalEdge) t).getVerticalFirst()) && (!removed.get(act.getIndex()))) {
+                  toDelete.add(t);
+                  removed.set(t.getIndex());
+                }
+              } else if ((t.PathEquals(act) && (!removed.get(act.getIndex()))) && (t.getIndex() != act.getIndex())) //same path
+              {
+                toDelete.add(t);
+                removed.set(t.getIndex());
+              }
+            } //end inner while
 					} //end outer while
-					Iterator<VEdge> e3 = toDelete.iterator();
-					while (e3.hasNext())
-						modifyEdges.remove_(e3.next().getIndex());
+        for (final VEdge vEdge : toDelete) modifyEdges.remove_(vEdge.getIndex());
 					if (mG.setDirected(d).cardinality() > 0){}
 				} //end of deleting similar edges in multiple directed graphs
 			setChanged();

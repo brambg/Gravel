@@ -42,9 +42,9 @@ public class CEdgeTextParameters extends Observable implements ActionListener, C
 	private JRadioButton rShowValue, rShowText;
 	private IntegerTextField iTextPosition, iTextDistance, iTextSize;
 	private JLabel TextPosition, TextDistance, TextSize, TextChoice,TextInfo;
-	private JCheckBox bChShowText, bChTextChoice, bChTextPosition, bChTextDistance, bChTextSize; ;
-	
-	private Vector<Integer> values;
+	private JCheckBox bChShowText, bChTextChoice, bChTextPosition, bChTextDistance, bChTextSize;
+
+  private Vector<Integer> values;
 	private Container TextContent;
 	boolean global, checksEnabled;
 	/**

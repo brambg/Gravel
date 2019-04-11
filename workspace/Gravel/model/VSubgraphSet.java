@@ -122,13 +122,11 @@ public class VSubgraphSet extends Observable implements Observer {
 	 * 		null, if no set with index i exists, else the set
 	 */
 	public VSubgraph get(int i) {
-		Iterator<VSubgraph> s = vSubgraphs.iterator();
-		while (s.hasNext()) {
-			VSubgraph actual = s.next();
-			if (i == actual.getIndex()) {
-				return actual;
-			}
-		}
+    for (final VSubgraph actual : vSubgraphs) {
+      if (i == actual.getIndex()) {
+        return actual;
+      }
+    }
 		return null;
 	}
 
@@ -227,7 +225,6 @@ public class VSubgraphSet extends Observable implements Observer {
 			}
 		}
 		actual.setColor(newcolor);
-		return;
 	}
 	/**
 	 * add an Edge to a set

@@ -40,18 +40,11 @@
 
 package sunw.demo.searchdemo;
 
-import java.io.*;
-import java.net.*;
 import java.text.*;
 import java.util.Vector;
-import java.util.Hashtable;
-import java.util.EventListener;
 import java.util.Locale;
 // import javax.help.*;
 import javax.help.search.*;
-import javax.help.search.SearchEvent;
-import javax.help.search.SearchListener;
-
 
 /**
  * ClientSearchQuery is an example implementation of a SearchQuery. 
@@ -177,7 +170,7 @@ public class ClientSearchQuery extends SearchQuery implements Runnable{
 	int start, quoteStart=0;
 	String word;
 	boolean prevWord=false, quote=false;
-	String oldword = null;
+	StringBuilder oldword = null;
 
 	params = new Vector();
 	boundary = BreakIterator.getWordInstance(l);
@@ -194,37 +187,37 @@ public class ClientSearchQuery extends SearchQuery implements Runnable{
 	    }
 	    if (word.compareTo("and") == 0 && !quote) {
 		prevWord = false;
-		params.addElement (new Integer(AND));
+		params.addElement (AND);
 		continue;
 	    } 
 	    if (word.compareTo("or") == 0 && !quote) {
 		prevWord = false;
-		params.addElement (new Integer(OR));
+		params.addElement (OR);
 		continue;
 	    }
 	    if (word.compareTo("not") == 0 && !quote) {
 		prevWord = false;
-		params.addElement (new Integer(NOT));
+		params.addElement (NOT);
 		continue;
 	    }
 	    if (word.compareTo("near") == 0 && !quote) {
 		prevWord = false;
-		params.addElement (new Integer(NEAR));
+		params.addElement (NEAR);
 		continue;
 	    }
 	    if (word.compareTo("adj") == 0 && !quote) {
 		prevWord = false;
-		params.addElement (new Integer(ADJ));
+		params.addElement (ADJ);
 		continue;
 	    }
 	    if (word.compareTo("(") == 0 && !quote) {
 		prevWord = false;
-		params.addElement (new Integer(LEFT_PAREN));
+		params.addElement (LEFT_PAREN);
 		continue;
 	    }
 	    if (word.compareTo(")") == 0 && !quote) {
 		prevWord = false;
-		params.addElement (new Integer(RIGHT_PAREN));
+		params.addElement (RIGHT_PAREN);
 		continue;
 	    }
 	    if (word.compareTo("\"") == 0) {
@@ -237,27 +230,27 @@ public class ClientSearchQuery extends SearchQuery implements Runnable{
 		prevWord = false;
 		if (oldword != null) {
 		    params.removeElementAt(params.size() - 1);
-		    oldword = oldword + word;
-		    params.addElement (oldword);
+		    oldword.append(word);
+		    params.addElement (oldword.toString());
 		    prevWord = true;
 		}
 		continue;
 	    }
-	    if (prevWord == true) {
+	    if (prevWord) {
 		if (quote) {
-		    params.addElement (new Integer(ADJ));
+		    params.addElement (ADJ);
 		} else {
-		    params.addElement (new Integer(NEAR));
+		    params.addElement (NEAR);
 		}
 	    }
-	    if (quote == true) {
+	    if (quote) {
 		if (word.endsWith("\"")) {
 		    word = new String(searchParams.substring(start, end-1));
 		    quote = false;
 		}
 	    }
 	    prevWord = true;
-	    oldword = word;
+	    oldword = new StringBuilder(word);
 	    params.addElement (word);
 	}
     }
@@ -278,9 +271,9 @@ public class ClientSearchQuery extends SearchQuery implements Runnable{
 	int term=0, j, k, size;
       
 	for (int i=0; i < params.size() ; i++) {
-	    Object obj = (Object)params.elementAt(i);
+	    Object obj = params.elementAt(i);
 	    if (obj instanceof Integer) {
-		term = ((Integer)obj).intValue();
+		term = (Integer) obj;
 	    } else {
 		// This is a word so find the word 
 		Word word = wordVec.findWord((String)obj);

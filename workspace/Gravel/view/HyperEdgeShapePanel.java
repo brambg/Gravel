@@ -145,15 +145,14 @@ public class HyperEdgeShapePanel implements ActionListener, Observer, CaretListe
     		}
     		else
     		{
-	    		String msg = "<html><center>Der Umriss ist nicht korrekt</center><br><br>Die folgenden Knoten erfüllen nicht die Korrektheit.<br>"+
-	    				"Einer der folgenden F"+CONST.html_ae+"lle trifft also zu:<ul><li>au"+CONST.html_sz+"erhalb des Umrisses und geh"+CONST.html_oe+"ren zur Kante</li><li>im Umriss und geh"+CONST.html_oe+"ren nicht zur Kante</li><li>Sie sind im Umriss, aber erf"+CONST.html_ue+"llen den Innenabstand nicht</li></ul>Diese Knoten werden bis zur n"+CONST.html_ae+"chten Uberpr"+CONST.html_ue+"fung rot hervorgehoben.<br><br>";		    		
+	    		StringBuilder msg = new StringBuilder("<html><center>Der Umriss ist nicht korrekt</center><br><br>Die folgenden Knoten erfüllen nicht die Korrektheit.<br>" +
+							"Einer der folgenden F" + CONST.html_ae + "lle trifft also zu:<ul><li>au" + CONST.html_sz + "erhalb des Umrisses und geh" + CONST.html_oe + "ren zur Kante</li><li>im Umriss und geh" + CONST.html_oe + "ren nicht zur Kante</li><li>Sie sind im Umriss, aber erf" + CONST.html_ue + "llen den Innenabstand nicht</li></ul>Diese Knoten werden bis zur n" + CONST.html_ae + "chten Uberpr" + CONST.html_ue + "fung rot hervorgehoben.<br><br>");
 	    		Vector<Integer> WrongNodes = validator.getInvalidNodeIndices();
-	    		for (int j=0; j<WrongNodes.size(); j++)
-	    				msg+="#"+WrongNodes.get(j);
+					for (Integer wrongNode : WrongNodes) msg.append("#").append(wrongNode);
 	    		if (WrongNodes.size()==0)
-	    			msg += "Es gab keine eindeutige Entscheidung, am Ende mehr als 2 Mengen verblieben.";
-	    		msg+="</html>";
-    			JOptionPane.showMessageDialog(Gui.getInstance().getParentWindow(), msg, "Der Umriss ist nicht korrekt.", JOptionPane.ERROR_MESSAGE);
+	    			msg.append("Es gab keine eindeutige Entscheidung, am Ende mehr als 2 Mengen verblieben.");
+	    		msg.append("</html>");
+    			JOptionPane.showMessageDialog(Gui.getInstance().getParentWindow(), msg.toString(), "Der Umriss ist nicht korrekt.", JOptionPane.ERROR_MESSAGE);
     			HShapeGraphicRef.setHighlightedNodes(WrongNodes);
     		}
     		reActivatePanel();
@@ -337,8 +336,8 @@ public class HyperEdgeShapePanel implements ActionListener, Observer, CaretListe
 		c.gridwidth=1;
 		c.gridheight=1;
 		iCOrigX = new IntegerTextField();
-		iCOrigX.addCaretListener(this);;
-		iCOrigX.setPreferredSize(new Dimension(50, 20));
+		iCOrigX.addCaretListener(this);
+    iCOrigX.setPreferredSize(new Dimension(50, 20));
 		CircleOriginX = new JLabel("<html><p>M<sub>X</sub></p></html>");
 		CircleFields.add(CircleOriginX,c);
 		c.gridx++;
@@ -347,8 +346,8 @@ public class HyperEdgeShapePanel implements ActionListener, Observer, CaretListe
 		c.gridy++;
 		c.gridx=0;
 		iCOrigY = new IntegerTextField();
-		iCOrigY.addCaretListener(this);;
-		iCOrigY.setPreferredSize(new Dimension(50, 20));
+		iCOrigY.addCaretListener(this);
+    iCOrigY.setPreferredSize(new Dimension(50, 20));
 		CircleOriginY = new JLabel("<html><p>M<sub>Y</sub></p></html>");
 		CircleFields.add(CircleOriginY,c);
 		c.gridx++;
@@ -357,8 +356,8 @@ public class HyperEdgeShapePanel implements ActionListener, Observer, CaretListe
 		c.gridy++;
 		c.gridx=0;
 		iCRad = new IntegerTextField();
-		iCRad.addCaretListener(this);;
-		iCRad.setPreferredSize(new Dimension(50, 20));
+		iCRad.addCaretListener(this);
+    iCRad.setPreferredSize(new Dimension(50, 20));
 		CircleRadius = new JLabel("<html><p>Radius</p></html>");
 		CircleFields.add(CircleRadius,c);
 		c.gridx++;
@@ -492,7 +491,7 @@ public class HyperEdgeShapePanel implements ActionListener, Observer, CaretListe
 					   (old.getType()==NURBSCreationMessage.CIRCLE)	
 					&& (iCOrigX.getValue()==Math.round((float)old.getPoints().firstElement().getX()))
 					&& (iCOrigY.getValue()==Math.round((float)old.getPoints().firstElement().getY()))
-					&& (iCRad.getValue()==old.getValues().firstElement().intValue())	)
+					&& (iCRad.getValue()== old.getValues().firstElement())	)
 					return; //No Value changed
 				NURBSCreationMessage nm = new NURBSCreationMessage(
 						4, //TODO: Enable Circles with Degree

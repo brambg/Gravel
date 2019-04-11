@@ -24,25 +24,25 @@ public interface ShapeModificationMouseHandler extends DragMouseHandler, Observe
 	/**
 	 * Reset Shape to last situation in the HyperEdge given as reference
 	 */
-	public void resetShape();
+  void resetShape();
 	
 	/**
 	 * Get Shape for drawing, if not null, else null is returned
 	 * @return
 	 */
-	public NURBSShape getShape();
+  NURBSShape getShape();
 	
 	/**
 	 * get the startpoint (without zoom) in the graph, if a drag is active
 	 * else null is returned
 	 * @return
 	 */
-	public Point2D getDragStartPoint();
+  Point2D getDragStartPoint();
 	/**
 	 * get the actual mouseposition (without zoom) in the graph, if a drag is active
 	 * else null is returned
 	 * @return
 	 */
-	public Point2D getDragPoint();
+  Point2D getDragPoint();
 	
 }

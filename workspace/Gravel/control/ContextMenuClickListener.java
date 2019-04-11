@@ -237,18 +237,15 @@ public class ContextMenuClickListener
 		NaddtoSet.setEnabled(false);
 		NremfromSet.removeAll();
 		NremfromSet.setEnabled(false);
-		Iterator<JMenuItem> iter = vSubgraphNMenus.iterator(); // get all Subgraphs
-		while (iter.hasNext()) {
-			JMenuItem t = iter.next();
-			if (t!=null) //Falls ein Eintrag leer ist, behandle ihn nicht.
+		for (final JMenuItem t : vSubgraphNMenus) {
+			if (t != null) //Falls ein Eintrag leer ist, behandle ihn nicht.
 			{
 				//Sets fangen mit 1 an die Menüeinträge mit 0
 				if (!(subgraphs.get(vSubgraphNMenus.indexOf(t)).containsNode(i))) // Knoten nicht enthalten -> hinzufügenMenü
 				{
 					NaddtoSet.setEnabled(true); //es gibt einen also gibts auch das Menü
 					NaddtoSet.add(t);
-				}
-				else  // Knoten enthalten -> entfernen anbieten
+				} else  // Knoten enthalten -> entfernen anbieten
 				{
 					NremfromSet.add(t);
 					NremfromSet.setEnabled(true);
@@ -275,17 +272,14 @@ public class ContextMenuClickListener
 		EaddtoSet.setEnabled(false);
 		EremfromSet.removeAll();
 		EremfromSet.setEnabled(false);
-		Iterator<JMenuItem> iter = vSubgraphNMenus.iterator(); // durchlaufe alle SetMenueeintraege
-		while (iter.hasNext()) {
-			JMenuItem t = iter.next();
-			if (t!=null) //Falls ein Index nixht vergeben ist
+		for (final JMenuItem t : vSubgraphNMenus) {
+			if (t != null) //Falls ein Index nixht vergeben ist
 			{
 				if (!(subgraphs.get(vSubgraphNMenus.indexOf(t)).containsEdge(i))) // Knoten nicht enthalten -> hinzufuegenMenue
 				{
 					EaddtoSet.setEnabled(true); //es gibt einen also gibts auch das Menue
 					EaddtoSet.add(t);
-				}
-				else  // Knoten enthalten -> entfernen anbieten
+				} else  // Knoten enthalten -> entfernen anbieten
 				{
 					EremfromSet.add(t);
 					EremfromSet.setEnabled(true);

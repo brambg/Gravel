@@ -27,10 +27,9 @@ public class VSegmentedEdge extends VEdge
 	public GeneralPath getPath(Point Start, Point End,float zoom) {
 		GeneralPath p = new GeneralPath();
 		p.moveTo(Start.x*zoom, Start.y*zoom);
-		for (int i=0; i<points.size(); i++)
-		{
-			p.lineTo(points.get(i).x*zoom, points.get(i).y*zoom);
-		}
+    for (Point point : points) {
+      p.lineTo(point.x * zoom, point.y * zoom);
+    }
 		p.lineTo(End.x*zoom,End.y*zoom);
 		return p;
 	}
@@ -50,38 +49,35 @@ public class VSegmentedEdge extends VEdge
 	}
 	public void translate(int x, int y)
 	{
-		for (int i=0; i<points.size(); i++)
-		{
-			points.get(i).translate(x,y);
-			if (points.get(i).x < 0)
-				points.get(i).x = 0;
-			if (points.get(i).y < 0)
-				points.get(i).y = 0;
-			
-		}
+    for (Point point : points) {
+      point.translate(x, y);
+      if (point.x < 0)
+        point.x = 0;
+      if (point.y < 0)
+        point.y = 0;
+
+    }
 	}
 	public Point getMax()
 	{	
 		Point max = new Point(0,0);
-		for (int i=0; i<points.size(); i++)
-		{
-			if (points.get(i).x > max.x)
-				max.x = points.get(i).x;
-			if (points.get(i).y > max.y)
-				max.y = points.get(i).y;
-		}
+    for (Point point : points) {
+      if (point.x > max.x)
+        max.x = point.x;
+      if (point.y > max.y)
+        max.y = point.y;
+    }
 		return max;
 	}
 	public Point getMin()
 	{	
 		Point min = new Point(Integer.MAX_VALUE,Integer.MAX_VALUE);
-		for (int i=0; i<points.size(); i++)
-		{
-			if (points.get(i).x < min.x)
-				min.x = points.get(i).x;
-			if (points.get(i).y < min.y)
-				min.y = points.get(i).y;
-		}
+    for (Point point : points) {
+      if (point.x < min.x)
+        min.x = point.x;
+      if (point.y < min.y)
+        min.y = point.y;
+    }
 		return min;
 	}
 	@SuppressWarnings("unchecked")

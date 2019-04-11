@@ -4,22 +4,15 @@
 
 import antlr.TokenBuffer;
 import antlr.TokenStreamException;
-import antlr.TokenStreamIOException;
-import antlr.ANTLRException;
-import antlr.LLkParser;
 import antlr.Token;
 import antlr.TokenStream;
 import antlr.RecognitionException;
 import antlr.NoViableAltException;
-import antlr.MismatchedTokenException;
-import antlr.SemanticException;
 import antlr.ParserSharedInputState;
 import antlr.collections.impl.BitSet;
 import antlr.collections.AST;
-import java.util.Hashtable;
 import antlr.ASTFactory;
 import antlr.ASTPair;
-import antlr.collections.impl.ASTArray;
 
 public class StringParser extends antlr.LLkParser       implements StringLexerTokenTypes
  {
@@ -97,7 +90,7 @@ public StringParser(ParserSharedInputState state) {
 				}
 			} while (true);
 			}
-			expr_AST = (AST)currentAST.root;
+			expr_AST = currentAST.root;
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
@@ -151,7 +144,7 @@ public StringParser(ParserSharedInputState state) {
 				}
 			} while (true);
 			}
-			mexpr_AST = (AST)currentAST.root;
+			mexpr_AST = currentAST.root;
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
@@ -185,12 +178,12 @@ public StringParser(ParserSharedInputState state) {
 					r = Math.pow(r,x);
 				}
 				else {
-					break _loop26;
+					break;
 				}
 				
 			} while (true);
 			}
-			dexpr_AST = (AST)currentAST.root;
+			dexpr_AST = currentAST.root;
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
@@ -217,8 +210,8 @@ public StringParser(ParserSharedInputState state) {
 				i_AST = astFactory.create(i);
 				astFactory.addASTChild(currentAST, i_AST);
 				match(NUM);
-				r=(double)Double.parseDouble(i.getText());
-				atom_AST = (AST)currentAST.root;
+				r= Double.parseDouble(i.getText());
+				atom_AST = currentAST.root;
 				break;
 			}
 			case LKLAMMER:
@@ -227,7 +220,7 @@ public StringParser(ParserSharedInputState state) {
 				r=expr();
 				astFactory.addASTChild(currentAST, returnAST);
 				match(RKLAMMER);
-				atom_AST = (AST)currentAST.root;
+				atom_AST = currentAST.root;
 				break;
 			}
 			default:
@@ -265,26 +258,22 @@ public StringParser(ParserSharedInputState state) {
 	
 	protected void buildTokenTypeASTClassMap() {
 		tokenTypeToASTClassMap=null;
-	};
-	
-	private static final long[] mk_tokenSet_0() {
-		long[] data = { 64L, 0L};
-		return data;
+	}
+
+   private static final long[] mk_tokenSet_0() {
+		 return new long[]{ 64L, 0L};
 	}
 	public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
 	private static final long[] mk_tokenSet_1() {
-		long[] data = { 3136L, 0L};
-		return data;
+		return new long[]{ 3136L, 0L};
 	}
 	public static final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
 	private static final long[] mk_tokenSet_2() {
-		long[] data = { 3520L, 0L};
-		return data;
+		return new long[]{ 3520L, 0L};
 	}
 	public static final BitSet _tokenSet_2 = new BitSet(mk_tokenSet_2());
 	private static final long[] mk_tokenSet_3() {
-		long[] data = { 4032L, 0L};
-		return data;
+		return new long[]{ 4032L, 0L};
 	}
 	public static final BitSet _tokenSet_3 = new BitSet(mk_tokenSet_3());
 	

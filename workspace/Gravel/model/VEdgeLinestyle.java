@@ -71,8 +71,8 @@ public class VEdgeLinestyle {
 		//gap: Eine Lücke vor einem punkt
 		//gap2 : Eine Lücke vor einem neuen strich 
 		boolean dash = false, dot = false, gap = false, gap2=false;
-		double zoomlength = (new Double(length)).doubleValue()*zoomfactor;
-		double zoomdistance = (new Double(distance)).doubleValue()*zoomfactor;
+		double zoomlength = (double) length *zoomfactor;
+		double zoomdistance = (double) distance *zoomfactor;
 		double zoomwidth = 0.0d; //(new Double(edgewidth)).doubleValue()*zoomfactor/(2.0d);
 		
 		double sumdistance = 0.0d;

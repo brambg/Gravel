@@ -9,40 +9,40 @@ import model.Messages.GraphConstraints;
 public interface VGraphInterface extends Observer {
 
 	
-	public final int GRAPH = GraphConstraints.VISUAL|GraphConstraints.GRAPH;
-	public final int HYPERGRAPH = GraphConstraints.VISUAL|GraphConstraints.HYPERGRAPH;
+	int GRAPH = GraphConstraints.VISUAL|GraphConstraints.GRAPH;
+	int HYPERGRAPH = GraphConstraints.VISUAL|GraphConstraints.HYPERGRAPH;
 	
 	/**
 	 * deselect all Nodes and Edges
 	 */
-	public void deselect();
+  void deselect();
 
 	/**
 	 * deletes all selected Nodes and (Hyper)Edges. That means, that also all incident Edges of selected Nodes are deleted
 	 */
-	public void removeSelection();
+  void removeSelection();
 	/**
 	 * Indicator for an existing selection
 	 * @return
 	 */
-	public boolean hasSelection();
+  boolean hasSelection();
 	/**
 	 * Set this selection to all nodes/edges/hyperedges that are selected in the parameter graph, if they existere here
 	 * @param g
 	 */
-	public void setSelection(VGraphInterface g);
+  void setSelection(VGraphInterface g);
 	/**
 	 * Get a single element, if and only if just one element is selected
 	 * @return
 	 */
-	public VItem getSingleSelectedItem();
+  VItem getSingleSelectedItem();
 	/**
 	 * Translates the Graph by the given Offset in x and y direction
 	 * <br><br>
 	 * @param x Translation on the X-axis
 	 * @param y Translation on the Y-axis
 	 */
-	public void translate(int x, int y);
+  void translate(int x, int y);
 
 	/**
 	 * returns the maximum point that is used by the VGraph.
@@ -51,7 +51,7 @@ public interface VGraphInterface extends Observer {
 	 * 
 	 * @return Maximum as a point
 	 */
-	public Point getMaxPoint(Graphics g);
+  Point getMaxPoint(Graphics g);
 
 	/**
 	 * returns the minimum point that is used by the VGraph.
@@ -63,14 +63,14 @@ public interface VGraphInterface extends Observer {
 	 * @param the Graphic in which the Graph lies. 
 	 * @return Point MinPoint
 	 */
-	public Point getMinPoint(Graphics g);
+  Point getMinPoint(Graphics g);
 
 	/**
 	 * informs all subscribers about a change. This Method is used to push a notify from outside
 	 * mit dem Oject o als Parameter
 	 */
-	public void pushNotify(Object o);
+  void pushNotify(Object o);
 
-	public int getType();
+	int getType();
 
 }

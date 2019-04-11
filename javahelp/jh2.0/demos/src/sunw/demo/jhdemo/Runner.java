@@ -91,8 +91,8 @@ public class Runner {
 	    }
 	    String[] args2 = getArgs(arguments);
 	    Class klass = cl.loadClass(runClass);
-	    Method m = klass.getMethod("main", 
-				       new Class[] { args2.getClass() });
+	    Method m = klass.getMethod("main",
+					args2.getClass());
 	    m.setAccessible(true);
 	    int mods = m.getModifiers();
 	    if (m.getReturnType() != void.class || !Modifier.isStatic(mods) ||

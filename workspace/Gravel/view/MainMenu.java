@@ -73,7 +73,7 @@ public class MainMenu extends JMenuBar implements ActionListener, Observer
 	{
         graphpart = vgraphic;
         GraphHistory = graphpart.getGraphHistoryManager();
-        isMac = (System.getProperty("os.name").toLowerCase().indexOf("mac")!=-1);
+        isMac = (System.getProperty("os.name").toLowerCase().contains("mac"));
         isGraph = vgraphic.getType()==VCommonGraphic.VGRAPHIC;
         createMenuBar();
 		fileDialogs = new JFileDialogs(vgraphic);
@@ -491,24 +491,22 @@ public class MainMenu extends JMenuBar implements ActionListener, Observer
 				if (cardinality>0) //es gibt überhaupt was
 				{
 					int n = JOptionPane.showConfirmDialog(Gui.getInstance().getParentWindow(), "<html>Der aktuelle Graph wurde nicht gespeichert.<br>M"+main.CONST.html_oe+"chten Sie den Graph noch speichern ?</html>","Gravel beenden",JOptionPane.YES_NO_CANCEL_OPTION);
-					if (n==JOptionPane.YES_OPTION)
+          //Cancel
+          //Do not quit
+          if (n==JOptionPane.YES_OPTION)
 						return fileDialogs.SaveAs(); //If someone chose yes and aborted, we don't want to quit
-					else if (n==JOptionPane.NO_OPTION)
-						return true; //He does not want to save but just quit
-					else //Cancel
-						return false; //Do not quit
+					else return n == JOptionPane.NO_OPTION; //He does not want to save but just quit
 				}
 			}
 			else //No last file known
 			{
 				String file = (new File(GeneralPreferences.getInstance().getStringValue("graph.lastfile")).getName());
 				int n = JOptionPane.showConfirmDialog(Gui.getInstance().getParentWindow(), "<html>Die letzten "+main.CONST.html_Ae+"nderungen des Graphen<br><i>'"+file+"'</i><br>wurden noch nicht gespeichert.<br>M"+main.CONST.html_oe+"chten Sie diese noch speichern ?</html>","Gravel beenden",JOptionPane.YES_NO_CANCEL_OPTION);
-	    		if (n==JOptionPane.YES_OPTION)
+        //Cancel
+        //Do not quit
+        if (n==JOptionPane.YES_OPTION)
 	    			return fileDialogs.Save();
-				else if (n==JOptionPane.NO_OPTION)
-					return true; //He does not want to save but just quit
-				else //Cancel
-					return false; //Do not quit
+				else return n == JOptionPane.NO_OPTION; //He does not want to save but just quit
 			}
 		}
 		return true;

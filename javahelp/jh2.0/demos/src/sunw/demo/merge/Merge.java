@@ -458,7 +458,7 @@ public class Merge extends JFrame {
 
     private class RemoveAction implements ActionListener {
 	    public void actionPerformed(ActionEvent e) {
-		Object a[] = (Object[]) hsList.getSelectedValues();
+				Object[] a = hsList.getSelectedValues();
 		if (a == null || a.length==0) {
 		    System.err.println("No selected values");
 		} else {
@@ -481,9 +481,9 @@ public class Merge extends JFrame {
 		helpSetURLs.append(newURL);
 		helpSetURLs.append("\n");
 		String p = helpSetURLs.getText();
-		String n = (String) helpSetName.getText();
+		String n = helpSetName.getText();
 		if (on12) {
-		    URL x[] = parseURLs(p);
+			URL[] x = parseURLs(p);
 		    cl = new URLClassLoader(x);
 		} else {
 		    cl = null;
@@ -508,7 +508,7 @@ public class Merge extends JFrame {
 
     private class ShowAction implements ActionListener {
 	    public void actionPerformed(ActionEvent e) {
-		Object a[] = (Object[]) hsList.getSelectedValues();
+				Object[] a = hsList.getSelectedValues();
 		if (a == null || a.length==0) {
 		    System.err.println("No selected values");
 		} else {
@@ -535,14 +535,14 @@ public class Merge extends JFrame {
 		removeButton.setEnabled(false);
 		displayButton.setEnabled(false);
 		// locate what entry has actually changed
-		int sel[] = hsList.getSelectedIndices();
-		for (int i=0 ; i<sel.length; i++) {
-		    if (sel[i] > 0) {
-			remove.setEnabled(true);
-			removeButton.setEnabled(true);
-			break;
-		    }
-		}
+				int[] sel = hsList.getSelectedIndices();
+				for (final int value : sel) {
+					if (value > 0) {
+						remove.setEnabled(true);
+						removeButton.setEnabled(true);
+						break;
+					}
+				}
 		displayButton.setEnabled(true);
 	    }
 	}
@@ -582,7 +582,7 @@ public class Merge extends JFrame {
 	Vector v = new Vector();
 	StringTokenizer tok = new StringTokenizer(s, "\n");
 	while (tok.hasMoreTokens()) {
-	    String spec = (String) tok.nextToken();
+	    String spec = tok.nextToken();
 	    try {
 		URL url = new URL(spec);
 		v.addElement(url);
@@ -590,7 +590,7 @@ public class Merge extends JFrame {
 		System.err.println("cannot create URL for "+spec);
 	    }
 	}
-	URL back[] = new URL[v.size()];
+			URL[] back = new URL[v.size()];
 	v.copyInto(back);
 	return back;
     }
@@ -619,11 +619,11 @@ public class Merge extends JFrame {
 	try {
 	    URL url = new URL(urlSpec);
 	    if (on12) {
-		URL urls[] = parseURLs(path);
+				URL[] urls = parseURLs(path);
 		debug("ursl["+urls.length+"]");
-		for (int i=0; i<urls.length; i++) {
-		    debug(urls[i]+"");
-		}
+				for (final URL value : urls) {
+					debug(value + "");
+				}
 
 		URLClassLoader ucl = new URLClassLoader(urls);
 		debug("ucl: "+ucl);
@@ -662,7 +662,7 @@ public class Merge extends JFrame {
 	while (e.hasMoreElements()) {
 	    v.addElement(e.nextElement());
 	}
-	Object back[] = new Object[v.size()];
+			Object[] back = new Object[v.size()];
 	v.copyInto(back);
 	return back;
     }
@@ -688,17 +688,17 @@ public class Merge extends JFrame {
 	m.addElement(masterHS);
 
 	// Add anyother helpsets
-	for (int i=0; i<data.length; i++) {
-	    debug("  "+data[i]);
-	    m.addElement(data[i]);
-	}
+			for (final Object datum : data) {
+				debug("  " + datum);
+				m.addElement(datum);
+			}
     }
 
 
     /**
      * No arguments main
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
 
  	Merge m = new Merge();
 	m.setResizable(false);
@@ -766,30 +766,30 @@ public class Merge extends JFrame {
 	    // Get the fonts
 	    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 	    fonts = ge.getAllFonts();
-	    for (int i = 0 ; i < fonts.length ; i++) {
-		DefaultMutableTreeNode node = 
-		    new DefaultMutableTreeNode(new MyFont(fonts[i]));
-		String family = fonts[i].getFamily();
-		String testFamily = null;
-		DefaultMutableTreeNode test = null;
-		for (Enumeration e = topNode.children() ;
-		     e.hasMoreElements() ; ) {
-		    test = (DefaultMutableTreeNode) e.nextElement();
-		    testFamily = (String) test.getUserObject();
-		    if (testFamily.compareTo(family) == 0) {
-			break;
-		    }
-		    test = null;
+		for (final Font value : fonts) {
+			DefaultMutableTreeNode node =
+					new DefaultMutableTreeNode(new MyFont(value));
+			String family = value.getFamily();
+			String testFamily = null;
+			DefaultMutableTreeNode test = null;
+			for (Enumeration e = topNode.children();
+					 e.hasMoreElements(); ) {
+				test = (DefaultMutableTreeNode) e.nextElement();
+				testFamily = (String) test.getUserObject();
+				if (testFamily.compareTo(family) == 0) {
+					break;
+				}
+				test = null;
+			}
+			if (test == null) {
+				DefaultMutableTreeNode parent =
+						new DefaultMutableTreeNode(family);
+				topNode.add(parent);
+				parent.add(node);
+			} else {
+				test.add(node);
+			}
 		}
-		if (test == null) {
-		    DefaultMutableTreeNode parent = 
-			new DefaultMutableTreeNode(family);
-		    topNode.add(parent);
-		    parent.add(node);
-		} else {
-		    test.add(node);
-		}
-	    }
 
 	    Box topBox = Box.createVerticalBox();
 

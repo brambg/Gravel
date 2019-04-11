@@ -211,12 +211,9 @@ public class TreeFunctions implements Observer {
 				return false;
 		}
 		//Are there exactely b children in each internal (non-leaf) node ? <= b ?
-		if ((childMinCount!=b)||(childMaxCount!=b))
-		{ //No
-			return false;
-		}
-		return true;
-	}
+    //No
+    return (childMinCount == b) && (childMaxCount == b);
+  }
 	
 	public MNode getlastStartnode()
 	{

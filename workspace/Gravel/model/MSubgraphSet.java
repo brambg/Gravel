@@ -62,15 +62,11 @@ public class MSubgraphSet extends Observable implements Observer {
 	 */
 	public MSubgraph get(int index)
 	{
-		Iterator<MSubgraph> iter = mSubgraphs.iterator();
-		while (iter.hasNext())
-		{
-			MSubgraph actual = iter.next();
-			if (actual.getIndex()==index)
-			{
-				return actual;
-			}
-		}
+    for (final MSubgraph actual : mSubgraphs) {
+      if (actual.getIndex() == index) {
+        return actual;
+      }
+    }
 		return null;
 	}
 	/**
@@ -79,14 +75,12 @@ public class MSubgraphSet extends Observable implements Observer {
 	 */
 	public int getNextIndex() {
 		int index = 1;
-		Iterator<MSubgraph> n = mSubgraphs.iterator();
-		while (n.hasNext()) {
-			MSubgraph temp = n.next();
-			if (temp.getIndex() >= index) // index vergeben
-			{
-				index = temp.getIndex() + 1;
-			}
-		}
+    for (final MSubgraph temp : mSubgraphs) {
+      if (temp.getIndex() >= index) // index vergeben
+      {
+        index = temp.getIndex() + 1;
+      }
+    }
 		return index;
 	}
 	/**
@@ -180,14 +174,12 @@ public class MSubgraphSet extends Observable implements Observer {
 
 	public Vector<String> getNames() {
 		Vector<String> ret = new Vector<String>();
-		Iterator<MSubgraph> s = mSubgraphs.iterator();
-		while (s.hasNext()) {
-			MSubgraph actual = s.next();
-			if ((actual.getIndex() + 1) > ret.size()) {
-				ret.setSize(actual.getIndex() + 1);
-			}
-			ret.set(actual.getIndex(), get(actual.getIndex()).getName());
-		}
+    for (final MSubgraph actual : mSubgraphs) {
+      if ((actual.getIndex() + 1) > ret.size()) {
+        ret.setSize(actual.getIndex() + 1);
+      }
+      ret.set(actual.getIndex(), get(actual.getIndex()).getName());
+    }
 		return ret;
 	}
 	public void update(Observable o, Object arg) {
@@ -197,31 +189,22 @@ public class MSubgraphSet extends Observable implements Observer {
 		int mod = mm.getModificationType();
 		if ((mod!=GraphConstraints.INDEXCHANGED)&&(mod!=GraphConstraints.REMOVAL))
 			return;
-		Iterator<MSubgraph> si = mSubgraphs.iterator();
-		while (si.hasNext())
-		{
-			MSubgraph s = si.next();
-			//If removed or index changed, remove (old) index from each set and set new one if changed
-			if (mod==GraphConstraints.INDEXCHANGED)
-			{
-				if (mm.getModifiedElement()==GraphConstraints.NODE)
-				{
-					s.removeNode(mm.getOldElementID());
-					s.addNode(mm.getElementID());
-				}
-				else if (mm.getModifiedElement()==GraphConstraints.EDGE)
-				{
-					s.removeEdge(mm.getOldElementID());
-					s.addEdge(mm.getElementID());
-				}
-			}
-			else if (mod==GraphConstraints.REMOVAL)
-			{
-				if (mm.getModifiedElement()==GraphConstraints.NODE)
-					s.removeNode(mm.getElementID());
-				else if (mm.getModifiedElement()==GraphConstraints.EDGE)
-					s.removeEdge(mm.getElementID());
-			}
-		}//end while
+    for (final MSubgraph s : mSubgraphs) {
+      //If removed or index changed, remove (old) index from each set and set new one if changed
+      if (mod == GraphConstraints.INDEXCHANGED) {
+        if (mm.getModifiedElement() == GraphConstraints.NODE) {
+          s.removeNode(mm.getOldElementID());
+          s.addNode(mm.getElementID());
+        } else if (mm.getModifiedElement() == GraphConstraints.EDGE) {
+          s.removeEdge(mm.getOldElementID());
+          s.addEdge(mm.getElementID());
+        }
+      } else if (mod == GraphConstraints.REMOVAL) {
+        if (mm.getModifiedElement() == GraphConstraints.NODE)
+          s.removeNode(mm.getElementID());
+        else if (mm.getModifiedElement() == GraphConstraints.EDGE)
+          s.removeEdge(mm.getElementID());
+      }
+    }//end while
 	}
 }

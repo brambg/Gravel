@@ -81,10 +81,7 @@ public class LaTeXPictureWriter implements TeXWriter {
 
 		gp = GeneralPreferences.getInstance();
 		width = w;
-		if (type.equalsIgnoreCase("doc"))
-			wholedoc = true;
-		else
-			wholedoc = false;		
+    wholedoc = type.equalsIgnoreCase("doc");
 	}
 	
 	//General
@@ -171,7 +168,7 @@ public class LaTeXPictureWriter implements TeXWriter {
 	public static String replace(String in,String remove, String replace) 
 	{
 		if (in==null || remove==null || remove.length()==0) return in;
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		int oldIndex = 0;
 		int newIndex = 0;
 		int remLength = remove.length();
@@ -207,9 +204,9 @@ public class LaTeXPictureWriter implements TeXWriter {
 			   for (int i=1; i<(actual.getWidth()-1)*(new Double(Math.round(LINESPPT/2))).intValue(); i++)
 			   {
 				   //One Side
-				   s.write(drawOneEdgeLine(actual,start,ende,(new Double(i)).doubleValue()));
+				   s.write(drawOneEdgeLine(actual,start,ende, (double) i));
 				   //Other Side
-				   s.write(drawOneEdgeLine(actual,start,ende,(new Double(-i)).doubleValue()));				   
+				   s.write(drawOneEdgeLine(actual,start,ende, (double) -i));
 			   }
 			   //edge text
 		    	if (actual.getTextProperties().isVisible()) //draw name
@@ -247,9 +244,9 @@ public class LaTeXPictureWriter implements TeXWriter {
 			   for (int i=1; i<(actual.getWidth()-1)*(new Double(Math.round(LINESPPT/2))).intValue(); i++)
 			   {
 				   //One Side
-				   s.write(drawOneHyperedgeLine(actual,(new Double(i)).doubleValue()));
+				   s.write(drawOneHyperedgeLine(actual, (double) i));
 				   //Other Side
-				   s.write(drawOneHyperedgeLine(actual,(new Double(-i)).doubleValue()));
+				   s.write(drawOneHyperedgeLine(actual, (double) -i));
 			   }
 			   //edge text
 		    	if (actual.getTextProperties().isVisible()) //draw name
@@ -298,7 +295,7 @@ public class LaTeXPictureWriter implements TeXWriter {
 
 	private String drawOnePath(PathIterator path, int linewidth,double distancefromline)
 	{
-		String s ="";
+		StringBuilder s = new StringBuilder();
 	   	double[] coords = new double[2];
 	   	double x = 0.0, y = 0.0, lastx=0.0, lasty = 0.0;
 		int testcount=0; //don't let paths grow tooo long
@@ -326,15 +323,15 @@ public class LaTeXPictureWriter implements TeXWriter {
 		    		if (moved)
 		    		{
 		    			moved = false;
-		    			s +=NL+"\\path";
+		    			s.append(NL + "\\path");
 		    		}
 		    		dir = new Point2D.Double(x - lastx,y-lasty);
 			    	dlength = LINESPPT*Math.sqrt(dir.x*dir.x + dir.y*dir.y);
 					orth_n_h = new Point.Double (dir.y/dlength, (-1.0d)*dir.x/dlength);
 					movx = orth_n_h.x*distancefromline;
 			    	movy = orth_n_h.y*distancefromline;
-		    		s +=("("+(lastx+movx-offset.x)+","+(max.y-lasty-movy)+")");
-			    	s +=("("+(x+movx-offset.x)+","+(max.y-y-movy)+")  ");
+		    		s.append("(").append(lastx + movx - offset.x).append(",").append(max.y - lasty - movy).append(")");
+			    	s.append("(").append(x + movx - offset.x).append(",").append(max.y - y - movy).append(")  ");
 		    	}
 		   }
 		   else
@@ -342,13 +339,13 @@ public class LaTeXPictureWriter implements TeXWriter {
 			   if (distancefromline==0.0d)
 			   {
 				   //Circle with diameter linewidth
-				   s += drawCircle(x-offset.x,max.y-y,linewidth);
+				   s.append(drawCircle(x - offset.x, max.y - y, linewidth));
 			   }
 		   }
 		   lastx = x; lasty = y;
 		   path.next();
 		 }
-		return s;
+		return s.toString();
 	}
 	/**
 	 * 
@@ -362,9 +359,9 @@ public class LaTeXPictureWriter implements TeXWriter {
 		double[] coords = new double[2];
 		double x = 0.0, y = 0.0;
 		Point2D.Double arrowhead = new Point2D.Double(),line1start = new Point2D.Double(),line1 = new Point2D.Double(),line2start = new Point2D.Double(),line2 = new Point2D.Double();
-		String s = "";
+		StringBuilder s = new StringBuilder();
 		if (actual.getWidth()>1) //Dann wurde die kante mit Thicklines verbreitert -> wiederzurück zu thin
-			s += NL+"\\thinlines";
+			s.append(NL + "\\thinlines");
 		if (directed)
 		{
 		  	Shape arrow = actual.getArrowShape(nodes.get(start).getPosition(),nodes.get(ende).getPosition(),Math.round(nodes.get(start).getSize()/2),Math.round(nodes.get(ende).getSize()/2),1.0f);
@@ -376,12 +373,12 @@ public class LaTeXPictureWriter implements TeXWriter {
 		    	x = coords[0]; y = coords[1];
 		    	if (type==PathIterator.SEG_MOVETO)
 		    	{
-		    		s += NL+"\\path("+(x-offset.x)+","+(max.y-y)+")";
+		    		s.append(NL + "\\path(").append(x - offset.x).append(",").append(max.y - y).append(")");
 		    		arrowhead = new Point2D.Double(x-offset.x,max.y-y);
 		    	}
 		    	else if (type==PathIterator.SEG_LINETO)	
 		    	{
-		    		s += "("+(x-offset.x)+","+(max.y-y)+")";
+		    		s.append("(").append(x - offset.x).append(",").append(max.y - y).append(")");
 		    		if (i==0)
 		    			line1start = new Point2D.Double(x-offset.x,max.y-y);
 		    		else if (i==1)
@@ -391,7 +388,7 @@ public class LaTeXPictureWriter implements TeXWriter {
 		    		}
 		    		else if (i==2)
 		    		{
-		    			line2 = new Point2D.Double((double)(x-offset.x)-line2start.x,(double)(max.y-y) - line2start.y);		    			
+		    			line2 = new Point2D.Double(x-offset.x -line2start.x, max.y-y - line2start.y);
 		    		}
 		    		i++;	
 		    	}
@@ -402,14 +399,14 @@ public class LaTeXPictureWriter implements TeXWriter {
 		    //Shorten the direction vectors to a 1/maxcount th of the length
 		    line1.x = line1.x/maxcount; line1.y = line1.y/maxcount;
 		    line2.x = line2.x/maxcount; line2.y = line2.y/maxcount;
-		    s += "\\path("+arrowhead.x+","+arrowhead.y+")("+line2start.x+","+line2start.y+")"; //Middle line in Thick
+		    s.append("\\path(").append(arrowhead.x).append(",").append(arrowhead.y).append(")(").append(line2start.x).append(",").append(line2start.y).append(")"); //Middle line in Thick
 		    for (int j=1; j<maxcount; j++)
 		    {
-		    	s += "\\path("+arrowhead.x+","+arrowhead.y+")("+(line1start.x+line1.x*(double)j)+","+(line1start.y+line1.y*(double)j)+")"; //Middle line in Thick
-		    	s += "\\path("+arrowhead.x+","+arrowhead.y+")("+(line2start.x+line2.x*(double)j)+","+(line2start.y+line2.y*(double)j)+")"; //Middle line in Thick
+		    	s.append("\\path(").append(arrowhead.x).append(",").append(arrowhead.y).append(")(").append(line1start.x + line1.x * (double) j).append(",").append(line1start.y + line1.y * (double) j).append(")"); //Middle line in Thick
+		    	s.append("\\path(").append(arrowhead.x).append(",").append(arrowhead.y).append(")(").append(line2start.x + line2.x * (double) j).append(",").append(line2start.y + line2.y * (double) j).append(")"); //Middle line in Thick
 		    }
 		}
-		return s;
+		return s.toString();
 	}
 	private void writeSubgraphs(OutputStreamWriter s) throws IOException
 	{

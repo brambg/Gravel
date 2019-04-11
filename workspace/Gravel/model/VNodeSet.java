@@ -54,10 +54,9 @@ public class VNodeSet extends Observable implements Observer {
 	 */
 	public void deselect()
 	{
-		Iterator<VNode> n = vNodes.iterator();
-		while (n.hasNext()) {
-			n.next().deselect();
-		}
+    for (final VNode vNode : vNodes) {
+      vNode.deselect();
+    }
 	}
 	/**
 	 * Remove all Nodes, that are selected from the set.
@@ -111,13 +110,11 @@ public class VNodeSet extends Observable implements Observer {
 	 * @return if a node with the given index, if it doesn't exist, it returns null
 	 */
 	public VNode get(int i) {
-		Iterator<VNode> n = vNodes.iterator();
-		while (n.hasNext()) {
-			VNode temp = n.next();
-			if (temp.getIndex() == i) {
-				return temp;
-			}
-		}
+    for (final VNode temp : vNodes) {
+      if (temp.getIndex() == i) {
+        return temp;
+      }
+    }
 		return null;
 	}
 	/**
@@ -174,20 +171,16 @@ public class VNodeSet extends Observable implements Observer {
 		NodeLock.lock(); //Knoten finden
 		try
 		{
-			Iterator<VNode> n = vNodes.iterator();				
-			while (n.hasNext())
-			{
-				VNode t = n.next();
-				if (t.getIndex()==node.getIndex())
-				{
-					vNodes.remove(t);
-					t.copyColorStatus(node);
-					vNodes.add(node);
-					setChanged();
-					notifyObservers(new GraphMessage(GraphConstraints.NODE,node.getIndex(), GraphConstraints.REPLACEMENT,GraphConstraints.NODE));	
-					break;
-				}
-			}
+      for (final VNode t : vNodes) {
+        if (t.getIndex() == node.getIndex()) {
+          vNodes.remove(t);
+          t.copyColorStatus(node);
+          vNodes.add(node);
+          setChanged();
+          notifyObservers(new GraphMessage(GraphConstraints.NODE, node.getIndex(), GraphConstraints.REPLACEMENT, GraphConstraints.NODE));
+          break;
+        }
+      }
 		}
 		finally {NodeLock.unlock();}
 	}
@@ -199,13 +192,11 @@ public class VNodeSet extends Observable implements Observer {
 	 * @return the first node in range, if there is one, else null
 	 */
 	public VNode getFirstinRangeOf(Point p) {
-		Iterator<VNode> n = vNodes.iterator();
-		while (n.hasNext()) {
-			VNode temp = n.next();
-			if (temp.getPosition().distance(p) <= temp.getSize() / 2) {
-				return temp;
-			}
-		}
+    for (final VNode temp : vNodes) {
+      if (temp.getPosition().distance(p) <= temp.getSize() / 2) {
+        return temp;
+      }
+    }
 		return null; // keinen gefunden
 	}
 	/**
@@ -213,11 +204,10 @@ public class VNodeSet extends Observable implements Observer {
 	 * @return true, if there is at least one selected node, else false
 	 */
 	public boolean hasSelection() {
-		Iterator<VNode> n = vNodes.iterator();
-		while (n.hasNext()) {
-			if ((n.next().getSelectedStatus() & VItem.SELECTED) == VItem.SELECTED)
-				return true;
-		}
+    for (final VNode vNode : vNodes) {
+      if ((vNode.getSelectedStatus() & VItem.SELECTED) == VItem.SELECTED)
+        return true;
+    }
 		return false;
 	}
 	/**
@@ -281,8 +271,8 @@ public class VNodeSet extends Observable implements Observer {
 		if (arg instanceof GraphColorMessage)
 		{
 			GraphColorMessage m = (GraphColorMessage)arg;
-			if (m==null)
-				return;
+			if (m==null) {
+			}
 			else
 				Colorchange(m);
 			

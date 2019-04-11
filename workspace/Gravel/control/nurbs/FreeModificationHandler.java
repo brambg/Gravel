@@ -29,8 +29,8 @@ public class FreeModificationHandler implements ShapeModificationMouseHandler {
 	VHyperEdge HyperEdgeRef;
 	float zoom;
 	GeneralPreferences gp;
-	Point MouseOffSet = new Point(0,0);;
-	boolean firstdrag = true;
+	Point MouseOffSet = new Point(0,0);
+  boolean firstdrag = true;
 	double DragStartProjection = Double.NaN;
 	NURBSShape temporaryShape=null;
 	
@@ -103,7 +103,7 @@ public class FreeModificationHandler implements ShapeModificationMouseHandler {
 		if (alt||shift)
 			return;
 		MouseOffSet = e.getPoint(); //Aktuelle Position merken für eventuelle Bewegungen while pressed
-		Point pointInGraph = new Point(Math.round(e.getPoint().x/((float)zoom)),Math.round(e.getPoint().y/((float)zoom))); //Rausrechnen des zooms
+		Point pointInGraph = new Point(Math.round(e.getPoint().x/ zoom),Math.round(e.getPoint().y/ zoom)); //Rausrechnen des zooms
 		if (temporaryShape.isPointOnCurve(pointInGraph, 2.0d)) //Are we near the Curve?
 		{
 			DragStartProjection = temporaryShape.ProjectionPointParameter(pointInGraph);

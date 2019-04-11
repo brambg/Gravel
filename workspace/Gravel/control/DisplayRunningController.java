@@ -39,12 +39,12 @@ public class DisplayRunningController extends Thread {
     		pointCount++;
     		if (pointCount>3)
     			pointCount=1;
-    		String t= ""+OrigTextPre;
+    		StringBuilder t= new StringBuilder("" + OrigTextPre);
     		for(int i = 0; i < pointCount; i++)
-    			t +=".";
-    		t+=OrigTextPost;
+    			t.append(".");
+    		t.append(OrigTextPost);
     		if (!pause)
-    			DisplayOn.setText(t);
+    			DisplayOn.setText(t.toString());
     		try {
     			sleep(500);
     		}

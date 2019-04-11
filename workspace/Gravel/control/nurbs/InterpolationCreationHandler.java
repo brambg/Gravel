@@ -7,7 +7,6 @@ import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
-import java.util.Iterator;
 import java.util.Vector;
 
 import model.*;
@@ -137,13 +136,10 @@ public class InterpolationCreationHandler implements ShapeCreationMouseHandler {
 	 */
 	private int containsPoint(Point2D p)
 	{
-		Iterator<Point2D> iter = InterpolationPoints.iterator();
-		while (iter.hasNext())
-		{
-			Point2D actualPoint = iter.next();
-			if (actualPoint.distance(p)<=(new Integer(gp.getIntValue("vgraphic.selwidth"))).doubleValue())
-				return InterpolationPoints.indexOf(actualPoint);
-		}
+    for (final Point2D actualPoint : InterpolationPoints) {
+      if (actualPoint.distance(p) <= (new Integer(gp.getIntValue("vgraphic.selwidth"))).doubleValue())
+        return InterpolationPoints.indexOf(actualPoint);
+    }
 		return -1;
 	}
 	//One every Click a potental Drag is initialized but firstdrag = true signals, that no Drag-Movement happened yet

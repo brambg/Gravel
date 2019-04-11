@@ -82,10 +82,7 @@ public class MyTikZPictureWriter implements TeXWriter {
 		}
 		gp = GeneralPreferences.getInstance();
 		figurewidth = w/10d;
-		if (type.equalsIgnoreCase("doc"))
-			wholedoc = true;
-		else
-			wholedoc = false;		
+    wholedoc = type.equalsIgnoreCase("doc");
 		pixelpercm = (double)(vg.getMaxPoint(vgc.getGraphics()).x-vg.getMinPoint(vgc.getGraphics()).x)/figurewidth;
 		offset = vg.getMinPoint(vgc.getGraphics());
 		max = vg.getMaxPoint(vgc.getGraphics());
@@ -165,7 +162,7 @@ public class MyTikZPictureWriter implements TeXWriter {
 			return "black";
 		}
 		// Following After schema {rgb:red,4;green,2;yellow,1} 
-		String colormix = "rgb:";
+		StringBuilder colormix = new StringBuilder("rgb:");
 		Iterator<MSubgraph> msubiter = msubgraphs.getIterator();
 		boolean first=true;
 		while (msubiter.hasNext())
@@ -178,11 +175,11 @@ public class MyTikZPictureWriter implements TeXWriter {
 			{
 				if (first)
 				{
-					colormix += "subgraph"+actsub.getIndex()+",1";
+					colormix.append("subgraph").append(actsub.getIndex()).append(",1");
 					first=false;
 				}
 				else
-					colormix += ";subgraph"+actsub.getIndex()+",1";
+					colormix.append(";subgraph").append(actsub.getIndex()).append(",1");
 			}
 		}
 		return "{"+colormix+"}";
@@ -253,7 +250,7 @@ public class MyTikZPictureWriter implements TeXWriter {
 	public static String replace(String in,String remove, String replace) 
 	{
 		if (in==null || remove==null || remove.length()==0) return in;
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		int oldIndex = 0;
 		int newIndex = 0;
 		int remLength = remove.length();
@@ -345,7 +342,7 @@ public class MyTikZPictureWriter implements TeXWriter {
 
 	public String drawOnePath(PathIterator path, int linewidth, String ColorSpec, String LineSpec)
 	{
-		String s ="";
+		StringBuilder s = new StringBuilder();
 	   	double[] coords = new double[2];
 	   	double x = 0.0, y = 0.0, lastx=0.0, lasty = 0.0;
 		boolean start=true;
@@ -358,19 +355,19 @@ public class MyTikZPictureWriter implements TeXWriter {
 		    	if (type==PathIterator.SEG_MOVETO)
 		    	{
 		    		if (!start)
-		    			s +=";";
-		    		s +=NL+"\t\t\\path["+LineSpec+",draw="+ColorSpec+", line width=";
+		    			s.append(";");
+		    		s.append(NL + "\t\t\\path[").append(LineSpec).append(",draw=").append(ColorSpec).append(", line width=");
 		    		if (linesinPT)
-		    			s += linewidth+"pt";
+		    			s.append(linewidth).append("pt");
 		    		else
-		    			s += (((double)linewidth)/pixelpercm)+"cm";
+		    			s.append(((double) linewidth) / pixelpercm).append("cm");
 		    		
-		    		s+= "] ("+(x-offset.x)/pixelpercm+","+(max.y-y)/pixelpercm+")";
+		    		s.append("] (").append((x - offset.x) / pixelpercm).append(",").append((max.y - y) / pixelpercm).append(")");
 		    	}
 		    	else if (type==PathIterator.SEG_LINETO)	
 		    	{
-	    			s += " -- ";
-					s += " ("+(x-offset.x)/pixelpercm+","+(max.y-y)/pixelpercm+")";
+	    			s.append(" -- ");
+					s.append(" (").append((x - offset.x) / pixelpercm).append(",").append((max.y - y) / pixelpercm).append(")");
 		    	}
 		    	else
                 	main.DEBUG.println(main.DEBUG.MIDDLE,"Unknown line type ("+type+") in Graphics Path when writing TikZ-File");
@@ -380,8 +377,8 @@ public class MyTikZPictureWriter implements TeXWriter {
 			   start=false;
 		   path.next();
 		 }
-	    s +=";";
-		return s;
+	    s.append(";");
+		return s.toString();
 	}
 	/**
 	 * 

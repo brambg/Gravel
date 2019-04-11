@@ -15,28 +15,28 @@ import java.awt.event.MouseMotionListener;
 public interface DragMouseHandler extends MouseListener, MouseMotionListener 
 {
 
-	public Point getMouseOffSet();
+	Point getMouseOffSet();
 	/**
 	 * Indicated whetther someoe is just dragging or not
 	 * @return
 	 */
-	public boolean dragged();
+  boolean dragged();
 	/** set whether the nodes are set to a gridpoint after dragging or not. Handler must not implement this
 	 * 
 	 */
-	public void setGridOrientated(boolean b);
+  void setGridOrientated(boolean b);
 	/** update Gridinfo
 	 * 
 	 */
-	public void setGrid(int x, int y);
+  void setGrid(int x, int y);
 	/**
 	 * For Displaying the Selection Rectangle
 	 * 
 	 * @return the rectangle if it exists, else null
 	 */
-	public Rectangle getSelectionRectangle();
+  Rectangle getSelectionRectangle();
 	/**
 	 * RemoveObservable Stuff
 	 */
-	public void removeGraphObservers();
+  void removeGraphObservers();
 }

@@ -29,8 +29,9 @@ public class NURBSShapeFragment extends NURBSShape {
 	private NURBSShape subcurve;
 	private double u1,u2;
 	private NURBSShape origCurve;
-	private enum affinType {TRANSLATION, ROTATION, SCALING, SCALING_DIR};
-	/**
+	private enum affinType {TRANSLATION, ROTATION, SCALING, SCALING_DIR}
+
+  /**
 	 * Initialize the subcurve of c to an intervall of the parameter [start,end]
 	 * (Iff start>end and c is closed and unclamped the subcurve gets [start,b)[a+offset,end+offset] where offset=b-a
 	 * 
@@ -301,11 +302,11 @@ public class NURBSShapeFragment extends NURBSShape {
 		//Raise both endvalues to multiplicity d to get an clamped curve
 		double offset = Knots.get(maxKnotIndex-degree)-Knots.get(degree);
 		int multStart = 0;
-		while (Knots.get(Start+multStart).doubleValue()==u1)
+		while (Knots.get(Start + multStart) ==u1)
 			multStart++;
 		int multEnd = 0;
 		NURBSShape sub = origCurve.clone();
-		while (Knots.get(End-multEnd).doubleValue()==u2)
+		while (Knots.get(End - multEnd) ==u2)
 			multEnd++;
 		Vector<Double> Refinement = new Vector<Double>();
 		for (int i=0; i<degree-multStart; i++)
@@ -333,13 +334,13 @@ public class NURBSShapeFragment extends NURBSShape {
 		for (int i=subStart-degree; i<=sub.maxCPIndex-degree; i++)
 		{
 			newCP.add((Point2D)sub.controlPoints.get(i).clone());
-			newWeight.add(sub.cpWeight.get(i).doubleValue());
+			newWeight.add(sub.cpWeight.get(i));
 		}
 		//...and from start of curve to u2
 		for (int i=0; i<=subEnd-degree; i++)
 		{
 			newCP.add((Point2D)sub.controlPoints.get(i).clone());
-			newWeight.add(sub.cpWeight.get(i).doubleValue());				
+			newWeight.add(sub.cpWeight.get(i));
 		}	
 		//Copy needed Knots
 		Vector<Double> newKnots = new Vector<Double>();
@@ -350,19 +351,18 @@ public class NURBSShapeFragment extends NURBSShape {
 		//KNots from u^to end of curve
 		while (index<sub.maxKnotIndex-degree)
 		{
-			newKnots.add(sub.Knots.get(index).doubleValue());
+			newKnots.add(sub.Knots.get(index));
 			index++;
 		}
 		//knots from start of curve to u2
 		index=degree; 
 		while (sub.Knots.get(index)<=u2)
 		{
-			newKnots.add(sub.Knots.get(index).doubleValue()+offset);
+			newKnots.add(sub.Knots.get(index) +offset);
 			index++;
 		}
 		newKnots.add(u2+offset);
-		NURBSShape c = new NURBSShape(newKnots,newCP,newWeight);
-		return c;
+		return new NURBSShape(newKnots,newCP,newWeight);
 	}
 	/**
 	 * Return the clamped Subcurve between the parameters u1 and u2
@@ -387,9 +387,9 @@ public class NURBSShapeFragment extends NURBSShape {
 		if (Knots.get(maxKnotIndex-degree)==u2) //Last possible Value the Curve is evaluated
 			End++; //Becaue the intervall per se is open but we need the next interval
 		//Raise both endvalues to multiplicity d to get an clamped curve
-		while (Knots.get(Start+multStart).doubleValue()==u1)
+		while (Knots.get(Start + multStart) ==u1)
 			multStart++;
-		while (Knots.get(End-multEnd).doubleValue()==u2)
+		while (Knots.get(End - multEnd) ==u2)
 			multEnd++;
 		Vector<Double> Refinement = new Vector<Double>();
 		NURBSShape subcurve = origCurve.clone();
@@ -407,7 +407,7 @@ public class NURBSShapeFragment extends NURBSShape {
 		for (int i=subStart-degree; i<=subEnd-degree; i++) //Copy needed CP
 		{
 			newCP.add((Point2D)subcurve.controlPoints.get(i).clone());
-			newWeight.add(subcurve.cpWeight.get(i).doubleValue());
+			newWeight.add(subcurve.cpWeight.get(i));
 		}
 		//Copy needed Knots
 		Vector<Double> newKnots = new Vector<Double>();
@@ -418,13 +418,12 @@ public class NURBSShapeFragment extends NURBSShape {
 			index++;
 		while (subcurve.Knots.get(index)<=u2)
 		{
-			newKnots.add(subcurve.Knots.get(index).doubleValue());
+			newKnots.add(subcurve.Knots.get(index));
 			index++;
 		}
 		if ((u2!=origCurve.Knots.get(origCurve.maxKnotIndex-origCurve.degree))||(origCurve.getType()!=NURBSShape.CLAMPED))
 			newKnots.add(u2);
-		NURBSShape c = new NURBSShape(newKnots,newCP,newWeight);
-		return c;
+		return new NURBSShape(newKnots,newCP,newWeight);
 	}
 
 	//

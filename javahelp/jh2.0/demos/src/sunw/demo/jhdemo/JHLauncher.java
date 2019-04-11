@@ -40,7 +40,6 @@
 
 package sunw.demo.jhdemo;
 
-import java.util.Locale;
 import java.awt.*;
 import java.awt.event.*;
 import javax.help.*;
@@ -53,8 +52,6 @@ import java.net.*;
 import java.util.*;
 import java.io.*;
 import java.security.AccessControlException;
-import java.awt.Font;
-import java.awt.GraphicsEnvironment;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
@@ -77,7 +74,7 @@ public class JHLauncher {
     protected static boolean debug = false;
     protected static boolean setHS = false;
     private static boolean on12;
-    private static Font fonts [];
+	private static Font[] fonts;
 
     private static JHelp jh = null;
     HelpSet hs = null;
@@ -284,30 +281,30 @@ public class JHLauncher {
 	    // Get the fonts
 	    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 	    fonts = ge.getAllFonts();
-	    for (int i = 0 ; i < fonts.length ; i++) {
-		DefaultMutableTreeNode node = 
-		    new DefaultMutableTreeNode(new MyFont(fonts[i]));
-		String family = fonts[i].getFamily();
-		String testFamily = null;
-		DefaultMutableTreeNode test = null;
-		for (Enumeration e = topNode.children() ;
-		     e.hasMoreElements() ; ) {
-		    test = (DefaultMutableTreeNode) e.nextElement();
-		    testFamily = (String) test.getUserObject();
-		    if (testFamily.compareTo(family) == 0) {
-			break;
-		    }
-		    test = null;
+		for (final Font value : fonts) {
+			DefaultMutableTreeNode node =
+					new DefaultMutableTreeNode(new MyFont(value));
+			String family = value.getFamily();
+			String testFamily = null;
+			DefaultMutableTreeNode test = null;
+			for (Enumeration e = topNode.children();
+					 e.hasMoreElements(); ) {
+				test = (DefaultMutableTreeNode) e.nextElement();
+				testFamily = (String) test.getUserObject();
+				if (testFamily.compareTo(family) == 0) {
+					break;
+				}
+				test = null;
+			}
+			if (test == null) {
+				DefaultMutableTreeNode parent =
+						new DefaultMutableTreeNode(family);
+				topNode.add(parent);
+				parent.add(node);
+			} else {
+				test.add(node);
+			}
 		}
-		if (test == null) {
-		    DefaultMutableTreeNode parent = 
-			new DefaultMutableTreeNode(family);
-		    topNode.add(parent);
-		    parent.add(node);
-		} else {
-		    test.add(node);
-		}
-	    }
 
 	    Box topBox = Box.createVerticalBox();
 
@@ -488,15 +485,15 @@ public class JHLauncher {
 	JMenuItem mi;
 
 	// File Menu
-	JMenu file = (JMenu) menuBar.add(new JMenu("File"));
+	JMenu file = menuBar.add(new JMenu("File"));
         file.setMnemonic('F');
 
-	mi = (JMenuItem) file.add(new JMenuItem("Open page"));
+	mi = file.add(new JMenuItem("Open page"));
 	ActionListener openPageListener = new OpenPageListener();
 	mi.addActionListener(openPageListener);
 
 	if (setHS) {
-	    mi = (JMenuItem) file.add(new JMenuItem("Set HelpSet"));
+	    mi = file.add(new JMenuItem("Set HelpSet"));
 	    mi.setMnemonic('s');
 	    mi.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -508,7 +505,7 @@ public class JHLauncher {
 	    });
 	}
 
-	mi = (JMenuItem) file.add(new JMenuItem("Exit"));
+	mi = file.add(new JMenuItem("Exit"));
 	mi.setMnemonic('x');
 	mi.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent e) {
@@ -518,15 +515,15 @@ public class JHLauncher {
 
 
 	// Option Menu
-	JMenu options = (JMenu) menuBar.add(new JMenu("Options"));
+	JMenu options = menuBar.add(new JMenu("Options"));
         options.setMnemonic('O');
 
-	mi = (JMenuItem) options.add(new JMenuItem("Set Font..."));
+	mi = options.add(new JMenuItem("Set Font..."));
 	ActionListener setFontListener = new SetFontListener();
 	mi.addActionListener(setFontListener);
 
 	if (debug) {
-	    mi = (JMenuItem) options.add(new JMenuItem("Show Element Tree"));
+	    mi = options.add(new JMenuItem("Show Element Tree"));
 	    ActionListener elementTreeListener = new ShowElementTreeListener();
 	    mi.addActionListener(elementTreeListener);
 	}
@@ -554,7 +551,7 @@ public class JHLauncher {
      * -classpath "classpath" 	A class path to use (default is the ClassLoader of JHLauncher)
      * -hsURL "URL to helpset" Where to look for the HelpSet.
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         boolean canContinue = true;
 	String version = System.getProperty("java.version");
         if (version.startsWith("1.0")) {
@@ -607,12 +604,10 @@ public class JHLauncher {
     /**
      * Parse the arguments
      */
-    private String[] shiftArgs(String args[], int step) {
+    private String[] shiftArgs(String[] args, int step) {
 	int count = args.length;
-	String back[] = new String[count-step];
-	for (int i=0; i<count-step; i++) {
-	    back[i] = args[i+step];
-	}
+			String[] back = new String[count - step];
+			if (count - step >= 0) System.arraycopy(args, 0 + step, back, 0, count - step);
 	return back;
     }
 
@@ -626,12 +621,12 @@ public class JHLauncher {
 	} catch (Exception ex) {
 	    System.err.println("cannot create URL for "+spec);
 	}
-	URL back[] = new URL[v.size()];
+			URL[] back = new URL[v.size()];
 	v.copyInto(back);
 	return back;
     }
 
-    private void setup(String args[]) {
+    private void setup(String[] args) {
 	ClassLoader loader = this.getClass().getClassLoader();
 	String path = null;	// the classpath to use (1.2-only)
 
@@ -646,7 +641,7 @@ public class JHLauncher {
 		if (on12) { 
 		   File file = new File(args[0]);
 		   handleHSFile(file);
-		   URL urls[] = parseURLs(hsPath);
+			URL[] urls = parseURLs(hsPath);
 		   // This is a 1.2 only feature.
 		   try {
 		      loader = URLClassLoader.newInstance(urls, loader);
@@ -672,7 +667,7 @@ public class JHLauncher {
 		}
 
 		hspath = new String("file:" + hspath);
-		URL urls[] = parseURLs(hspath);
+				URL[] urls = parseURLs(hspath);
 		args = shiftArgs(args, 1);
 		try {
 		    loader = URLClassLoader.newInstance(urls, loader);
@@ -931,9 +926,9 @@ public class JHLauncher {
 	    ClassLoader cl;
 	    HelpSet hs = null;
 	    String path = helpSetURL.getText();
-	    String name = (String) helpSetName.getText();
+	    String name = helpSetName.getText();
 	    if (on12) {
-		URL x[] = parseURLs(path);
+				URL[] x = parseURLs(path);
 		cl = new URLClassLoader(x);
 	    } else {
 		cl = null;
@@ -961,7 +956,7 @@ public class JHLauncher {
 	    }
 	    createFrame (hs.getTitle(), null);
 	    launch();
-	    selectionDialog.hide();
+	    selectionDialog.dispose();
 	}
     }
 

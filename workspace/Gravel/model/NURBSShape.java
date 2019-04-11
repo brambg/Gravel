@@ -1,5 +1,7 @@
 package model;
 
+import main.DEBUG;
+
 import java.awt.Point;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
@@ -166,25 +168,16 @@ public class NURBSShape {
 	{
 		if ((s.controlPoints.size()!=controlPoints.size())||(Knots.size()!=s.Knots.size()))
 			return false;
-		Iterator<Point2D> bi = controlPoints.iterator();
-		while (bi.hasNext())
-		{
-			Point2D p = bi.next();
-			if (s.controlPoints.get(controlPoints.indexOf(p)).distance(p)!=0.0d)
+		for (final Point2D p : controlPoints) {
+			if (s.controlPoints.get(controlPoints.indexOf(p)).distance(p) != 0.0d)
 				return false;
 		}
-		Iterator<Double> ti = Knots.iterator();
-		while (ti.hasNext())
-		{
-			Double v = ti.next();
-			if (s.Knots.get(Knots.indexOf(v)).compareTo(v)==0) //Equal
+		for (final Double v : Knots) {
+			if (s.Knots.get(Knots.indexOf(v)).compareTo(v) == 0) //Equal
 				return false;
 		}
-		Iterator<Double> wi = cpWeight.iterator();
-		while (wi.hasNext())
-		{
-			Double v = wi.next();
-			if (s.cpWeight.get(cpWeight.indexOf(v)).compareTo(v)==0) //Equal
+		for (final Double v : cpWeight) {
+			if (s.cpWeight.get(cpWeight.indexOf(v)).compareTo(v) == 0) //Equal
 				return false;
 		}
 		return true;
@@ -274,19 +267,16 @@ public class NURBSShape {
 		Vector<Double> k = new Vector<Double>();
 		Iterator<Double> iter = Knots.iterator();
 		while (iter.hasNext())
-			k.addElement(new Double(iter.next().doubleValue()));
+			k.addElement(iter.next());
 		
 		Vector<Double> w = new Vector<Double>();
 		iter = cpWeight.iterator();
 		while (iter.hasNext())
-			w.addElement(new Double(iter.next().doubleValue()));
+			w.addElement(iter.next());
 
 		Vector<Point2D> p = new Vector<Point2D>();
-		Iterator<Point2D> iter2 = controlPoints.iterator();
-		while (iter2.hasNext())
-		{
-			Point2D next = iter2.next();
-			p.addElement((Point2D) next.clone());			
+		for (final Point2D next : controlPoints) {
+			p.addElement((Point2D) next.clone());
 		}
 		return new NURBSShape(k,p,w);
 	}
@@ -297,10 +287,7 @@ public class NURBSShape {
 	{
 		double x = Double.MIN_VALUE;
 		double y = Double.MIN_VALUE;
-		Iterator<Point2D> bi = controlPoints.iterator();
-		while (bi.hasNext())
-		{
-			Point2D p = bi.next();
+		for (final Point2D p : controlPoints) {
 			if (p.getX() > x)
 				x = p.getX();
 			if (p.getY() > y)
@@ -315,10 +302,7 @@ public class NURBSShape {
 	{
 		double x = Double.MAX_VALUE;
 		double y = Double.MAX_VALUE;
-		Iterator<Point2D> bi = controlPoints.iterator();
-		while (bi.hasNext())
-		{
-			Point2D p = bi.next();
+		for (final Point2D p : controlPoints) {
 			if (p.getX() < x)
 				x = p.getX();
 			if (p.getY() < y)
@@ -342,11 +326,8 @@ public class NURBSShape {
 	 */
 	public void scale(double sx, double sy)
 	{
-		Iterator<Point2D> bi = controlPoints.iterator();
-		while (bi.hasNext())
-		{
-			Point2D p = bi.next();
-			p.setLocation(p.getX()*sx,p.getY()*sy);
+		for (final Point2D p : controlPoints) {
+			p.setLocation(p.getX() * sx, p.getY() * sy);
 		}
 		//recalculate Homogeneous
 		refreshInternalValues();		
@@ -359,11 +340,8 @@ public class NURBSShape {
 	public void translate(double x, double y)
 	{
 		Vector<Point2D> Q = new Vector<Point2D>();
-		Iterator<Point2D> bi = controlPoints.iterator();
-		while (bi.hasNext())
-		{
-			Point2D p = bi.next();
-			Q.add(new Point2D.Double(p.getX()+x,p.getY()+y));
+		for (final Point2D p : controlPoints) {
+			Q.add(new Point2D.Double(p.getX() + x, p.getY() + y));
 		}
 		this.setCurveTo(Knots,Q,cpWeight);
 	}
@@ -408,9 +386,9 @@ public class NURBSShape {
 		path.moveTo((float)actualPoint.getX(), (float)actualPoint.getY());
 		//Init Stack with the endpoint
 		calculatedParameters.push(Knots.get(maxKnotIndex-degree)); //Last value, that can be evaluated
-		calculatedPoints.push(CurveAt(calculatedParameters.peek().doubleValue()));
+		calculatedPoints.push(CurveAt(calculatedParameters.peek()));
 		calculatedParameters.push((Knots.get(maxKnotIndex-degree)+Knots.get(degree))/2d); //Middle, because start and end ar equal
-		calculatedPoints.push(CurveAt(calculatedParameters.peek().doubleValue()));
+		calculatedPoints.push(CurveAt(calculatedParameters.peek()));
 		//
 		//Calculate values in between as long as they are not near enough
 		//
@@ -631,7 +609,7 @@ public class NURBSShape {
 		int r = r2-r1;
 		PK.set(0,new Vector<Point2dHom>());PK.get(0).setSize(r+1);
 		for (int i=0; i<=r; i++)
-			PK.get(0).set(i, (Point2dHom) controlPointsHom.get(r1+i).clone());
+			PK.get(0).set(i, controlPointsHom.get(r1+i).clone());
 		for (int k=1; k<=d; k++) //through all derivatives
 		{
 			PK.set(k,new Vector<Point2dHom>()); PK.get(k).setSize(r-k+1);
@@ -800,13 +778,9 @@ public class NURBSShape {
 	public Point2D getNearestCP(Point m) {
 		double mindist = Double.MAX_VALUE;
 		Point2D result = null;
-		Iterator<Point2D> bi = controlPoints.iterator();
-		while (bi.hasNext())
-		{
-			Point2D p = bi.next();
+		for (final Point2D p : controlPoints) {
 			double dist = p.distance(m);
-			if (dist < mindist)
-			{
+			if (dist < mindist) {
 				mindist = dist;
 				result = p;
 			}
@@ -843,21 +817,21 @@ public class NURBSShape {
 		if (changeFront)
 		{
 			for (int j=0; j<degree; j++)
-				Knots.set(j, Knots.get(maxKnotIndex-2*degree+j).doubleValue()-offset);
+				Knots.set(j, Knots.get(maxKnotIndex - 2 * degree + j) -offset);
 			for (int j=0; j<degree; j++)
 			{
 				controlPoints.set(j, (Point2D) controlPoints.get(maxCPIndex-degree+1+j).clone());
-				cpWeight.set(j, cpWeight.get(maxCPIndex-degree+1+j).doubleValue());
+				cpWeight.set(j, cpWeight.get(maxCPIndex - degree + 1 + j));
 			}
 		}
 		else //Update last values
 		{
 			for (int j=0; j<degree; j++)
-				Knots.set(maxKnotIndex-degree+j, Knots.get(degree+j).doubleValue()+offset);
+				Knots.set(maxKnotIndex-degree+j, Knots.get(degree + j) +offset);
 			for (int j=0; j<degree; j++)
 			{
 				controlPoints.set(maxCPIndex-degree+1+j, (Point2D) controlPoints.get(j).clone());
-				cpWeight.set(maxCPIndex-degree+1+j, cpWeight.get(j).doubleValue());
+				cpWeight.set(maxCPIndex-degree+1+j, cpWeight.get(j));
 			}
 
 		}
@@ -918,29 +892,26 @@ public class NURBSShape {
 		int lastAffected = knotIndex-mult, firstAffected = knotIndex-degree, offSet = firstAffected-1; //OffSet from temporary Vector to original
 		Vector<Point2dHom> temp = new Vector<Point2dHom>();
 		temp.setSize(lastAffected-offSet+2);
-		temp.set(0,(Point2dHom)controlPointsHom.get(offSet).clone()); temp.set(lastAffected-offSet+1, (Point2dHom)controlPointsHom.get(lastAffected+1).clone());
+		temp.set(0, controlPointsHom.get(offSet).clone()); temp.set(lastAffected-offSet+1, controlPointsHom.get(lastAffected+1).clone());
 		int i=firstAffected, j=lastAffected, ii=1, jj=lastAffected-offSet; //i,j are the values of the actual Controlpoints, ii,jj are those of the temporary Vector
 		while ((j-i) > 0) //Just one removal, t=0 from the algorithm
 		{
-			double alphi = (knotu-Knots.get(i).doubleValue()) / (Knots.get(i+degree+1)-Knots.get(i));
-			double alphj = (knotu-Knots.get(j).doubleValue()) / (Knots.get(j+degree+1)-Knots.get(j));
-			Point2dHom newii = (Point2dHom) controlPointsHom.get(i).clone();
-			Point2dHom newiisummand = (Point2dHom)temp.get(ii-1).clone();
+			double alphi = (knotu- Knots.get(i)) / (Knots.get(i+degree+1)-Knots.get(i));
+			double alphj = (knotu- Knots.get(j)) / (Knots.get(j+degree+1)-Knots.get(j));
+			Point2dHom newii = controlPointsHom.get(i).clone();
+			Point2dHom newiisummand = temp.get(ii-1).clone();
 			newiisummand.scale(-1d*(1d-alphi));	newii.add(newiisummand);newii.scale(alphi);
 			temp.set(ii,newii);
-			Point2dHom newjj = (Point2dHom) controlPointsHom.get(j).clone();
-			Point2dHom newjjsummand = (Point2dHom)temp.get(jj+1).clone();
+			Point2dHom newjj = controlPointsHom.get(j).clone();
+			Point2dHom newjjsummand = temp.get(jj+1).clone();
 			newjjsummand.scale(-1d*(alphj)); newjj.add(newjjsummand);newjj.scale(1d-alphj);
 			temp.set(jj,newjj);
 			i++; ii++; j--; jj--;
 		}
-		for (int k=0; k<temp.size(); k++)
-		{
-			if (temp.get(k)!=null)
-			{
-				if (temp.get(k).w<0)
-				{
-		        	main.DEBUG.println(main.DEBUG.MIDDLE,"NURBSShape::removeKnoteNear() : Can't remove Knot, because in the calculation one weight got negative!");
+		for (Point2dHom point2dHom : temp) {
+			if (point2dHom != null) {
+				if (point2dHom.w < 0) {
+					DEBUG.println(DEBUG.MIDDLE, "NURBSShape::removeKnoteNear() : Can't remove Knot, because in the calculation one weight got negative!");
 					return false;
 				}
 			}
@@ -955,7 +926,7 @@ public class NURBSShape {
 		}
 		//Shift unaffected Knots
 		for (int k=knotIndex+1; k<=maxKnotIndex; k++)
-			Knots.set(k-1, Knots.get(k).doubleValue());
+			Knots.set(k-1, Knots.get(k));
 		Knots.setSize(Knots.size()-1); //Remove last Element
 		//Shift all unaffected ControlPoints
 		int firstCPOut = (2*knotIndex-mult-degree)/2;
@@ -966,14 +937,11 @@ public class NURBSShape {
 		//Recompute Points & weights
 		controlPoints = new Vector<Point2D>(); 
 		cpWeight = new Vector<Double>();
-		Iterator<Point2dHom> Pwi = controlPointsHom.iterator();
-		while (Pwi.hasNext())
-		{
-			Point2dHom p1 = Pwi.next();
-			if (p1.w==0)
-				controlPoints.add(new Point2D.Double(p1.x,p1.y));
+		for (final Point2dHom p1 : controlPointsHom) {
+			if (p1.w == 0)
+				controlPoints.add(new Point2D.Double(p1.x, p1.y));
 			else
-				controlPoints.add(new Point2D.Double(p1.x/p1.w, p1.y/p1.w));
+				controlPoints.add(new Point2D.Double(p1.x / p1.w, p1.y / p1.w));
 			cpWeight.add(p1.w);
 		}
 		maxCPIndex = controlPoints.size()-1;
@@ -997,11 +965,8 @@ public class NURBSShape {
 	{
 		if (isEmpty())
 			return;
-		Iterator<Double> testI = X.iterator();
-		while (testI.hasNext())
-		{
-			double thisx = testI.next().doubleValue();
-			if ((thisx < Knots.firstElement())||(thisx>Knots.lastElement())) //Out Of Range
+		for (final double thisx : X) {
+			if ((thisx < Knots.firstElement()) || (thisx > Knots.lastElement())) //Out Of Range
 				return;
 		}
 		//Compare The NURBS Book A5.4
@@ -1014,13 +979,13 @@ public class NURBSShape {
 		Vector<Double> newt = new Vector<Double>();
 		newt.setSize(Knots.size()+X.size());
 		for (int j=0; j<=a-degree; j++)//Copy the first not changed values of the CPs
-			newPw.set(j, (Point2dHom) controlPointsHom.get(j).clone());
+			newPw.set(j, controlPointsHom.get(j).clone());
 		for (int j=b-1; j<=maxCPIndex; j++)//Copy the last not changed values of the CPs
-			newPw.set(j+X.size(), (Point2dHom) controlPointsHom.get(j).clone());
+			newPw.set(j+X.size(), controlPointsHom.get(j).clone());
 		for (int j=0; j<=a; j++)//Copy the first not changed values of t
-			newt.set(j, Knots.get(j).doubleValue());
+			newt.set(j, Knots.get(j));
 		for (int j=b+degree; j<=maxKnotIndex; j++)//Copy the last not changed values of t
-			newt.set(j+X.size(), Knots.get(j).doubleValue());
+			newt.set(j+X.size(), Knots.get(j));
 		
 		int i=b+degree-1; //Last Value that's new in t
 		int k=b+degree+X.size()-1; //Last Value that's new in Pw
@@ -1028,42 +993,39 @@ public class NURBSShape {
 		{ 
 			while ((X.get(j) <= Knots.get(i)) && (i > a)) //These Values are not affected by Insertion of actual Not, copy them
 			{
-				newPw.set(k-degree-1, (Point2dHom) controlPointsHom.get(i-degree-1).clone());
-				newt.set(k, Knots.get(i).doubleValue());
+				newPw.set(k-degree-1, controlPointsHom.get(i-degree-1).clone());
+				newt.set(k, Knots.get(i));
 				k--;i--;
 			}
-			newPw.set(k-degree-1, (Point2dHom) newPw.get(k-degree).clone());
+			newPw.set(k-degree-1, newPw.get(k-degree).clone());
 			for (int l=1; l<=degree; l++)
 			{
 				int actualindex = k-degree+l;
-				double alpha = newt.get(k+l).doubleValue()-X.get(j).doubleValue();
+				double alpha = newt.get(k + l) - X.get(j);
 				if (Math.abs(alpha) == 0.0d)
-					newPw.set(actualindex-1, (Point2dHom) newPw.get(actualindex).clone());
+					newPw.set(actualindex-1, newPw.get(actualindex).clone());
 				else
 				{
-					alpha = alpha/(newt.get(k+l).doubleValue()-Knots.get(i-degree+l).doubleValue());
-					Point2dHom p1 = (Point2dHom) newPw.get(actualindex-1).clone();
+					alpha = alpha/(newt.get(k + l) - Knots.get(i - degree + l));
+					Point2dHom p1 = newPw.get(actualindex-1).clone();
 					p1.scale(alpha);
-					Point2dHom p2 = (Point2dHom) newPw.get(actualindex).clone();
+					Point2dHom p2 = newPw.get(actualindex).clone();
 					p2.scale(1.0d - alpha);
 					p1.add(p2);
 					newPw.set(actualindex-1,p1);
 				}
 			} //All Points recomputed for this insertion
-			newt.set(k, X.get(j).doubleValue());
+			newt.set(k, X.get(j));
 			k--;
 		}
 		//Recompute Points & weights
 		controlPoints = new Vector<Point2D>(); 
 		cpWeight = new Vector<Double>();
-		Iterator<Point2dHom> Pwi = newPw.iterator();
-		while (Pwi.hasNext())
-		{
-			Point2dHom p1 = Pwi.next();
-			if (p1.w==0)
-				controlPoints.add(new Point2D.Double(p1.x,p1.y));
+		for (final Point2dHom p1 : newPw) {
+			if (p1.w == 0)
+				controlPoints.add(new Point2D.Double(p1.x, p1.y));
 			else
-				controlPoints.add(new Point2D.Double(p1.x/p1.w, p1.y/p1.w));
+				controlPoints.add(new Point2D.Double(p1.x / p1.w, p1.y / p1.w));
 			cpWeight.add(p1.w);
 		}
 		Knots = newt;
@@ -1121,7 +1083,7 @@ public class NURBSShape {
 			double nodei = 0.0d;
 			for (int j=1; j<=degree; j++)
 			{
-				nodei = nodei + (double)Knots.get(i+j);
+				nodei = nodei + Knots.get(i+j);
 			}
 			nodei = nodei/degree;
 			if (Math.abs(position-nodei)<min)

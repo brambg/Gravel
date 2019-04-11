@@ -128,7 +128,7 @@ public class NodeDragEdgeCreationListener implements MouseListener, MouseMotionL
 
 	public void mouseReleased(MouseEvent e) {
 		Point p = new Point(Math.round(e.getPoint().x/((float)vgc.getZoom()/100)),Math.round(e.getPoint().y/((float)vgc.getZoom()/100))); //rausrechnen
-		if (((e.getPoint().x==-1)&&(e.getPoint().y==-1))||(firstdrag==true)) //never dragged
+		if (((e.getPoint().x==-1)&&(e.getPoint().y==-1))||(firstdrag)) //never dragged
 		{	
 			if (DragNode!=null)
 				vg.modifyNodes.remove(DragNode.getIndex());

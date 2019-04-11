@@ -44,14 +44,10 @@ import java.util.*;
 import java.net.URL;
 import java.awt.*;
 import java.awt.event.*;
-import java.applet.*;
 import java.lang.reflect.*;
 import javax.help.*;
 import javax.swing.*;
-import javax.swing.text.*;
-import sunw.demo.classviewer.ClassViewerNavigator;
 import java.beans.PropertyVetoException;
-import javax.help.Map.ID;
 
 /**
  * This class is the main class of the IdeHelp demo
@@ -361,7 +357,7 @@ public class ApiDemo extends JPanel implements ActionListener {
     // An Option Dialog.  Not really good for help
 
     private void showDialog1() {
-	Object options[] = {"OK", "CANCEL", "HELP"};
+			Object[] options = {"OK", "CANCEL", "HELP"};
 	int index =
 	    JOptionPane.showOptionDialog(null, // parent
 					 "Exit?", // message object
@@ -403,7 +399,7 @@ public class ApiDemo extends JPanel implements ActionListener {
 	menuItem.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent e){
 
-		Object options[] = {"OK", "CANCEL", "HELP"};
+				Object[] options = {"OK", "CANCEL", "HELP"};
 		int index =
 		    JOptionPane.showOptionDialog(null, // parent
 						 "Exit IdeDemo?", // message object
@@ -580,16 +576,14 @@ public class ApiDemo extends JPanel implements ActionListener {
 	}
     }
     
-    private static String[] shiftArgs(String args[], int step) {
+    private static String[] shiftArgs(String[] args, int step) {
 	int count = args.length;
-	String back[] = new String[count-step];
-	for (int i=0; i<count-step; i++) {
-	    back[i] = args[i+step];
-	}
+			String[] back = new String[count - step];
+			if (count - step >= 0) System.arraycopy(args, 0 + step, back, 0, count - step);
 	return back;
     }
 
-    public static void main(String args[]) throws Exception {
+    public static void main(String[] args) throws Exception {
 	if (args.length >= 1) {
 	    String laf = args[0];
 	    UIManager.setLookAndFeel(swingPkg + laf);
@@ -610,10 +604,10 @@ public class ApiDemo extends JPanel implements ActionListener {
 
 
     private static void printData(Container container) {
-	Component k[] = container.getComponents();
-	for (int i=0; i<k.length; i++) {
-	    System.err.println(k[i]);
-	}
+			Component[] k = container.getComponents();
+			for (final Component component : k) {
+				System.err.println(component);
+			}
 	System.err.println(container);
     }
 
@@ -622,7 +616,7 @@ public class ApiDemo extends JPanel implements ActionListener {
 	Method m = null;
 	hasCustomCursor = false;
 	try {
-	    Class types[] = {Image.class, Point.class, String.class};
+		Class[] types = {Image.class, Point.class, String.class};
 	    m = Toolkit.class.getMethod("createCustomCursor",
 					       types);
 	    if (m != null) {

@@ -60,12 +60,12 @@ public class CommonEdgeClickListener implements MouseListener {
 		boolean alt = ((InputEvent.ALT_DOWN_MASK & e.getModifiersEx()) == InputEvent.ALT_DOWN_MASK); // alt ?
 		if (alt&&(edgeInRange!=null)) //if alt+click -> toggle visibility
 		{
-			edgeInRange.getTextProperties().setVisible(edgeInRange.getTextProperties().isVisible()^true);
+			edgeInRange.getTextProperties().setVisible(!edgeInRange.getTextProperties().isVisible());
 			vg.pushNotify(new GraphMessage(GraphConstraints.EDGE, edgeInRange.getIndex(),GraphConstraints.UPDATE, GraphConstraints.EDGE));
 		}
 		else if (alt&&(hyperedgeInRange!=null))
 		{
-			hyperedgeInRange.getTextProperties().setVisible(hyperedgeInRange.getTextProperties().isVisible()^true);
+			hyperedgeInRange.getTextProperties().setVisible(!hyperedgeInRange.getTextProperties().isVisible());
 			vhg.pushNotify(new GraphMessage(GraphConstraints.HYPEREDGE, hyperedgeInRange.getIndex(),GraphConstraints.UPDATE, GraphConstraints.HYPEREDGE));			
 		}
 	}

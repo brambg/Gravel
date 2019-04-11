@@ -445,7 +445,7 @@ public class VHyperGraphic extends VCommonGraphic
 				Click.update(o,arg);
 			repaint();
 		}
-		else if (super.Controls.containsKey((String)arg)) //We got news from grid or zoom
+		else if (super.Controls.containsKey(arg)) //We got news from grid or zoom
 			handlePreferencesUpdate();
 	}
 	

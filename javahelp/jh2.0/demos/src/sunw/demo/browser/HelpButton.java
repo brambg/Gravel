@@ -44,8 +44,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
-import java.util.Locale;
-import java.io.IOException;
 import javax.help.*;
 
 /** 1.2 version of this
@@ -111,11 +109,10 @@ public class HelpButton extends JApplet implements ActionListener{
 	} catch (Exception ee) {
 	    System.out.println ("Trouble in createHelpSet;");
 	    ee.printStackTrace();
-	    return;
-	}
+  }
     }
 
-    public static void main(String args[]) throws Exception {
+    public static void main(String[] args) throws Exception {
 	frame=new JFrame("HelpButton demo");
 	frame.getContentPane().setLayout(new BorderLayout());
 	frame.getContentPane().add(new HelpButton("HolidayHistory", 
