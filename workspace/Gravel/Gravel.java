@@ -1,11 +1,8 @@
-import java.io.File;
-
-import javax.swing.UIManager;
-
 import main.DEBUG;
-
 import view.Gui;
-import view.Gui_Mac;
+
+import javax.swing.*;
+import java.io.File;
 /**
  * Gravel
  * 
